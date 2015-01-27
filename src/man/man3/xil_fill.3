@@ -1,0 +1,88 @@
+.\" @(#)xil_fill.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_fill 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_fill \- perform boundary fill from specified start point
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_fill (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "float " xseed ,
+.br
+.BI "float " yseed ,
+.br
+.BI "float *" boundary ,
+.br
+.BI "float *" fill_color );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_fill
+.IX Functions xil_fill
+.IX "Presentation Functions" "xil_fill"
+This function performs a boundary fill.  Given the starting coordinates, the routine fills every 4-connected pixel with the specified color until it encounters the boundary.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I xseed
+is a float that specifies the 
+.I x 
+start coordinate.
+.I yseed
+is a float that specifies the 
+.I y 
+start coordinate.
+.I boundary
+is a pointer to the floating-point array that specifies the boundary value [0...(nbands-1)] for each pixel.
+.I fill_color
+is a pointer to the floating-point array that specifies the fill color [0...(nbands-1)] for each pixel.
+.SS ROI Behavior
+.nh
+This function performs the fill operation on the entire source image.  The filled pixels within the ROI (region of interest) are output to the destination image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+For this example, the source and destination images contain 2 bands.
+Perform boundary fill starting at (x,y) = (7,3).
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src;
+XilImage dst;
+float xseed = 7.0;
+float yseed = 3.0;
+float boundary[2] = {255.0, 0.0};
+float fill_color [2] =  {0.0,255.0};
+.ta 3.5i
+xil_fill(src, dst, xseed, yseed, boundary, fill_color);
+.RE
+.fi
+.SH NOTES
+.nh
+Source and destination images must be the same data type, and have the
+same number of bands.  For an n-band image, the array of floats for 
+.I boundary 
+and 
+.I fill_color 
+must be of size n.  A pixel that matches each band in the specified
+.I boundary 
+value is a boundary pixel.  Only pixels that are changed to the fill color are output to the destination image.
+In-place operations are supported.
+.SH SEE ALSO
+.BR xil_create (3),
+.BR xil_roi_create (3).

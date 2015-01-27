@@ -1,0 +1,162 @@
+.\" @(#)xil_storage_set_band_stride.3 1.9 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_storage_set_band_stride 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_storage_set_band_stride, xil_storage_set_pixel_stride,
+xil_storage_set_scanline_stride, xil_storage_set_offset and
+xil_storage_set_data, xil_storage_set_data_release \- set values on an XilStorage object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_storage_set_band_stride (XilStorage " storage,
+.if t .in +5n
+.br
+.BI "unsigned int " band_stride );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_storage_set_pixel_stride (XilStorage " storage,
+.if t .in +5n
+.br
+.BI "unsigned int " band,
+.br
+.BI "unsigned int " pixel_stride );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_storage_set_scanline_stride (XilStorage " storage,
+.if t .in +5n
+.br
+.BI "unsigned int " band,
+.br
+.BI "unsigned int " scanline_stride );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_storage_set_offset (XilStorage " storage,
+.if t .in +5n
+.br
+.BI "unsigned int " band,
+.br
+.BI "unsigned int " offset );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_storage_set_data (XilStorage " storage ,
+.if t .in +5n
+.br
+.BI "unsigned int " band ,
+.br
+.BI "void *" data );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_storage_set_data_release (XilStorage " storage ,
+.if t .in +5n
+.br
+.BI "XilDataReleaseFuncPtr " release_func ,
+.br
+.BI "void* " user_args );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to set information on an XilStorage object.
+When an XilStorage object is first created, the band stride, pixel stride, and scanline stride attributes are set to zero and the pointer to the image data is set to NULL. This information is filled in by the user 
+prior to calling either
+.BR xil_set_storage_with_copy (3)
+or
+.BR xil_set_tile_storage (3). 
+.P
+.IX xil_storage_set_band_stride
+.IX Functions xil_storage_set_band_stride
+.IX "Storage Functions" "xil_storage_set_band_stride"
+.B xil_storage_set_band_stride (\^)
+sets the band stride of 
+.I storage.
+Band stride represents the distance to the same pixel in the next band.
+Band stride is only valid for XIL_BAND_SEQUENTIAL and therefore does
+not take a band argument (which is of use only to XIL_GENERAL type storage).
+.P
+.IX xil_storage_set_pixel_stride
+.IX Functions xil_storage_set_pixel_stride
+.IX "Storage Functions" "xil_storage_set_pixel_stride"
+.B xil_storage_set_pixel_stride (\^)
+sets the pixel stride of 
+.I storage.
+Pixel stride represents the distance to the next pixel on the same scanline.
+For XIL_BAND_SEQUENTIAL, pixel stride is always 1. 
+The band argument is for use with XIL_GENERAL storage since each band
+may have a different pixel stride. For XIL_PIXEL_SEQUENTIAL
+images, it is only necessary to set the pixel stride for band 0.
+.P
+.IX xil_storage_set_scanline_stride
+.IX Functions xil_storage_set_scanline_stride
+.IX "Storage Functions" "xil_storage_set_scanline_stride"
+.B xil_storage_set_scanline_stride (\^)
+sets the scanline stride of 
+.I storage.
+Scanline stride represents the distance to the same pixel on the next
+horizontal scanline (the vertical stride). The band argument is for use with 
+XIL_GENERAL storage since each band may have a different scanline
+stride. For XIL_PIXEL_SEQUENTIAL and XIL_BAND_SEQUENTIAL images, 
+it is only necessary to set the scanline stride for band 0.
+.P
+.IX xil_storage_set_offset
+.IX Functions xil_storage_set_offset
+.IX "Storage Functions" "xil_storage_set_offset"
+.B xil_storage_set_offset (\^)
+sets the offset into the first byte 
+.I storage.
+The offset represents the number of bits to offset to the first pixel.
+This call is valid only for XIL_BIT images. The band argument is for use
+with XIL_GENERAL storage since each band may have a different offset. For XIL_BAND_SEQUENTIAL images, it is only necessary to set the offset for band 0.
+.P
+.IX xil_storage_set_data
+.IX Functions xil_storage_set_data
+.IX "Storage Functions" "xil_storage_set_data"
+.B xil_storage_set_data (\^)
+sets the data pointer. The data pointer is the starting address of the storage with data units of the appropriate type for the image. The band argument is for use with XIL_GENERAL storage since each band may have a different data pointer. For XIL_PIXEL_SEQUENTIAL or XIL_BAND_SEQUENTIAL storage, it is only necessary to set the data pointer for band 0.
+.P
+.IX xil_storage_set_data_release
+.IX Functions xil_storage_set_data_release
+.IX "Storage Functions" "xil_storage_set_data_release"
+The user may choose to add a data release function pointer to the storage object. If this function pointer is set, XIL will call back to the user when it is done with the data. If the function pointer is not set, no action is taken when XIL is done with the data. The prototype for the
+XilDataReleaseFuncPtr is:
+.sp
+.ft B
+.RS
+typedef void (*XilDataReleaseFuncPtr)(void*, void*);
+.ft R
+.sp
+.RE
+The first argument is the data pointer that is no longer used. The second argument is for the arguments provided as user_args in 
+.B xil_storage_set_data_release (\^).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH SEE ALSO
+.BR Storage (3),
+.BR xil_set_tile_storage (3),
+.BR xil_set_storage_with_copy (3).

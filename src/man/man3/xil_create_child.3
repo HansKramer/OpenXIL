@@ -1,0 +1,117 @@
+.\" @(#)xil_create_child.3 1.3 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_create_child 3 "08 February 1994" "" "XIL Library"
+.SH NAME
+xil_create_child \- create a child image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage xil_create_child ( XilImage " parent ,
+.if t .in +5n
+.br
+.BI "unsigned int " xstart ,
+.br
+.BI "unsigned int " ystart ,
+.br
+.BI "unsigned int " width ,
+.br
+.BI "unsigned int " height ,
+.br
+.BI "unsigned int " startband ,
+.br
+.BI "unsigned int " numbands );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_create_child
+.IX Functions xil_create_child
+.IX "Image Functions" "xil_create_child
+This routine creates a new (child) reference to the existing image.
+Modifications to the child image affect the parent's data.
+.I xstart
+is the horizontal offset in pixels from the upper-left corner of the source
+image to the upper-left corner of the subimage.
+.I ystart
+is the vertical offset in pixels from the upper-left corner of the source
+image to the upper-left corner of the subimage.
+.I width
+is the width of the subimage in pixels.
+.I height
+is the height of the subimage in pixels.
+.I startband
+is the offset in bands, starting from the first band, to the first band in the subimage.
+.I numbands
+is the number of bands in the subimage.
+.P
+.nh
+The color space of the child image is set to that of the parent image
+if the number of bands in the child is the same as that of the parent.
+Otherwise, the color space is set to NULL.  The origin of the child
+image is initialized to (0.0, 0.0).
+.P
+.nh
+Note that this function does not create a copy of the data, only a reference
+to it.
+.SS ROI Behavior
+.nh
+The default ROI is NULL.  If an ROI is NULL, operations are performed on the
+entire (child) image. The parent image's ROI and origin are ignored by the
+child.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.fi
+.ft 1
+.nh
+Create a 512 x 512 5-band, 16-bit image. Then create a 100 x 100 child image
+that begins at offset (200, 250) comprising the middle 3 bands:
+.LP
+.nf
+.RS
+.ft 3
+XilImage image, child_image;
+.sp
+image = xil_create(512, 512, 5, XIL_SHORT);
+child_image = xil_create_child(image, 200, 250, 100, 100, 1, 3);
+.RE
+.sp  
+.ne 20 
+.SH NOTES 
+.nh 
+If overlapping but not coincident sibling images
+(children of the same parent) 
+are specified as the source and destination for an operation, 
+the operation is performed.
+However, the library generates a warning message, and the results
+of such an operation are undefined. For an exception to this behavior, see 
+.BR xil_copy (3).
+.sp
+.nh
+It is important to note that child images are true images and are not
+equivalent to setting an ROI on the parent image.  If an XIL operation has
+certain edge behavior along an image boundary, the child image boundry is treated as an image boundary even if there is data available outside the child in the parent image.  An example would be the XIL_EDGE_EXTEND case of
+.BR xil_convolve (3)
+which duplicates the edge of the source image to provide information necessary
+for the convolution operation.  This will be the case along a child image edge
+even if there is sufficient data in the parent to provide the necessary
+information for the convolution operation.
+.SH SEE ALSO
+.BR xil_create (3),
+.BR xil_create_copy (3),
+.BR xil_create_from_device (3),
+.BR xil_create_from_type (3),
+.BR xil_create_from_window (3),
+.BR xil_destroy (3),
+.BR xil_set_origin (3),
+.BR xil_get_origin (3),
+.BR xil_set_roi (3),
+.BR xil_get_roi (3),
+.BR xil_get_parent (3).

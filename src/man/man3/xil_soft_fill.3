@@ -1,0 +1,114 @@
+.\" @(#)xil_soft_fill.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_soft_fill 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_soft_fill \- perform soft fill from specified starting point
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_soft_fill (XilImage " src,
+.if t .in +5n
+.br
+.BI "XilImage " dst,
+.br
+.BI "float " xseed,
+.br
+.BI "float " yseed,
+.br
+.BI "float *" foregnd_color,
+.br
+.BI "unsigned int " num_backgnd_color,
+.br
+.BI "float *" backgnd_color,
+.br
+.BI "float *" fill_color);
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_soft_fill
+.IX Functions xil_soft_fill
+.IX "Presentation Functions" "xil_soft_fill"
+This function performs a soft fill on a region composed of the foreground color and a number of background colors. From the starting coordinates, every 4-connected pixel containing a percentage of foreground color is filled with the corresponding percentage of fill color.  If a pixel does not contain the foreground color, it forms part of the boundary of the region.
+.P
+.nh
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I xseed
+is a float that specifies the 
+.I x 
+start coordinate.
+.I yseed
+is a float that specifies the 
+.I y 
+start coordinate.
+.I foregnd_color
+is a pointer to the floating-point array that specifies the foreground color [0...(nbands-1)] for each pixel in the soft fill region.
+.P
+.nh
+.I num_backgnd_color
+is the number of background colors in the background color list.
+.I backgnd_color
+is a pointer to the floating-point array that specifies the list of background colors [num_backgnd_color][0...(nbands-1)] for each pixel in the soft fill region.
+.I fill_color
+is a pointer to the floating-point array that specifies the fill color [0...(nbands-1)] for each pixel in the soft fill region.
+.SS ROI Behavior
+.nh
+This function performs the fill operation on the entire source image.  The filled pixels within the ROI (region of interest) are output to the destination image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 20
+.SH EXAMPLES
+For this example, the source and destination images contain 3 bands.  The foreground color and 2 background colors form the soft fill region.
+Perform soft fill starting at (x,y) = (7,3).
+.P
+.RS
+.nf
+.ft 3
+XilImage src;
+XilImage dst;
+float xseed = 7.0;
+float yseed = 3.0;
+float foregnd_color[3] = {255.0, 0.0, 0.0};
+unsigned int num_backgnd_color = 2;
+float backgnd_color[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 255.0};
+float fill_color [3] =  {0.0, 255.0, 0.0};
+.sp
+xil_soft_fill(src, dst, xseed, yseed, foregnd_color, 
+	num_backgnd_color, backgnd_color, fill_color);
+.RE
+.fi
+.ne 25
+.SH NOTES
+.nh
+Source and destination images must be the same data type, and have the
+same number of bands.  For an n-band image, the array of floats for 
+.I foregnd_color 
+and 
+.I fill_color 
+must be of size n, and
+.I backgnd_color
+must be of size n*
+.I num_backgnd_color.
+.P
+.nh  
+The set of basis colors, the foreground and background colors, must not be coplanar, or the algorithm will fail to determine the correct percentage for fill color.  Only pixels that are changed to the fill color are output to the destination image.
+.sp
+In-place operations are supported.
+.SH SEE ALSO
+.BR xil_fill (3)
+
+
+
+
+

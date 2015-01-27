@@ -1,0 +1,83 @@
+.\" @(#)xil_threshold.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_threshold 3 "17 June 1993" "" "XIL Library"
+.SH NAME
+xil_threshold \- set value of image pixel bands within a specified range
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_threshold (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "float *" low ,
+.br
+.BI "float *" high ,
+.br
+.BI "float *" map );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_threshold
+.IX Functions xil_threshold
+.IX "Image Processing Operations" "xil_threshold"
+For each band of an image, this function maps to a constant
+all the values that fall between a low value and
+a high value.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I low
+is a pointer to the floating-point array that specifies the low value of the range
+for band [0...(nbands-1)].
+.I low[0]
+is the low value for band 0, and so forth.
+.I high
+is a pointer to the floating-point array that specifies the high value of the range for band [0...(nbands-1)].
+.I high[0]
+is the high value for band 0, and so forth.
+.I map
+is a pointer to the floating-point array that specifies the map value for each pixel band within the range [low:high].
+.LP
+For an n-band image, the array of floats for 
+.I low, 
+.I high, 
+and 
+.I map 
+must be of size n.  Each band is independently evaluated for its range.
+Values outside the range are passed through without change.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+For this example, the source and destination images contain 2 bands.  Force each pixel in band[0] between [192:255] to value 191.  Force each pixel in band[1] between [0:63] to value 64.
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src;
+XilImage dst;
+float low[2] =  {192.0, 0.0};
+float high[2] = {255.0, 63.0};
+float map[2] =  {191.0, 64.0};
+.ta 3.5i
+xil_threshold(src, dst, low, high, map);
+.RE
+.fi
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the same number of bands.
+In-place operations are supported.
+
+

@@ -1,0 +1,113 @@
+.\" @(#)xil_get_active_buffer.3 1.2 97/02/25 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_active_buffer 3 "7 January 1998" "" "XIL Library"
+.SH NAME
+xil_get_active_buffer, xil_set_active_buffer - get or set the active buffer on
+a double-buffered or stereo device image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilBufferId xil_get_active_buffer ( XilImage " image );
+.br
+.ft R
+.fi
+.P
+.sp .5v
+.BI "void xil_set_active_buffer ( XilImage " image ,
+.if t .in +5n
+.br
+.BI "XilBufferId " id );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_get_active_buffer
+.IX Functions xil_get_active_buffer
+.IX "Image Functions" "xil_get_active_buffer"
+.IX xil_set_active_buffer
+.IX Functions xil_set_active_buffer
+.IX "Image Functions" "xil_set_active_buffer"
+.nh
+The active buffer of a double-buffered or stereo device image
+represents the buffer that will be affected when an operation uses the
+image.  At creation of a double-buffered image, the
+back buffer is the active buffer. At the creation of a stereo image,
+the active buffer is the left image. If both double-buffered and stereo
+the active buffer at creation will be the back-left buffer.
+.P
+.B xil_get_active_buffer
+(\^) returns the current 
+.B XilBufferId
+for the active buffer of a double-buffered or stereo device image. The 
+.B XilBufferId 
+is an enumeration type that can be one of the following enumeration constants :
+.sp
+.nf
+     XIL_FRONT_BUFFER
+     XIL_BACK_BUFFER
+     XIL_LEFT_BUFFER
+     XIL_RIGHT_BUFFER
+     XIL_FRONT_LEFT_BUFFER
+     XIL_FRONT_RIGHT_BUFFER
+     XIL_BACK_LEFT_BUFFER
+     XIL_BACK_RIGHT_BUFFER
+.fi
+.P
+If this function is called on an image that is either not a device image or
+not a double-buffered or stereo image, an error is generated and the value XIL_BACK_BUFFER is returned to the user.
+.P
+.B xil_set_active_buffer
+(\^) sets the active buffer for the double-buffered device image to either XIL_FRONT_BUFFER or XIL_BACK_BUFFER. If this function is called on an image that is either not a device image or not a double-buffered stereo device image, an error is generated.
+.SH EXAMPLES
+.nh
+.sp
+.nf
+.ft 3
+    XilSystemState State;
+    XilImage display_image;
+    XilImage image0, image1;
+    Display* display;
+    Window window;
+
+    /* Create an XIL display image from existing X display and window */
+    if(display_image = xil_create_double_buffered_window(State,
+                                              display,window) == NULL) {
+    
+        /* return with error */
+    }
+
+    /* We know that this device image is double buffered */
+
+    /* Copy image0 to the back buffer of display */
+    xil_copy(image0, display_image);
+
+    /* Move the back buffers contents to the front buffer */
+    xil_swap_buffers(display_image);
+
+    /* Set the active buffer of the display image to the front buffer */
+    xil_set_active_buffer(display_image, XIL_FRONT_BUFFER);
+    
+    /* overwrite the contents of the front buffer directly */
+    xil_copy(image1, display_image);
+.ft 1
+.fi
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+\f2XIL Programmer's Guide\fP.
+.SH NOTES
+.nh
+Changing the active buffer to the 
+.B XIL_FRONT_BUFFER 
+does not change the fact that 
+.B xil_swap_buffers(3)
+swaps the contents of the back buffer to the front buffer.
+.SH "SEE ALSO"
+.BR xil_create_double_buffered_window (3),
+.BR xil_create_from_special_window (3),
+.BR xil_swap_buffers (3).

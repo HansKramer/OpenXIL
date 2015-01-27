@@ -1,0 +1,82 @@
+##
+##  @(#)mapfile	1.15 96/06/29 
+##
+##
+##  Linker MapFile for xilOp_SunSoft-XIL.so.2
+##
+
+xilOp_SunSoft-XIL.so.2 {
+    global:
+        ##
+        ##  Required Entry Function
+        ##
+        __0FKXilOpEntryv;
+
+        ##
+        ##  Op Create Routines
+        ##
+        __0fHXilOpOrGcreatePcPPviT;
+        __0fIXilOpAddGcreatePcPPviT;
+        __0fIXilOpAndGcreatePcPPviT;
+        __0fIXilOpMaxGcreatePcPPviT;
+        __0fIXilOpMinGcreatePcPPviT;
+        __0fIXilOpNotGcreatePcPPviT;
+        __0fIXilOpXorGcreatePcPPviT;
+        __0fJXilOpCastGcreatePcPPviT;
+        __0fJXilOpCopyGcreatePcPPviT;
+        __0fKXilOpBlendGcreatePcPPviT;
+        __0fLXilOpDivideGcreatePcPPviT;
+        __0fLXilOpLookupGcreatePcPPviT;
+        __0fMXilOpExtremaGcreatePcPPviT;
+        __0fMXilOpOrConstGcreatePcPPviT;
+        __0fMXilOpRescaleGcreatePcPPviT;
+        __0fNXilOpAbsoluteGcreatePcPPviT;
+        __0fNXilOpAddConstGcreatePcPPviT;
+        __0fNXilOpAndConstGcreatePcPPviT;
+        __0fNXilOpMultiplyGcreatePcPPviT;
+        __0fNXilOpSetValueGcreatePcPPviT;
+        __0fNXilOpSubtractGcreatePcPPviT;
+        __0fNXilOpXorConstGcreatePcPPviT;
+        __0fOXilOpHistogramGcreatePcPPviT;
+        __0fOXilOpThresholdGcreatePcPPviT;
+        __0fRXilOpNearestColorGcreatePcPPviT;
+        __0fTXilOpChooseColormapGcreatePcPPviT;
+        __0fRXilOpSqueezeRangeGcreatePcPPviT;
+        __0fSXilOpDivideByConstGcreatePcPPviT;
+        __0fSXilOpMultiplyConstGcreatePcPPviT;
+        __0fSXilOpSubtractConstGcreatePcPPviT;
+        __0fUXilOpBlackGenerationGcreatePcPPviT;
+	__0fRXilOpColorConvertGcreatePcPPviT;
+	__0fRXilOpColorCorrectGcreatePcPPviT;
+        __0fUXilOpDivideIntoConstGcreatePcPPviT;
+        __0fWXilOpCopyWithPlanemaskGcreatePcPPviT;
+        __0fWXilOpSubtractFromConstGcreatePcPPviT;
+	__0fLXilOpAffineGcreatePcPPviT;
+	__0fLXilOpRotateGcreatePcPPviT;
+	__0fKXilOpScaleGcreatePcPPviT;
+	__0fOXilOpTranslateGcreatePcPPviT;
+	__0fOXilOpTransposeGcreatePcPPviT;
+	__0fWXilOpSubsampleAdaptiveGcreatePcPPviT;
+	__0faXilOpSubsampleBinaryToGrayGcreatePcPPviT;
+	__0fOXilOpTablewarpGcreatePcPPviT;
+	__0fWXilOpTablewarpVerticalGcreatePcPPviT;
+	__0fYXilOpTablewarpHorizontalGcreatePcPPviT;
+	__0fQXilOpBandCombineGcreatePcPPviT;
+	__0fQXilOpCopyPatternGcreatePcPPviT;
+	__0fSXilOpEdgeDetectionGcreatePcPPviT;
+	__0fNXilOpConvolveGcreatePcPPviT;
+	__0fKXilOpErodeGcreatePcPPviT;
+	__0fLXilOpDilateGcreatePcPPviT;
+	__0fJXilOpFillGcreatePcPPviT;
+	__0fNXilOpSoftFillGcreatePcPPviT;
+	__0fMXilOpDisplayGcreatePcPPviT;
+	__0fMXilOpCaptureGcreatePcPPviT;
+	__0fSXilOpOrderedDitherGcreatePcPPviT;
+	__0fKXilOpPaintGcreatePcPPviT;
+        __0fNXilOpCompressGcreatePcPPviT;
+        __0fPXilOpDecompressGcreatePcPPviT;
+	__0fTXilOpErrorDiffusionGcreatePcPPviT;
+
+    local:
+        *;
+};

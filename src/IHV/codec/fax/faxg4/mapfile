@@ -1,0 +1,19 @@
+##
+##  @(#)mapfile	1.1 96/03/08 
+##
+##
+##  Linker MapFile for xilCompress_faxG4.so.2
+##
+
+xilCompress_faxG4 {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fbXilDeviceManagerCompressionGcreateUiTBPUiTDT;
+
+    local:
+        *;
+};
+
+

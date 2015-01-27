@@ -1,0 +1,110 @@
+.\" @(#)xil_storage_get_by_name.3 1.2 97/02/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_storage_get_by_name 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_storage_get_by_name, xil_storage_get_name, xil_storage_set_name \- get and
+set a storage object name and get a handle to a storage object  by specifying a name
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilStorage xil_storage_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_storage_get_name (XilStorage " storage );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_storage_set_name (XilStorage " storage ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to storage objects, to read a storage object's name, and to
+retrieve storage objects by name.
+.P
+.nh
+.IX xil_storage_get_by_name
+.IX Functions xil_storage_get_by_name
+.IX "Storage Functions" "xil_storage_get_by_name"
+.BR xil_storage_get_by_name (\^)
+returns the handle to the storage object with the specified 
+.I name.
+If such a storage object does not exist, NULL is returned.  
+.B xil_storage_get_by_name
+(\^) does not make a copy of the storage object.
+.P
+.nh
+.IX xil_storage_get_name
+.IX Functions xil_storage_get_name
+.IX "Storage Functions" "xil_storage_get_name"
+.BR xil_storage_get_name (\^)
+returns a copy of the specified storage object's name. A call to 
+.B free
+(3) should be used to free the space allocated by 
+.BR xil_storage_get_name (\^)
+If the specified storage object has no name, NULL is returned.
+.P
+.nh
+.IX xil_storage_set_name
+.IX Functions xil_storage_set_name
+.IX "Storage Functions" "xil_storage_set_name"
+.BR xil_storage_set_name (\^)
+sets the name of the specified storage object to the one provided.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create a storage object associated with my_image and call it
+"my_image's storage". Then create a storage object associated
+with your_image and call it "your image's storage" :
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage my_image;
+XilImage your_image;
+XilStorage storage1;
+XilStorage storage2;
+.sp
+my_image = xil_create(State,64,64,3,XIL_BYTE);
+your_image = xil_create(State,64,64,3,XIL_BYTE);
+
+      .... load data into my_image and your_image......
+
+storage1 = xil_storage_create(State,my_image);
+storage2 = xil_storage_create(State,your_image);
+xil_storage_set_name(storage1, "my_image's storage");
+xil_storage_set_name(storage2, "your_image's storage");
+.fi
+.ft
+.RE
+.P 
+.ne 10
+.SH NOTES
+.nh
+If you give two storage objects the same name, it is not defined which
+storage object will be retrieved by a call to 
+.BR xil_storage_get_by_name (\^).
+.SH SEE ALSO
+.BR xil_storage_create (3).

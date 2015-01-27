@@ -1,0 +1,137 @@
+.\" @(#)xil_install_error_handler.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_install_error_handler 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_install_error_handler, xil_default_error_handler,
+xil_remove_error_handler,
+xil_call_next_error_handler \- install or remove a customized error handler, or use the default version
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "int xil_install_error_handler (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "XilErrorFunc " func );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_remove_error_handler (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "XilErrorFunc " func );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "Xil_boolean xil_call_next_error_handler ( XilError " error );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "Xil_boolean xil_default_error_handler ( XilError " error );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+Errors and warnings in the XIL library are dispatched through an 
+error handling routine.  Users can provide their own customized error function or use the XIL default routine.  Users can also chain error
+handlers to allow individual error handlers to handle only a certain type of error.
+.P
+.nh
+.IX xil_install_error_handler
+.IX Functions xil_install_error_handler
+.IX "Error Handling Functions" "xil_install_error_handler"
+.BR xil_install_error_handler (\^)
+installs a user-provided customized error function.  Inside this
+function, calls can be made to the various 
+.B xil_error_get_* 
+routines to get information about the error.  The return value from 
+this error handler can be used by any error handlers further up the chain to determine whether the error has been successfully handled. The most recently
+installed error handler is called first, then the next most recently
+installed error handler, and so on, so that the last error handler to be
+installed is the first to be called.
+.P
+.nh
+.IX xil_remove_error_handler
+.IX Functions xil_remove_error_handler
+.IX "Error Handling Functions" "xil_remove_error_handler"
+.BR xil_remove_error_handler (\^)
+removes an error function from the
+error handler chain.  It can be used to remove the default error handler
+from the error handler chain.
+.P
+.IX xil_call_next_error_handler
+.IX Functions xil_call_next_error_handler
+.IX "Error Handling Functions" "xil_call_next_error_handler"
+.BR xil_call_next_error_handler (\^)
+can be called from within an error handler to allow an error handler further down the chain to handle the error.
+.P
+.nh
+.IX xil_default_error_handler
+.IX Functions xil_default_error_handler
+.IX "Error Handling Functions" "xil_default_error_handler"
+.BR xil_default_error_handler (\^)
+prints an informative message about errors and warnings to the standard error output.  The default error handler always returns 
+.I TRUE
+and is always the last error handler on the error handler chain.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 25
+.SH EXAMPLES
+.nf
+.sp
+.RS
+.ft 3
+/* Print the standard error message.
+ * If the error is a RESOURCE error, then quit.
+ */
+Xil_boolean resource_errors(XilError error)
+{
+	int ret_val;
+	ret_val = xil_call_next_error_handler(error);
+	if (xil_error_get_category(error) == XIL_ERROR_RESOURCE)
+	   exit(1);
+	return ret_val;
+}
+
+main()
+{
+	XilSystemState State;
+
+	State=xil_open();
+	if (State==NULL) {
+	   printf("Couldn't initialize XIL\\n");
+	   exit(1);
+	}
+	xil_install_error_handler(State,resource_errors);
+...
+}
+.RE
+.fi
+.ft 1
+.SH NOTES
+Only certain XIL functions can be called from within an error handler.
+For more information, see the 
+.I "XIL Programmer's Guide."
+.SH SEE ALSO
+.BR xil_error_get_string (3).
+
+
+
+

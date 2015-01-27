@@ -1,0 +1,227 @@
+.\" @(#)xil_get_tile_storage.3 1.5 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_tile_storage 3 "10 February 1997" "" "XIL Library"
+.SH NAME
+xil_get_tile_storage, xil_set_tile_storage - get and set the storage
+associated with an image on a per tile basis
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_get_tile_storage(XilImage " image,
+.if t .in +5n
+.br
+.BI "int " x,
+.br
+.BI "int " y,
+.br
+.BI "XilStorage " storage);
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_set_tile_storage(XilImage " image,
+.if t .in +5n
+.br
+.BI "XilStorage " storage);
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_get_tile_storage
+.IX Functions xil_get_tile_storage
+.IX "Image Functions" "xil_get_tile_storage"
+.IX xil_set_tile_storage
+.IX Functions xil_set_tile_storage
+.IX "Image Functions" "xil_set_tile_storage"
+.nh
+Use these routines to get or set the data of 
+.I image 
+on a per-tile
+basis. This is the only way to get or set individual tiles of data. The application is responsible for accessing the tiles one by one by requesting the image's tile size with the 
+.B xil_get_tile_size
+(\^) call. An image's storage is only accessible while the image is exported.
+.P
+.B xil_get_tile_storage
+(\^) will fill in 
+.I storage 
+with the appropriate information and data pointer for the 
+.I image's 
+storage for a given tile. X and Y represent the coordinate falling within the desired tile, usually the upper left corner coordinate. On a single-tiled image, the storage returned will be that of the whole image. When the application is in the default tiling mode, XIL_WHOLE_IMAGE, the image will consist of one tile.
+.P
+.B xil_set_tile_storage
+(\^) sets one tile of 
+.I image's 
+storage. Before calling this routine, the user must set all of the fields in
+.I storage
+as appropriate for the storage type. This is the only way to set an image from storage buffers that are themselves tiled or non-contiguous. The application can set the image's tile size with the 
+.BR xil_set_tilesize (3)
+call but is only able to set the image to more than one tile if the tiling mode is XIL_TILING. Use the 
+.BR xil_storage_set_coordinates (3)
+to indicate which tile the storage represents.
+.SH EXAMPLES
+Acquire and process an XIL_BYTE
+.B Xil 
+image's data on a tile basis. This example assumes that the storage is 
+.B XIL_PIXEL_SEQUENTIAL 
+so that only band 0 needs to be queried to describe the storage layout of the tile.
+.ft B
+.nf
+.sp
+    XilImage image;
+    XilStorage storage;
+    XilDatatype datatype;
+    XilStorageType storage_type;
+    XilSystemState state;
+    
+    unsigned int width, height, nbands;
+    Xil_unsigned8* data_ptr;
+
+    unsigned int tile_xsize, tile_ysize;
+
+   /*
+    * Assuming the byte image already exists with data in it...
+    */
+    xil_get_info(image, &width, &height, &nbands, datatype);
+    xil_export(image);
+    xil_get_tile_size(image, &tile_xsize, &tile_ysize);
+    storage = xil_storage_create(state, image);
+
+    /* Get storage and process a tile at a time */
+    for(y=0; y< height; y+=tile_ysize) {
+        for(x=0; x<width; x+=tile_xsize) {
+
+        Xil_unsigned8*    image_data;
+        unsigned int      image_scanline_stride;
+        unsigned int      image_pixel_stride;
+        
+            if(xil_get_tile_storage(image, x, y, storage) == FALSE) {
+                fprintf(stderr,
+                        "ERROR: Failed to aquire storage for tile (%d, %d)",
+                        x, y);
+                /* Any other error related cleanup */
+                return;
+            }
+            if(!(storage_is_type(storage,XIL_PIXEL_SEQUENTIAL))) {
+                fprintf(stderr,
+                        "ERROR: Can't process this type of image");
+                /* Any other error related cleanup */
+            }
+
+            /*
+             *  This is a PIXEL_SEQUENTIAL_IMAGE
+             *  By definition, the band stride is 1.
+             *  Pick the information from band 0; it will be the same for all bands
+             */
+             image_start           = (Xil_unsigned8*)xil_storage_get_data(storage, 0);
+             image_scanline_stride = xil_storage_get_scanline_stride(storage, 0);
+             image_pixel_stride    = xil_storage_get_pixel_stride(storage, 0);
+
+             /* Using the data pointer, image_start and incrementing using */
+             /* the image_scanline_stride and image_pixel_stride           */
+             /* process this tile of the image as desired                  */
+
+
+        }
+    }
+
+    /*
+     *  Cleanup by destroying the storage object
+     */
+    xil_storage_destroy(storage);
+
+    /*
+     *  Give control of the image back to XIL making it available for the
+     *  maximum available XIL processing performance.  Indicate the image was
+     *  modified while it was exported.
+     */
+    xil_import(image, TRUE);
+.fi
+.ft
+.RE
+Set an XIL image to use the data storage in four non-contiguous buffers of XIL_BYTE pixel sequential data. Each buffer represents a 64 x 64 region.
+.ft B
+.nf
+.sp
+    /*
+     *  Assuming the file data is already memory mapped and
+     *  referenced by a pointer to each buffer of data.
+     */
+     XilSystemState state;
+     XilImage       image;
+    /*
+     *  Each of the mmap ptrs is stored in an array for
+     *  easy access in the loop.
+     */
+     void*          buffer_mmap_ptrs[4];
+     int            tile_counter = 0;
+
+     xil_state_set_Default_tiling_mode(state,XIL_TILING);
+     image = xil_create(state, 256, 256, 3, XIL_BYTE);
+     xil_export(image);
+     xil_set_tilesize(image, 64, 64);
+     storage = xil_storage_create(state, image);
+
+     /*
+      *  Set up tile-processing loop
+      */
+     for(y=0; y<256; y+=64) {
+         for(x=0; x< 256; x+=64) {
+             xil_storage_set_band_stride(storage, 3);
+
+
+             /*
+              *  For pixel sequential data, only set the information
+              *  for the 0 band
+              */
+             xil_storage_set_scanline_stride(storage, 0, 64*3);
+             xil_storage_set_data(storage, 0,
+                                  buffer_mmap_ptrs[tile_counter], NULL);
+
+             /*
+              *  Indicate which tile this storage represents
+              */
+             xil_storage_set_coordinates(storage, x, y);        
+
+             /*
+              *  Set the storage on the image
+              */
+             xil_set_tile_storage(image, storage);
+
+             /*
+              *  Increment the tile counter accessing the mmap ptrs
+              */
+             tile_counter += 1;
+         }
+     }
+     xil_storage_destroy(storage);
+     /*
+      *  Import the image telling XIL that the data has changed
+      */
+     xil_import(image,TRUE);
+
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+This routine may not be used in conjunction with the backwards compatible routines 
+.BR xil_set_memory_storage (3)
+and 
+.BR xil_get_memory_storage (3).
+.SH "SEE ALSO"
+.BR xil_export (3),
+.BR xil_get_tile_size (3),
+.BR xil_set_tile_size (3),
+.BR xil_storage_create (3),
+.BR xil_state_set_default_tiling_mode (3),
+.BR xil_storage_set_coordinates (3),
+.BR xil_storage_get_coordinates (3),
+.BR xil_storage_get_data (3),
+.BR xil_storage_set_data (3)
+

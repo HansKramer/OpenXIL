@@ -1,0 +1,114 @@
+.\" @(#)xil_get_width.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_width 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_get_width, xil_get_height, xil_get_nbands, xil_get_size \- get width, height, number of bands, or size of image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "unsigned int xil_get_width (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_get_height (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_get_nbands (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_get_size (XilImage " image ,
+.if t .in +5n
+.br
+.BI "unsigned int *" width ,
+.br
+.BI "unsigned int *" height );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_get_width
+.IX Functions xil_get_width
+.IX "Image Functions" "xil_get_width"
+.BR xil_get_width (\^)
+gets the width of  
+.I image.
+.P
+.IX xil_get_height
+.IX Functions xil_get_height
+.IX "Image Functions" "xil_get_height"
+.BR xil_get_height (\^)
+gets the height of 
+.I image.
+.P
+.IX xil_get_nbands
+.IX Functions xil_get_nbands
+.IX "Image Functions" "xil_get_nbands"
+.BR xil_get_nbands (\^)
+gets the number of bands in 
+.I image.
+.P
+.IX xil_get_size
+.IX Functions xil_get_size
+.IX "Image Functions" "xil_get_size"
+.BR xil_get_size (\^)
+gets the
+.I width 
+and 
+.I height
+of 
+.I image. 
+.P
+These functions may be called on all images.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the width and height of an image:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+unsigned int width, height;
+XilImage image;
+.ta 3.5i
+.sp
+width = xil_get_width (image);
+height = xil_get_height (image);
+.RE
+.fi
+.ft 1
+.P
+Or alternatively:
+.nf
+.sp
+.RS
+.ft 3
+.ta 3.5i
+xil_get_size (image, &width, &height);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_imagetype (3),
+.BR xil_get_datatype (3),
+.BR xil_get_info (3).

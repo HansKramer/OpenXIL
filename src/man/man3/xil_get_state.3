@@ -1,0 +1,247 @@
+.\" @(#)xil_get_state.3 1.5 97/05/20 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_state 3 "10 February 1997" "" "XIL Library"
+.SH NAME
+xil_get_state, xil_imagetype_get_state, xil_colorspace_get_state, xil_colorspacelist_get_state, xil_cis_get_state, xil_dithermask_get_state, xil_histogram_get_state, xil_kernel_get_state, xil_lookup_get_state,
+xil_roi_get_state, xil_sel_get_state, xil_storage_get_state \- get the XilSystemState associated with an XIL object
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_get_state (XilImage " image );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_imagetype_get_state (XilImageType " imagetype );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_colorspace_get_state (XilColorspace " colorspace );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_colorspacelist_get_state (XilColorspaceList " colorspacelist );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_cis_get_state (XilCis " cis );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_dithermask_get_state (XilDitherMask " dithermask );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_histogram_get_state (XilHistogram " histogram );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_kernel_get_state (XilKernel " kernel );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_lookup_get_state (XilLookup " lookup );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_roi_get_state (XilRoi " roi );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_sel_get_state (XilSel " sel );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.fi
+.BI "XilSystemState xil_storage_get_state (XilStorage " storage );
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_get_state
+.IX Functions xil_get_state
+.IX "Image Functions" "xil_sel_get_state"
+.IX xil_sel_get_state
+.IX Functions xil_sel_get_state
+.IX "SEL Functions" "xil_sel_get_state"
+.IX xil_roi_get_state
+.IX Functions xil_roi_get_state
+.IX "ROI Functions" "xil_roi_get_state"
+.IX xil_lookup_get_state
+.IX Functions xil_lookup_get_state
+.IX "Lookup Table Functions" "xil_lookup_get_state"
+.IX xil_kernel_get_state
+.IX Functions xil_kernel_get_state
+.IX "Kernel Functions" "xil_kernel_get_state"
+.IX xil_dithermask_get_state
+.IX Functions xil_dithermask_get_state
+.IX "Dither Mask Functions" "xil_dithermask_get_state"
+.IX xil_histogram_get_state
+.IX Functions xil_histogram_get_state
+.IX "Histogram Functions" "xil_histogram_get_state"
+.IX xil_imagetype_get_state
+.IX Functions xil_imagetype_get_state
+.IX "Image Type Functions" "xil_imagetype_get_state"
+.IX xil_cis_get_state
+.IX Functions xil_cis_get_state
+.IX "CIS Functions" "xil_cis_get_state"
+.IX xil_storage_get_state
+.IX Functions xil_storage_get_state
+.IX "Storage Functions" "xil_storage_get_state"
+.nh
+XIL provides a way to retrieve the 
+.B XilSystemState 
+that was used to create any
+XIL object. The application writer may need to get the state of an object in
+order to create another object later in the program. An object cannot be
+created without an 
+.B XilSystemState.
+.P
+.B xil_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an 
+.B XilImage 
+object.
+.P
+.B xil_imagetype_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an
+.B XilImageType 
+object.
+.P
+.B xil_colorspace_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an
+.B XilColorspace 
+object.
+.P
+.B xil_colorspacelist_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an
+.B XilColorspaceList 
+object.
+.P
+.B xil_cis_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an 
+.B XilCis 
+object.
+.P
+.B xil_dithermask_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an
+.B XilDithermask 
+object.
+.P
+.B xil_histogram_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an
+.B XilHistogram 
+object.
+.P
+.B xil_kernel_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an 
+.B XilKernel 
+object.
+.P
+.B xil_lookup_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an
+.B XilLookup 
+object.
+.P
+.B xil_roi_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an 
+.B XilRoi 
+object.
+.P
+.B xil_sel_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an 
+.B XilSel 
+object.
+.P
+.B xil_storage_get_state 
+(\^) returns the 
+.B XilSystemState 
+used to create an 
+.B XilStorage
+object.
+.SH EXAMPLES
+.PP
+.SH NOTES
+.PP
+.SH "SEE ALSO"
+.BR xil_open(3),
+.BR xil_create(3),
+.BR xil_iamgetype_create(3),
+.BR xil_colorspace_create(3),
+.BR xil_colorspacelist_create(3),
+.BR xil_cis_create(3),
+.BR xil_dithermask_create(3),
+.BR xil_histogram_create(3),
+.BR xil_kernel_create(3),
+.BR xil_lookup_create(3),
+.BR xil_roi_create(3),
+.BR xil_sel_create(3),
+.BR xil_storage_create(3).
+

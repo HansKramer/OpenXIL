@@ -1,0 +1,96 @@
+.\" @(#)xil_color_correct.3 1.2 96/09/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_color_correct 3 "5 May 1997" "" "XIL Library"
+.SH NAME
+xil_color_correct - color corrects an XilImage given an XilColorspaceList of
+	color spaces using KCMS (TM) color management
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_color_correct (XilImage " src,
+.if t .in +5n
+.br
+.BI "XilImage " dst,
+.br
+.BI "XilColorspaceList* " colorspacelist);
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_color_correct
+.IX Functions xil_color_correct
+.IX "Color Functions" "xil_color_correct"
+.nh
+This function color corrects the data of the source image into the destination image using the color spaces listed in \f2colorspacelist\fP. The correction is accomplished using KCMS color management. 
+.I src 
+is the source image's handle. 
+.I dst 
+is the destination image's handle.
+.I colorspacelist 
+is a handle to a list of one or more color spaces.
+.P
+Color spaces can be of three types: XIL_COLORSPACE_NAME, XIL_COLORSPACE_FILENAME, and XIL_COLORSPACE_KCS_ID.
+.P
+If 
+.B xil_color_correct () 
+is called with two color spaces and these color spaces are of type XIL_COLORSPACE_NAME, 
+.BR xil_color_convert (3) 
+is executed internally in the library.
+.P
+Color spaces attached to the images will be ignored. Only the color spaces in the list will be used in this operation.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide." 
+.SH EXAMPLES
+.nh
+This example color corrects an image using two color spaces that are in files in the current directory.
+.sp
+.nf
+.ft 3
+    #define SRC_PROFILE "kcmsEKphcdcn.inp"
+    #define DST_PROFILE "kcmsEKsony20.mon"
+
+    XilSystemState State;
+    XilImage src, dst;
+    XilColorspace cspaces[2];
+    XilColorspaceList cspaceList;
+
+    /*
+     * Create the color space using a filename
+     */
+    cspaces[0] = xil_colorspace_create(state,
+        XIL_COLORSPACE_FILENAME, SRC_PROFILE);
+    cspaces[1] = xil_colorspace_create(state,
+        XIL_COLORSPACE_FILENAME, DST_PROFILE);
+
+    /* create the color space list */
+    cspaceList = xil_colorspacelist_create(state, cspaces, 2);
+
+    /* color correct the image */
+    xil_color_correct(src, dst, cspaceList);
+
+    /* Destroy the color space list, then the color spaces */
+    xil_colorspacelist_destroy(cspaceList);
+    xil_colorspace_destroy(cspaces[0]);
+    xil_colorspace_destroy(cspaces[1]);
+.sp
+.ft 1
+.fi
+.SH NOTES
+.nh
+The source and destination images must be of XIL_BYTE data type and have the same number of bands. This restriction is placed by KCMS and not by the XIL library. The only time this restriction is lifted is if
+.BR xil_color_convert (3) 
+is called (refer to DESCRIPTION). An application must destroy any created color spaces and color space lists. It should not destroy any color spaces in the list until after destroying the XilColorspaceList object. The XilColorspaceList object contains pointers to the color spaces in it.
+.SH "SEE ALSO"
+.BR xil_color_convert (3), 
+.BR xil_colorspace_create (3),
+.BR xil_colorspacelist_create (3), 
+.BR xil_colorspacelist_destroy (3),
+.BR xil_colorspace_destroy (3). 
+

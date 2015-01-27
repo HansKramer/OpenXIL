@@ -1,0 +1,26 @@
+##
+##  @(#)mapfile	1.2 96/04/10 
+##
+##
+##  Linker MapFile for xilCompute_H261SUNWcg6.so.2
+##
+
+xilCompute_H261SUNWcg6 {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fXXilDeviceManagerComputeGcreateUiTBPUiTDT;
+
+        ##
+        ##  Codec Device Members
+        ##
+
+
+    local:
+        *;
+};
+
+
+
+

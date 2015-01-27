@@ -1,0 +1,105 @@
+.\" @(#)xil_storage_create.3 1.7 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_storage_create 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_storage_create, xil_storage_destroy \- create and destroy XilStorage object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilStorage xil_storage_create (XilSystemState " State,
+.if t .in +5n
+.br
+.BI "XilImage* " image );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_storage_destroy (XilStorage " storage );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.P
+.nh
+.IX xil_storage_create
+.IX Functions xil_storage_create
+.IX "Storage Functions" "xil_storage_create" 
+.B xil_storage_create
+(\^) creates an XilStorage object. At creation, all attributes of the storage object are intitialized to zero or NULL, with the exception of the storage type, which is initialized to XIL_GENERAL. All setting and getting of storage 
+description parameters is accomplished using a set of API bindings for 
+accessing the XilStorage object.  Although the XilImage is associated with the
+storage at creation, the XilStorage object does not contain information about
+the image's storage until storage parameters are explicitly set with
+.BR xil_get_tile_storage (\^),
+or by the application.
+.BR xil_storage_create (\^)
+does not need to be called in order to use the
+.BR xil_get_storage_with_copy (\^)
+call.
+.P
+.BR xil_storage_destroy
+(\^) destroys the specified XilStorage object.
+
+.SH EXAMPLES
+.nh
+Create storage associated with an image and then access the storage located
+at the upper left corner of the image.
+.RS
+.ft B
+.nf
+.sp
+XilImage image;
+XilStorage storage;
+.sp
+/*
+ * load the image from elsewhere...
+ */
+.sp
+storage = xil_storage_create(image);
+xil_export(image);
+xil_get_tile_storage(image, 0, 0, storage);
+.sp
+/*
+ *  access the information and data in the storage object....
+ */
+.sp
+/*
+ *  After use, destroy the storage object.
+ */
+xil_storage_destroy(storage);
+.fi
+.ft
+.RE
+.P 
+.sp
+.ne 10
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH NOTES
+.nh
+The use of the XilStorage object is mutually exclusive with the
+.BR xil_get_memory_storage (\^)
+and
+.BR xil_set_memory_storage (\^)
+calls.
+.SH SEE ALSO
+.BR Storage (3),
+.BR xil_set_storage_with_copy (3),
+.BR xil_get_tile_storage (3),
+.BR xil_set_tile_storage (3),
+.BR xil_storage_set_scanline_stride (3),
+.BR xil_storage_set_pixel_stride (3),
+.BR xil_storage_set_band_stride (3),
+.BR xil_storage_set_offset (3),
+.BR xil_storage_set_data (3),
+.BR xil_storage_is_type (3).
+

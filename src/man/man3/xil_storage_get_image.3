@@ -1,0 +1,34 @@
+.\" @(#)xil_storage_get_image.3 1.2 97/05/30 SMI/VPG;
+.so man3/xil.macs
+.TH xil_storage_get_image 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_storage_get_image \- get the image associated with a storage object
+.SH SYNOPSIS
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage xil_storage_get_image (XilStorage " storage );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_storage_get_image
+.IX Functions xil_storage_get_image
+.IX "Storage Functions" "xil_storage_get_image"
+This function returns a handle to the image that was associated with
+.I storage
+when the storage object was created through a call to
+.BR xil_storage_create (\^).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH SEE ALSO
+.BR xil_storage_create (3),
+.BR xil_storage_set_data_supply_routine (3).

@@ -1,0 +1,112 @@
+.\" @(#)xil_roi_get_by_name.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_get_by_name 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_roi_get_by_name, xil_roi_get_name, xil_roi_set_name \- get and set a region of interest (ROI) object name
+and get a handle to a ROI by specify a name
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilRoi xil_roi_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_roi_get_name (XilRoi " roi );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_roi_set_name (XilRoi " roi ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to ROI objects, get the name of ROIs, and
+retrieve ROI objects by name.
+.P
+.nh
+.IX xil_roi_get_by_name
+.IX Functions xil_roi_get_by_name
+.IX "ROI Functions" "xil_roi_get_by_name"
+.B xil_roi_get_by_name
+(\^) returns the handle to the ROI object with the specified name 
+.I name.
+If such an object does not exist, NULL is returned.  
+.B xil_roi_get_by_name
+(\^) does not make a copy of the ROI object.
+.P
+.nh
+.IX xil_roi_get_name
+.IX Functions xil_roi_get_name
+.IX "ROI Functions" "xil_roi_get_name"
+.B xil_roi_get_name
+(\^) returns a copy of the specified ROI object's name.  A call to 
+.B free
+(3) should be used to free the space allocated by 
+.B xil_roi_get_name
+(\^). If the specified ROI object has no name, NULL is returned.
+.P
+.nh
+.IX xil_roi_set_name
+.IX Functions xil_roi_set_name
+.IX "ROI Functions" "xil_roi_set_name"
+.B xil_roi_set_name
+(\^) sets the name of the specified ROI object to the one provided.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create an ROI named "image1_mask" from an image:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage image1;
+XilRoi roi;
+roi = xil_roi_create(State);
+xil_roi_add_image(roi,image1);
+xil_roi_set_name(roi, "image1_mask");
+.sp
+.fi
+.ft
+.RE
+.P 
+Use an ROI named "image1_mask" to selectively copy an image:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage src, dst;
+XilRoi image_mask_roi;
+image_mask_roi = xil_roi_get_by_name(State,"image1_mask");
+xil_set_roi(dst, image_mask_roi);
+xil_copy(src, dst);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+If you give two ROI objects the same name, it is not defined which ROI
+object will be retrieved by a call to 
+.B xil_roi_get_by_name
+(\^).

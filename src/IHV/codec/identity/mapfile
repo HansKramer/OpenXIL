@@ -1,0 +1,19 @@
+##
+##  @(#)mapfile	1.3 96/05/29 
+##
+##
+##  Linker MapFile for xilCodec_IdentityMemory.so.2
+##
+
+xilCodec_IdentityMemory {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fbXilDeviceManagerCompressionGcreateUiTBPUiTDT;
+
+    local:
+        *;
+};
+
+

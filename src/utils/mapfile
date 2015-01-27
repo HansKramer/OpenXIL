@@ -1,0 +1,104 @@
+##
+##  @(#)mapfile	1.30 98/01/28 
+##
+##
+##  Linker MapFile for xiliUtils.so.2
+##
+
+xiliUtils.so.2 {
+    global:
+        ##
+        ##  Symbols exported from the inclusion of libC.  All other XIL
+        ##  pipelines and libraries (including libxil.so.1) link with us to
+        ##  resolve their libC symbols.
+        ##
+        _vector_new_;
+        _vector_delete_;
+        _vector_con_;
+        _vector_des_;
+        __0OnwUi;
+        __0OdlPv;
+        _pure_error_;
+        __0FPset_new_handlerPFv_v;
+        
+        ##
+        ##  XIL UTILS FUNCTIONS
+        ##
+
+	##
+	## Assembler routines
+	##
+	xili_memcpy;
+	xili_memset;
+
+	##
+	## C - code
+	## 
+
+	## Bit utilities
+	__0FMxili_bit_notPUcTBUiNCD;
+	__0FPxili_bit_memcpyPUcTBUiNCD;
+	__0FRxili_bit_setvaluePUcUiNCC;
+	__0FXxili_bit_check_for_zeroPCUcUiTC;
+
+	## Geom utilities
+	__0FUxili_build_opt_tableiTB;
+	__0FXxili_is_multiple_of_2pif;
+	__0FYxili_is_multiple_of_pi_2f;
+        __0FTxili_affine_is_copy6IAffineTr;
+        __0FUxili_affine_is_scale6IAffineTr;
+        __0FVxili_affine_is_rotate6IAffineTr;
+        __0FYxili_affine_is_translate6IAffineTr;
+        __0FYxili_affine_is_transpose6IAffineTrfNFCP6N__XilFlipType;
+        __0Fcxili_affine_extract_rotation6IAffineTr;
+        __0FZxili_affine_extract_scale6IAffineTrPfTC;
+        __0Ffxili_affine_extract_translation6IAffineTrPfTC;
+	__0Fcxili_translation_is_integralfTB;
+        __0FZxili_scale_is_subsample2xfTB;
+	__0FUxili_scale_is_zoom2xfTB;
+
+	# Singular value decomposition functions (used by SoftFill)
+	__0FHsvinvrtiTBPfTD;
+        
+	# Choose colormap utility object functions (C++ object)
+        __0fVXiliColormapGeneratorMhist3dPixSeqPUcUiNDC;
+        __0fVXiliColormapGeneratorNhist3dGeneralPPUcUiTCPUiTE;
+        __0fVXiliColormapGeneratorQgenerateColormapPUcUi;
+        __0fVXiliColormapGeneratorTaccumulateHistogramP6VXiliColormapGenerator;
+        __0oVXiliColormapGeneratorctv;
+        __0oVXiliColormapGeneratordtv;
+
+     
+	# Memory mapping of file functions (C++ object)
+	__0fOXiliMemMapFileJfileWritePvUiPUi;
+	__0fOXiliMemMapFileIfileReadPvUiPUi;
+	__0fOXiliMemMapFileIfileSeekli;
+	__0fOXiliMemMapFileGmemMapUi;
+	__0fOXiliMemMapFileImemUnmapv;
+	__0fOXiliMemMapFileIresetMapv;
+	__0fOXiliMemMapFileJgetMemMapv;
+	__0oOXiliMemMapFilectPciNCC;
+	__0oOXiliMemMapFiledtv;
+
+	# Miscellaneous
+	__0FQxili_hash_stringPCc;
+        __0Faxili_cspace_name_to_opcodePCcP6TXilColorspaceOpCodePUi;
+        __0FKxili_dlsymPvPCc;
+        __0FLxili_dlopenPc;
+        __0FMxili_dlclosePv;
+        __0FMxili_dlerrorv;
+        __0FMxili_sysconfi;
+        __0FNxili_dgettextPCcTB;
+        __0FNxili_strerrori;
+	__0FQxili_print_debugPce;
+
+        ##
+        ##  Variables
+        ##
+        _XILI_SQR;
+        xili_byte_to_float;
+        xili_frac_table;
+        
+    local:
+        *;
+};

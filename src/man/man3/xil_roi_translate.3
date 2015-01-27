@@ -1,0 +1,68 @@
+.\" @(#)xil_roi_translate.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_translate 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_roi_translate \- translate an ROI up and down or left and right
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilRoi xil_roi_translate ( XilRoi " roi ,
+.if t .in +5n
+.br
+.BI "int " xoffset ,
+.br
+.BI "int " yoffset  );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_roi_translate
+.IX Functions xil_roi_translate
+.IX "ROI Functions" "xil_roi_translate"
+This function returns a region of interest (ROI) that is translated ( moved) (
+.I "xoffset, yoffset"
+) from the specified ROI.  The coordinates of the translation are with respect to the storage of the image. That is, an ROI coordinate of (0.0, 0.0) always refers to the upper left pixel in an image, regardless of the image's origin.
+Positive offsets for
+.I "xoffset, yoffset"
+move the ROI to the right and down. Negative offsets move the ROI left and up. 
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.fi
+.ft 1
+.nh
+Move all of the regions comprising an ROI +20 in 
+.I x 
+and -50 in 
+.I y
+:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilRoi roi, translated_roi;
+.ta 3.5i
+translated_roi = xil_roi_translate (roi, 20, -50);
+.RE
+.SH SEE ALSO
+.BR xil_get_roi (3),
+.BR xil_set_roi (3),
+.BR xil_roi_add_image (3),
+.BR xil_roi_add_rect (3),
+.BR xil_roi_add_region (3),
+.BR xil_roi_create (3),
+.BR xil_roi_create_copy (3),
+.BR xil_roi_destroy (3),
+.BR xil_roi_get_as_image (3),
+.BR xil_roi_get_as_region (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_unite (3).

@@ -1,0 +1,61 @@
+.\" @(#)xil_roi_unite.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_unite 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_roi_unite \- find the union of two ROIs
+.SH SYNOPSIS
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilRoi xil_roi_unite ( XilRoi " roi1 ,
+.if t .in +5n
+.br
+.BI "XilRoi " roi2 );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_roi_unite
+.IX Functions xil_roi_unite
+.IX "ROI Functions" "xil_roi_unite"
+.nh
+This function returns a new ROI created by taking the union of two existing ROIs.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the union of the ROIs associated with two images:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+XilRoi roi_src, roi_dst, roi_union;
+.ta 3.5i
+.sp
+roi_src = xil_get_roi (src);
+roi_dst = xil_get_roi (dst);
+roi_union = xil_roi_unite (roi_src, roi_dst);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_roi (3),
+.BR xil_set_roi (3),
+.BR xil_roi_add_image (3),
+.BR xil_roi_add_rect (3),
+.BR xil_roi_add_region (3),
+.BR xil_roi_create (3),
+.BR xil_roi_create_copy (3),
+.BR xil_roi_destroy (3),
+.BR xil_roi_get_as_image (3),
+.BR xil_roi_get_as_region (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_translate (3).

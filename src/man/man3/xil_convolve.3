@@ -1,0 +1,96 @@
+.\" @(#)xil_convolve.3 1.2 97/05/12 SMI/VPG;
+.so man3/xil.macs
+.TH xil_convolve 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_convolve \- convolve an image with a user-specified kernel
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_convolve (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "XilKernel " kernel ,
+.br
+.BI "XilEdgeCondition " edge_condition );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_convolve
+.IX Functions xil_convolve
+.IX "Image Processing Operations" "xil_convolve"
+This function convolves an image with the user specified kernel.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I kernel
+is a handle to an 
+.I XilKernel 
+structure that contains floating-point values.
+.LP
+.I edge_condition
+is an enumeration type that controls what happens when the convolution encounters the edge of an image.
+The three possible edge conditions are as follows:
+.TP 25
+.SM XIL_EDGE_NO_WRITE
+The edge of the destination image is not touched; that is, the destination image edges will contain whatever values were present before 
+.B xil_convolve()
+was touched.
+.TP 25
+.SM XIL_EDGE_ZERO_FILL
+The edge of the destination image is set to zero.
+.TP 25
+.SM XIL_EDGE_EXTEND
+.nh
+The edge of the source image is replicated to fill the destination edge.
+.SS ROI Behavior
+.nh
+An ROI (region of interest) is used as a read mask for key pixels in the source image and as a write mask in the destination image. The convolve operation may access data outside a source ROI as long as the key pixel remains inside.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+For this example, a 2 x 2 kernel is created, and the key pixel is set to the lower right-hand corner of the kernel.  Convolve the 
+.I src 
+image using the kernel, with the edge condition set to 
+.SM XIL_EDGE_ZERO_FILL.
+.LP
+.nf
+.RS
+.ft 3
+XilSystemState State;
+XilImage src, dst;
+XilKernel kernel;
+float data[4];
+.sp
+data[0] = data[1] = 0.5;
+data[2] = data[3] = 0.0;
+kernel = xil_kernel_create(State, 2, 2, 1, 1, data);
+.sp
+.ta 3.5i
+xil_convolve(src, dst, kernel, XIL_EDGE_ZERO_FILL);
+.RE
+.fi
+.ft 1
+.sp
+.ne 10
+.SH NOTES
+.nh
+Source and destination images must be the same data type and
+have the same number of bands. The images need not have the same width and height.
+This operation cannot be performed in place. Separable kernels are supported.
+.SH SEE ALSO
+.BR xil_kernel_create (3),
+.BR xil_kernel_create_separable (3),
+.BR xil_kernel_destroy (3).
+

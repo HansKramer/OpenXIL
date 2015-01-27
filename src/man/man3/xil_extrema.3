@@ -1,0 +1,66 @@
+.\" @(#)xil_extrema.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_extrema 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_extrema \- find maximum and minimum values of an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_extrema (XilImage " src ,
+.if t .in +5n
+.br
+.BI "float *" max ,
+.br
+.BI "float *" min );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_extrema
+.IX Functions xil_extrema
+.IX "Image Processing Operations" "xil_extrema"
+This function finds the maximum and minimum pixel values in each band of an image.  
+.I src
+is the source image handle.  
+.I max
+is a pointer to the floating-point array that holds the maximum value [0...nbands].  
+.I min
+is a pointer to the floating-point array that holds the minimum value [0...nbands].
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Find the maximum and minimum pixel values in a 2-banded image:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src;
+float max[2];
+float min[2];
+.ta 3.5i
+xil_extrema(src, max, min);
+.RE
+.fi
+.SH NOTES
+.LP
+.nh
+For an n-band image, the arrays of floats for 
+.I min, max 
+must each be of size n, because each band is independently evaluated.  If the maximum pointer is 
+.I NULL, 
+only the minimum is computed.  If the minimum pointer is 
+.I NULL,
+only the maximum is computed.  
+.SH SEE ALSO
+.BR xil_create (3).
+
+
+

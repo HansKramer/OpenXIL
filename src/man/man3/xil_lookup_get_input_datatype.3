@@ -1,0 +1,183 @@
+.\" @(#)xil_lookup_get_input_datatype.3 1.1 96/09/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup_get_input_datatype 3 "29 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup_get_input_datatype, xil_lookup_get_num_entries, 
+xil_lookup_get_offset, xil_lookup_get_output_datatype, 
+xil_lookup_get_input_nbands, xil_lookup_get_output_nbands, 
+xil_lookup_set_offset \- operations on lookup tables
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilDataType xil_lookup_get_input_datatype ( XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_lookup_get_num_entries ( XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "short xil_lookup_get_offset ( XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilDataType xil_lookup_get_output_datatype ( XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_lookup_get_input_nbands (XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_lookup_get_output_nbands (XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_lookup_set_offset ( XilLookup " lookup , 
+.if t .in +5n
+.br
+.BI "short " offset );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+These routines read and set the values of lookup table attributes.
+Lookup tables are used in transforming data.  Lookup tables 
+used for single-band input images
+can have multiple output data per input value. Lookup tables 
+allow an offset that describes the input value corresponding to the 
+first table value.
+.P  
+Table data can represent any of the allowed image data types, but 1-bit data is stored in an unpacked format as the least significant bit in an 8-bit entry.
+.P
+.IX xil_lookup_get_input_datatype
+.IX Functions xil_lookup_get_input_datatype
+.IX "Lookup Table Functions" "xil_lookup_get_input_datatype" 
+.B xil_lookup_get_input_datatype
+(\^) gets the data type of the expected input to the lookup table. XIL 
+lookups cannot have XIL_FLOAT as an input datatype. 
+.P
+.IX xil_lookup_get_num_entries
+.IX Functions xil_lookup_get_num_entries
+.IX "Lookup Table Functions" "xil_lookup_get_num_entries"
+.B xil_lookup_get_num_entries
+(\^) gets the number of entries in the lookup table.
+This function cannot be used on combined lookup tables.
+.P
+.IX xil_lookup_get_offset
+.IX Functions xil_lookup_get_offset
+.IX "Lookup Table Functions" "xil_lookup_get_offset"
+.B xil_lookup_get_offset
+(\^) returns the offset value used to map the lookup table index to a 
+pixel value of a particular data type.  The offset value is added to a
+lookup table index to return a pixel value, and subtracted from a pixel
+value to return an index into the lookup table.
+This function cannot be used on combined lookup tables.
+.P
+.nh
+For example, if a lookup table has an offset of 16, then entry 0 in the
+lookup table maps to an actual value of 16, entry 1 maps to 17, and so
+on.  Therefore, if you wanted to find the RGB value for pixel 36, you
+would take lookup table entry 20 (pixel value 36 minus offset value 16).
+.P
+.IX xil_lookup_get_output_datatype
+.IX Functions xil_lookup_get_output_datatype
+.IX "Lookup Table Functions" "xil_lookup_get_output_datatype"
+.B xil_lookup_get_output_datatype
+(\^) gets the data type of the expected output from the lookup table.
+.P
+.IX xil_lookup_get_input_nbands
+.IX Functions xil_lookup_get_input_nbands
+.IX "Lookup Table Functions" "xil_lookup_get_input_nbands"
+.B xil_lookup_get_input_nbands
+(\^) gets the number of bands expected in the input.
+.P
+.IX xil_lookup_get_output_nbands
+.IX Functions xil_lookup_get_output_nbands
+.IX "Lookup Table Functions" "xil_lookup_get_output_nbands"
+.B xil_lookup_get_output_nbands
+(\^) gets the number of bands expected in the output.
+.P
+.IX xil_lookup_set_offset
+.IX Functions xil_lookup_set_offset
+.IX "Lookup Table Functions" "xil_lookup_set_offset"
+.B xil_lookup_set_offset
+(\^) sets the offset value to the one specified.
+This function cannot be used on combined lookup tables.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 10
+.SH EXAMPLES
+Calculate the buffer size (in bytes) necessary to hold all the values in a lookup table:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilLookup lookup_table;
+unsigned int nbands;
+XilDataType datatype;
+unsigned int num_entries;
+long buffer_size;
+.ta 3.5i
+.sp
+nbands = xil_lookup_get_output_nbands (lookup_table);
+datatype = xil_lookup_get_output_datatype (lookup_table);
+num_entries = xil_lookup_get_num_entries (lookup_table);
+.sp
+switch (datatype) {
+   case XIL_BIT:
+   case XIL_BYTE:
+      buffer_size = nbands * num_entries * sizeof(Xil_unsigned8);
+      break;
+   case XIL_SHORT:
+      buffer_size = nbands * num_entries * sizeof(Xil_signed16);
+      break;
+   case XIL_FLOAT:
+      buffer_size = nbands * num_entries * sizeof(Xil_float32);
+      break;
+}
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_lookup_create (3),
+.BR xil_lookup_create_combined (3),
+.BR xil_lookup_create_copy (3),
+.BR xil_lookup_destroy (3),
+.BR xil_lookup_convert (3),
+.BR xil_lookup_get_band_lookup (3),
+.BR xil_lookup_set_values (3).
+
+ 

@@ -1,0 +1,134 @@
+.\" @(#)xil_storage_get_band_stride.3 1.6 97/05/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_storage_get_band_stride 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_storage_get_band_stride, xil_storage_get_pixel_stride, xil_storage_get_scanline_stride,
+xil_storage_get_offset, xil_storage_get_data \- get the values set on an
+XilStorage object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "unsigned int xil_storage_get_band_stride (XilStorage " storage );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_storage_get_pixel_stride (XilStorage " storage,
+.if t .in +5n
+.br
+.BI "unsigned int " band );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_storage_get_scanline_stride (XilStorage " storage,
+.if t .in +5n
+.br
+.BI "unsigned int " band );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_storage_get_offset (XilStorage " storage,
+.if t .in +5n
+.br
+.BI "unsigned int " band );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void * xil_storage_get_data (XilStorage " storage ,
+.if t .in +5n
+.br
+.BI "unsigned int " band );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to get information about an XilStorage object.
+When an XilStorage object is first created, the band stride, pixel stride, and scanline stride attributes are set to zero and the pointer to the image data is set to NULL. This information is filled in when the XilStorage object
+is used with
+.BR xil_get_storage_with_copy (3)
+or
+.BR xil_get_tile_storage (3),
+or when set explicitly by the user.
+.P
+.IX xil_storage_get_band_stride
+.IX Functions xil_storage_get_band_stride
+.IX "Storage Functions" "xil_storage_get_band_stride"
+.B xil_storage_get_band_stride (\^)
+returns the band stride of  
+.I storage.
+Band stride represents the distance to the same pixel in the next 
+band.  For XIL_PIXEL_SEQUENTIAL storage, the band stride is always 1.
+Band stride is undefined for XIL_GENERAL storage as there is no band 
+correlation for XIL_GENERAL storage.
+.P
+.IX xil_storage_get_pixel_stride
+.IX Functions xil_storage_get_pixel_stride
+.IX "Storage Functions" "xil_storage_get_pixel_stride"
+.B xil_storage_get_pixel_stride (\^)
+returns the pixel stride of the 
+storage for
+.I band.
+Pixel stride represents the distance to the next pixel on the same scanline.
+For XIL_BAND_SEQUENTIAL, pixel stride is always 1. It is only necessary
+to query for bands other than 0 for XIL_GENERAL storage.
+.P
+.IX xil_storage_get_scanline_stride
+.IX Functions xil_storage_get_scanline_stride
+.IX "Storage Functions" "xil_storage_get_scanline_stride"
+.B xil_storage_get_scanline_stride (\^)
+returns the scanline stride of the 
+storage for 
+.I band.
+Scanline stride represents the distance to the same pixel on the next
+horizontal scanline (the vertical stride). It is only necessary to
+query for bands other than 0 for XIL_GENERAL storage.
+.P
+.IX xil_storage_get_offset
+.IX Functions xil_storage_get_offset
+.IX "Storage Functions" "xil_storage_get_offset"
+.B xil_storage_get_offset (\^)
+returns the offset for the data in
+.I storage
+for
+.I band. 
+The offset represents the number of bits to offset to the first pixel.
+This call is valid only for XIL_BIT images. It is only necessary to
+query for bands other than 0 for XIL_GENERAL storage.
+.P
+.IX xil_storage_get_data
+.IX Functions xil_storage_get_data
+.IX "Storage Functions" "xil_storage_get_data"
+.B xil_storage_get_data (\^)
+returns the data pointer for the data in
+.I storage
+for
+.I band. 
+The data pointer is the starting address of the storage with data
+units of the appropriate type for the image. It is only necessary to
+query for bands other than 0 for XIL_GENERAL storage.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH SEE ALSO
+.BR Storage (3),
+.BR xil_storage_is_type (3),
+.BR xil_get_tile_storage (3),
+.BR xil_get_storage_with_copy (3)

@@ -1,0 +1,173 @@
+.\" @(#)xil_cis_put_bits.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_put_bits 3 "13 August 1993" "" "XIL Library"
+.SH NAME
+xil_cis_put_bits, xil_cis_put_bits_ptr \- put compressed data into a compressed image sequence
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_cis_put_bits (XilCis " cis , 
+.if t .in +5n
+.br
+.BI "int " nbytes ,
+.br
+.BI "int " nframes ,
+.br
+.BI "void *" data );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_cis_put_bits_ptr (XilCis " cis , 
+.if t .in +5n
+.br
+.BI "int " nbytes ,
+.br
+.BI "int " nframes ,
+.br
+.BI "void *" data ,
+.br
+.BI "XIL_FUNCPTR_DONE_WITH_DATA " done_with_data );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "typedef void (*XIL_FUNCPTR_DONE_WITH_DATA)(void *);"
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.P
+.IX xil_cis_put_bits
+.IX Functions xil_cis_put_bits
+.IX "Video Compression Functions" "xil_cis_put_bits"
+.nh
+.BR xil_cis_put_bits (\^)
+copies
+.I nbytes
+of compressed data representing
+.I nframes
+frames of uncompressed data into the compressed image sequence
+.I cis.
+Parameter
+.I data
+is a generic pointer to the data being copied into the compressed image sequence (CIS).
+.P
+.IX xil_cis_put_bits_ptr
+.IX Functions xil_cis_put_bits_ptr
+.IX "Video Compression Functions" "xil_cis_put_bits_ptr"
+.nh
+.BR xil_cis_put_bits_ptr (\^)
+puts
+.I nbytes
+of compressed data representing
+.I nframes
+frames of uncompressed data into the compressed image sequence
+.I cis.
+Parameter
+.I data
+is a generic pointer to the data being put into the CIS.
+.P 
+.nh 
+Unlike
+.BR xil_cis_put_bits (\^),
+.BR xil_cis_put_bits_ptr (\^)
+does not copy data
+into the CIS; instead, the CIS directly
+references the data pointed to by
+.I data.
+In this case, the application is responsible for ensuring that the data
+remains valid. The application may supply a routine
+.I done_with_data()
+that is called when the particular buffer is no longer needed by
+the CIS. The
+.I done_with_data()
+routine will also be called if the CIS is destroyed explicitly with
+.BR xil_cis_destroy (3)
+or implicitly with
+.BR xil_close (3).
+The application may supply NULL for the callback; in this case,
+the application is responsible for determining when particular buffers
+are no longer needed.
+.P
+.nh
+The 
+.I nframes 
+parameter is used to specify how many frames of uncompressed
+data the 
+.I nbytes 
+of compressed data represents. Used in this way, 
+.I nframes
+must be an integer greater than zero. If the exact number of complete frames
+is not known, then 
+.I nframes 
+should be set to -1. This informs the CIS that
+the data being placed into it contains one or more complete frames. 
+.P
+.nh
+If the data being put into the CIS may not represent an integer number of frames, then 
+.I nframes 
+should be set to 0. This informs the CIS that the data being placed into it may contain 0 or more frames, and that the last frame and/or the first frame represented in this data may not be complete. 
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Copy bitstream data that contains 
+.I frame_count 
+frames into an 
+.I XilCis:
+.RS
+.nf
+.ft 3
+XilCis cis;
+xil_cis_put_bits(cis, bytes, frame_count, data);
+.RE
+.fi
+.ft 1
+.P
+.nh
+Copy bitstream data that contains an unknown number of complete frames (greater
+than or equal to 1 frame) into an 
+.I XilCis:
+.RS
+.nf
+.ft3
+XilCis cis;
+xil_cis_put_bits(cis, bytes, -1, data);
+.RE
+.fi
+.ft 1
+.ne 20
+.P
+.nh
+Insert into an 
+.I XilCis 
+bitstream data that contains some number of frames
+in which the last and/or the first frame may or may not be complete:
+.RS
+.nf
+.ft 3
+XilCis cis;
+xil_cis_put_bits_ptr(cis, bytes, 0, data, NULL);
+.RE
+.fi
+.ft 1
+.SH NOTES
+If error messages indicate that there is no more available free memory, try
+increasing swap space.
+.SH SEE ALSO
+.BR xil_cis_create (3)
+

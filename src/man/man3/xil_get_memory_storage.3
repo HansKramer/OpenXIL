@@ -1,0 +1,219 @@
+.\" @(#)xil_get_memory_storage.3 1.3 98/06/18 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_memory_storage 3 "8 April 1994" "" "XIL Library"
+.SH NAME
+xil_get_memory_storage, xil_set_memory_storage \- get and set memory storage
+.SH "SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "Xil_boolean xil_get_memory_storage ( XilImage " image,
+.if t .in +5n
+.br
+.BI "XilMemoryStorage *" storage );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_set_memory_storage ( XilImage " image,
+.if t .in +5n
+.br
+.BI "XilMemoryStorage *" storage );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions when you want to get or set the data in an image.
+.P
+.IX xil_get_memory_storage
+.IX Functions xil_get_memory_storage
+.IX "Image Functions" "xil_get_memory_storage"
+.nh
+.B xil_get_memory_storage 
+(\^) returns a description of how an exported image is stored in system memory.
+Storage for this description must be allocated by the user.
+.B xil_get_memory_storage 
+(\^) returns TRUE if the memory storage could be obtained, and FALSE otherwise.
+This can be used before calls such as
+.BR fread (3S)
+to test whether the data is available for the desired operation.
+.sp
+The information returned by
+.B xil_get_memory_storage
+(\^) is valid only while the image remains exported.
+After the image is imported, both the
+address at which the image's pixel values are located and the pixel layout
+in memory is likely to change. Thus, the information that was returned by
+.B xil_get_memory_storage
+(\^) prior to the import is no longer valid.
+Trying to access pixel values using invalid
+pointers to the data or using invalid
+information about the pixel layout can cause serious
+problems in an application. 
+.sp
+.nh
+In the XIL library, multibanded images - except for 1-bit images - are stored in a pixel-sequential format.  The following attributes are only exposed to the application if the image is exported:
+.nf
+.sp
+	Distance to the same pixel on the next horizontal scanline (the vertical stride)
+	Distance to the next pixel on the same scanline (the pixel stride)
+	Starting address of the image
+.sp
+.fi
+.P
+.nh
+For 1-bit multibanded images, the data is stored in a band-sequential manner.  The export of 1-bit images exposes four private attributes that define the image storage:
+.nf
+.sp
+	Distance in bytes to the byte of the same pixel in the next scanline
+	Distance in bytes to the same pixel of the next band
+	Number of bits to offset to the first pixel
+	Byte starting address of the image data
+.sp
+.fi
+.P
+.nh
+User data may be imported after image creation if it meets the layout and data type criteria described.
+.P
+.nh 
+.I XilMemoryStorage 
+is defined as follows:
+.P
+.nf
+typedef struct __XilMemoryStorageBit {
+    Xil_unsigned8* data;            /* pointer to the first byte of the image */
+    unsigned int   scanline_stride; /* the number of bytes between scanlines */
+    unsigned long  band_stride;     /* the number of bytes between bands */
+    unsigned char  offset;          /* the number of bits to the first pixel */
+} XilMemoryStorageBit;
+	
+truct __XilMemoryStorageByte {
+   Xil_unsigned8* data;            /* pointer to the first byte of the image */
+   unsigned long  scanline_stride; /* the number of bytes between scanlines */
+   unsigned int   pixel_stride;    /* the number of bytes between pixels */
+} XilMemoryStorageByte;
+
+typedef struct __XilMemoryStorageShort {
+   Xil_signed16* data;             /* pointer to the first word of the image */
+   unsigned long scanline_stride;  /* the number of words between scanlines */
+   unsigned int  pixel_stride;     /* the number of words between pixels */
+} XilMemoryStorageShort;
+
+typedef union __XilMemoryStorage {
+    XilMemoryStorageBit   bit;
+    XilMemoryStorageByte  byte;
+    XilMemoryStorageShort shrt;
+} XilMemoryStorage;
+
+.fi
+.sp
+.P
+When manipulating the data, it's important to use the 
+.I scanline_stride 
+and 
+.I pixel_stride
+information returned by
+.B xil_get_memory_storage
+(\^); you
+cannot make assumptions about the image's format in memory storage.
+For example, some accelerators 
+may not handle 3-banded RGB
+images while they do handle 4-banded (RGBA) images.  For these
+accelerators, the
+memory storage code converts 3-banded images into 4-banded 
+images when the first accelerator function is called on the
+image data.  If the image is
+then exported, the XIL library returns a 3-banded child of a 
+4-banded image as the data layout for the 3-banded image that was
+imported. This means that the code written
+on the exported data cannot assume a 3-pixel layout and cannot
+skip to the beginning of the next pixel by simply
+doing a
+.I *src++.
+.P
+.IX xil_set_memory_storage
+.IX Functions xil_set_memory_storage
+.IX "Image Functions" "xil_set_memory_storage"
+.nh
+.B xil_set_memory_storage 
+(\^) allows an application to specify the memory used for an 
+.I image.  
+This 
+.I storage 
+is specified with the same
+.I XilMemoryStorage
+structure that
+.B xil_get_memory_storage  
+(\^) uses.  The memory must be both readable and writable.  After
+.B xil_set_memory_storage 
+(\^) has been called, the image resides in the specified memory 
+.I only 
+while the image remains exported. 
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Fill an image with the contents of a file.  Note that you must export the
+image before you can call 
+.BR xil_get_memory_storage (\^).
+Likewise, you must import it when you are done using the data.
+.LP
+.nf
+.sp
+.RS
+.ft 3
+.sp
+XilImage image;
+int width, height, nbands;
+XilDataType datatype;
+XilMemoryStorage storage;
+Xil_boolean status;
+char *infile = "input_image";
+
+xil_export(image);
+status = xil_get_memory_storage(image, &storage);
+if(status == FALSE) {
+  /* XIL's error handler will print an error msg to stderr */
+  exit(1);
+}
+int h, w;
+Xil_unsigned8* scanline = storage.byte.data;
+xil_get_info(image, &width, &height, &nbands, &datatype);
+/*
+ * The following loop uses fread to read from an infile. The same
+ * loop could be used to write to an outfile by replacing fread with
+ * fwrite and replacing the infile with an outfile
+ */
+for(h=0; h<height; h++) {
+    Xil_unsigned8* row = scanline;
+    for(w=0; w<width; w++) {
+        fread((char*)row, nbands, sizeof(Xil_unsigned8), infile);
+        row += storage.byte.pixel_stride;
+    }
+    scanline += storage.byte.scanline_stride;
+}
+xil_import(image);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The information returned from
+.B xil_get_memory_storage 
+(\^) or set by
+.B xil_set_memory_storage 
+(\^) is valid only as long as the image is exported.  Memory resources
+allocated by the XIL library are freed by the XIL library.  Memory 
+resources allocated by an application are not freed by the XIL library.
+.SH SEE ALSO
+.BR xil_import (3),
+.BR xil_export (3).
+	

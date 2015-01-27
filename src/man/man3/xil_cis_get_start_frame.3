@@ -1,0 +1,105 @@
+.\" @(#)xil_cis_get_start_frame.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_start_frame 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_start_frame, xil_cis_get_read_frame, xil_cis_get_write_frame \- obtain frame status attributes. 
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.P
+.sp .5v
+.fi
+.BI "int xil_cis_get_start_frame (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "int xil_cis_get_read_frame (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "int xil_cis_get_write_frame (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+In each of these routines, 
+.I cis
+is the input compressed image sequence (CIS).  Every frame in a CIS has a frame
+number associated with it.  The beginning of the CIS is frame number zero.  
+A CIS may have one or more frames buffered in memory.  The
+.I start_frame
+is the index of the earliest buffered frame that still resides in the CIS. The
+.I read_frame 
+is the index of the next frame that will be read by routines such as 
+.BR xil_cis_get_bits_ptr (3) 
+or 
+.BR xil_decompress (3).
+The 
+.I write_frame 
+is the next frame that will be written.  Routines such as
+.BR xil_cis_put_bits_ptr (3)  
+or  
+.BR xil_compress (3)
+add new frames immediately at this frame and increment the 
+.I write_frame
+index each time they write a frame.
+.P
+.IX  xil_cis_get_start_frame
+.IX Functions xil_cis_get_start_frame
+.IX "CIS Functions" "xil_cis_get_start_frame"
+.nh
+.BR xil_cis_get_start_frame (\^)
+returns the index, relative to the beginning of the CIS, of the first
+compressed image still buffered in the CIS.
+.P
+.IX xil_cis_get_read_frame
+.IX Functions xil_cis_get_read_frame
+.IX "CIS Functions" "xil_cis_get_read_frame" 
+.nh
+.BR xil_cis_get_read_frame (\^)
+returns the index of the current read frame, i.e. the one that will be decompressed next. 
+.P
+.IX xil_cis_get_write_frame
+.IX Functions xil_cis_get_write_frame
+.IX "CIS Functions" "xil_cis_get_write_frame"  
+.nh
+.BR xil_cis_get_write_frame (\^)
+returns the index of the next frame to be written.  Thus,  
+.I write_frame
+- 1 is the last complete frame in the CIS. If a partial or an unknown number of frames exist in the CIS because calls to 
+.BR xil_cis_put_bits (\^)
+ or 
+.BR xil_cis_put_bits_ptr (\^)
+have not yet been resolved, then the decompressor must parse the data to determine how many frames are in the CIS.  This can make
+.BR xil_cis_get_write_frame (\^)
+potentially expensive.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.RS
+.ft B
+.nf
+.sp
+XilCis cis;
+.sp
+printf("Current Read Frame is %d\\n",
+	xil_cis_get_read_frame(cis));
+.SH SEE ALSO
+.BR xil_compress (3),
+.BR xil_decompress (3),
+.BR xil_cis_seek (3),
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_cis_put_bits_ptr (3).

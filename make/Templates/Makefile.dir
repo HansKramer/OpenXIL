@@ -1,0 +1,10 @@
+#
+# @(#)Makefile.dir	1.7 94/06/20 Sun Microsystems North Carolina Development Center
+#
+
+include $(XIL_CUSTOM)
+include $(PROJECT_ROOT)/make/directory.cfg
+
+SUB_DIRS=a b c your-directories-go-here
+
+include $(PROJECT_ROOT)/make/rules/directory.cfg

@@ -1,0 +1,229 @@
+.\" @(#)xil_cis_attempt_recovery.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_attempt_recovery 3 "12 August 1993" "" "XIL Library"
+.SH NAME
+xil_cis_attempt_recovery \- attempt recovery after an error occurs in a compressed image sequence 
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_cis_attempt_recovery ( XilCis " cis ,
+.if t .in +5n
+.br
+.BI "unsigned int " nframes , 
+.br
+.BI "unsigned int " nbytes );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_attempt_recovery
+.IX Functions xil_cis_attempt_recovery
+.IX "Video Compression Functions" "xil_cis_attempt_recovery"
+.nh
+This function is used to attempt recovery from a non-autorecoverable error
+that occurs during the playback of a compressed image sequence (CIS). An
+non-autorecoverable error is an error from which the decompressor cannot
+automatically recover, such as a bitstream decoding error. 
+.P
+.I cis 
+is the input CIS in which an error occurred. 
+.P
+.I nframes 
+is the maximum number of frames after the current read frame which will be
+parsed to attempt recovery from a non-autorecoverable error.
+.P
+.I nbytes 
+is the maximum number of bytes past the read point which will be parsed to 
+attempt recovery from an error.  
+.P
+If both of these values are zero, then the attempt at recovery will search forward as many bytes or frames as necessary.  If
+.I nframes
+is non-zero and 
+.I nbytes
+is zero, then 
+the error recovery mechanism will attempt to search
+.I nframes
+ahead with its best approximation of exactly how many bytes that should be.  If
+.I nbytes 
+is non-zero and
+.I nframes
+is zero, the search will go through
+.I nbytes,
+regardless of the number of frames. 
+.P
+.nh
+. B xil_cis_attempt_recovery
+(\^) only needs to be called for non-autorecoverable errors.  Consult
+.BR xil_cis_get_autorecover (3)
+for details.
+.P
+.nh
+Both autorecoverable and non-autorecoverable errors are reported to the user
+through the error handling mechanism.  The user decides whether to attempt
+recovery of a non-autorecoverable error.  
+.P
+.nh
+If the error is auto-recoverable, after reporting the error, the attribute
+.I AUTO_RECOVER
+(see
+.BR xil_cis_get_autorecover (3)
+)
+is checked to determine whether to attempt recovery.
+If the attribute is set to TRUE, recovery is attempted.
+.P
+.nh
+Non-autorecoverable errors are handled similarly, except that the
+.I AUTO_RECOVER 
+attribute has no effect on how these errors are handled.  When a non-autorecoverable error is detected, the CIS is marked invalid before the user is notified of the error.  The CIS is marked CIS_READ_INVALID for decompression and CIS_WRITE_INVALID for compression (see
+.BR xil_cis_get_read_invalid (3)
+and 
+.BR xil_cis_get_write_invalid (3)    
+).  Thus, if an error occurs in one of the decompression routines, then compression routines or 
+.BR xil_cis_put_bits (3)
+can still write into the CIS.
+.P
+.nh
+After a non-autorecoverable error has occurred, the user can validate the CIS in one of three ways: by calling 
+.BR xil_cis_reset (3), 
+seeking to a valid frame, or asking XIL to attempt recovery using 
+.B xil_cis_attempt_recovery 
+(\^).  If the user attempts to seek to a valid frame and the CIS cannot successfully complete the request, a seek error is generated.
+.sp
+.ne 25
+.P
+.nh 
+To find out where the CIS is located after the call to
+.B xil_cis_attempt_recovery 
+(\^), use 
+.BR xil_cis_get_read_frame (3) 
+to get the best approximation of the current 
+.I read_frame, 
+and
+.BR xil_cis_has_data (3)
+to get the exact number of bytes left in the CIS. By checking and comparing the values returned by 
+.B xil_cis_has_data 
+(\^) before and after calls to 
+.B xil_cis_attempt_recovery 
+(\^), you can determine the exact number of bytes that were searched through.
+It is also possible to determine the approximate number of frames that were
+skipped by checking and comparing the values returned 
+by 
+.BR xil_cis_get_read_frame (3)
+before and after calls to 
+.B xil_cis_attempt_recovery 
+(\^).  If 
+.B xil_cis_attempt_recovery 
+(\^) succeeds, the CIS is returned to a VALID state.  You can determine
+whether this function was successful by testing the state of the CIS 
+with a call to 
+.BR xil_get_read_invalid (3) 
+or
+.BR xil_get_write_invalid (). 
+If you set the number of bytes or number of frames to check through to a 
+low value, multiple calls to this function may be necessary. 
+.P
+.nh
+CIS error recovery has been implemented so that
+.B xil_cis_attempt_recovery 
+(\^) can be called from the error handling function itself.  If this
+function is called during the error handling function, the current 
+decompress call will fail regardless of whether recovery was successful, 
+the CIS will be marked VALID, and the next decompress call will 
+succeed (unless another error is encountered). 
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+In this example, when an error occurs, the error handler is called and
+the user gives the CIS permission to search indefinitely in an attempt 
+to recover. If the attempt is unsuccessful, then 
+.BR xil_cis_has_data (3) 
+fails, and the decompression loop is halted as if the video concluded. 
+.LP
+.nf
+.sp
+.RS
+.ft 3
+/*
+ * Example Error Recovery
+ */
+.sp
+Xil_boolean 
+  my_error_handler( XilError error )
+{
+ 
+    XilCis cis; 
+    XilObject obj; 
+.sp 
+    /* If an XIL-CIS error occurred */
+    if ( ( xil_error_get_category(error) == XIL_ERROR_CIS_DATA ) &&
+         ( (obj = xil_error_get_object(error)) != NULL) &&
+         ( xil_object_get_type(obj) == XIL_CIS ) ) { 
+.sp 
+       cis = (XilCis)obj;
+.sp 
+       /* Has an error occurred that we can attempt to   
+        *   recover from?  If so, attempt recovery. 
+        */ 
+       if (xil_cis_get_read_invalid(cis)) {
+.sp 
+          xil_cis_attempt_recovery(cis, 0, 0);
+.sp 
+          /* If the CIS is now OK, we've handled it correctly. */ 
+          if (!xil_cis_get_read_invalid(cis))
+              return TRUE;  
+       } 
+  } 
+  return xil_call_next_error_handler(error); 
+.sp  
+}
+.sp
+main() { 
+.sp 
+    XilCis cis;  
+    XilSystemState state; 
+    XilImage image;
+    XilImage displayimage;
+    XilLookup lookup;
+.sp 
+    if ( ( state = xil_open() ) == NULL ) {
+        printf(" Couldn't initialize XIL\\n");
+        exit(1);  
+    }
+.sp 
+    /* install error handler */
+    xil_install_error_handler( state, my_error_handler );
+.sp 
+    while(xil_cis_has_data(cis)) {
+        xil_decompress(cis, image);
+        xil_nearest_color(image, displayimage, lookup);
+    }
+}
+.sp
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+Occasionally, it is possible that error recovery may revalidate the CIS, but be off-sync
+from the number of frames that would have been in the CIS if the data had been correct.
+This can cause another error later, when the CIS reaches the end of the data inserted
+through the 
+.BR xil_cis_put_bits (3) 
+call.  It may then find that the number of frames that it decoded from the data chunk is different than what the user said was in it.
+.SH SEE ALSO
+.BR xil_cis_get_autorecover (3),
+.BR xil_cis_get_read_invalid (3),
+.BR xil_cis_get_write_invalid (3), 
+.BR xil_cis_get_read_frame (3), 
+.BR xil_cis_put_bits (3),
+.BR xil_call_next_error_handler (3),
+.BR xil_cis_reset (3).  

@@ -1,0 +1,30 @@
+# XIL Extensions - Start
+#
+# @(#)config.1	1.5 96/05/11 
+#
+
+# The format for entries in this file is:
+#
+# class="XIL_COMPUTE" name="name-of-compute-module"
+#	 priority="priority-of-module" dependencies="list-of-dependencies";
+#
+# If there are no dependencies, the dependencies part may be omitted.  A
+# priority of "-1" means to ignore a previously defined definition with
+# the same name and thus not load in that module.  This is useful for
+# overriding a shared configuration with a local configuration.
+
+class="XIL_COMPUTE" name="memoryBIT"
+	priority="100";
+
+class="XIL_COMPUTE" name="memoryBYTE"
+	priority="100";
+
+class="XIL_COMPUTE" name="memorySHORT"
+	priority="100";
+
+class="XIL_COMPUTE" name="memoryFLOAT"
+	priority="100";
+
+class="XIL_COMPUTE" name="SUNWkcms"
+	priority="100";
+# XIL Extensions - End

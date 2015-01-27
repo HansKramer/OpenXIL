@@ -1,0 +1,66 @@
+.\" @(#)xil_cis_sync.3 1.2 97/05/30 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_sync 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_sync \- force any outstanding call to
+.BR xil_compress (3)
+to complete when it would otherwise have been deferred
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_cis_sync ( XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_sync
+.IX Functions xil_cis_sync
+.IX "CIS Functions" "xil_cis_sync"
+.BR xil_cis_sync (\^)
+forces any outstanding calls to 
+.BR xil_compress (3)
+to complete. 
+.LP
+In order to execute multiple operations as a molecule, XIL defers the
+operations until a results must be produced. Thus, if a call to
+.BR xil_compress (\^)
+is part of a molecule, the compression occurs when the deferred molecule
+is executed, not at the time that the
+.BR xil_compress (\^)
+function is called. Calling 
+.BR xil_cis_sync (\^) 
+ensures that the compression
+operation executes when it is called. Of course, this prevents the
+execution of any molecule of which the 
+.BR xil_compress (\^) 
+operation may have been a part.
+.nh
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Measure the performance of a compress operation:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+starttime= gmtime(NULL);		/* get the start time */
+xil_compress(src,cis);          		/* compress the image */
+xil_cis_sync(cis);			/* force the compress to actually happen */
+endtime= gmtime(NULL);		/* get the finish time */
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+This function does not produce any semantic differences in the execution of
+the program.

@@ -1,0 +1,137 @@
+.\" @(#)xil_create_temporary.3 1.6 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_create_temporary 3 "10 February 1997" "" "XIL Library"
+.SH NAME
+xil_create_temporary, xil_create_temporary_from_type - create a temporary image
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilImage xil_create_temporary(XilSystemState " system_state,
+.if t .in +5n
+.br
+.BI "unsigned int " width,
+.br
+.BI "unsigned int " height,
+.br
+.BI "unsigned int " nbands,
+.br
+.BI "XilDataType  " datatype);
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "XilImage xil_create_temporary_from_type(XilSystemState " system_state,
+.if t .in +5n
+.br
+.BI "XilImageType " imagetype);
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Temporary images share all the properties of standard XIL images except that they can only be written into once and read from once. You use temporary images as interim images when performing a sequence of XIL functions on a source image to produce a particular destination image.
+.P
+Temporary images provide a significant benefit with tiling. In addition, they help the deferred execution mechanism recognize when images are no longer needed. It is strongly recommended that you create temporary images for all interim images that you know you won't be processing again.
+.P
+.B xil_create_temporary
+(\^) creates an image with the specified dimensions and data type.
+.I width
+is the width (extent in x) of the image.
+.I height
+is the height (extent in y) of the image.
+.I nbands
+is the number of bands in the image.
+.I datatype
+is the data type of the image, which can be one of the following enumeration constants of type XilDataType:
+.nf
+.sp
+.fi
+.TP 15
+.nh
+XIL_BIT
+1-bit
+.TP 15
+XIL_BYTE
+unsigned 8-bit
+.TP 15
+XIL_SHORT
+signed 16-bit
+.TP 15
+XIL_FLOAT
+32-bit IEEE floating point
+.LP
+.B xil_create_temporary_from_type
+(\^) creates an image from an
+.B XilImageType
+object. All the parameters needed to create the image are contained within the
+.B XilImageType
+object. An 
+.B XilImageType
+object is often used as a shortcut for creating new images equivalent to an existing image without having to query the image or image type for its individual characteristics. The characteristics of an
+.B XilImageType
+object are
+.I "xsize, ysize, nbands, datatype,"
+and
+.I colorspace.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the \f2XIL Programmer's Guide\fP.
+.SH EXAMPLES
+Take a particular source image and perform a series of operations before displaying the final image.
+.RS
+.ft B
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState state;
+XilImage       filesrc;
+XilImage       display;
+XilImage       tmp1, tmp2;
+unsigned int   width, height, nbands;
+XilDataType    datatype;
+Display*       xdisplay;
+Window         xwindow;
+.sp
+filesrc = xil_create(state, width, height, nbands, datatype);
+display = xil_create_from_window(state, xdisplay, xwindow);
+tmp1 = xil_create_temporary(state, width, height, nbands,datatype);
+.sp
+/* process filesrc into the display */
+.sp
+xil_lookup(filesrc, tmp1);
+tmp2 = xil_create_temporary(state, width, height, nbands,datatype);
+xil_convolve(tmp1, tmp2);
+xil_ordered_dither (tmp2, display);
+.sp
+/* wait */
+.sp
+xil_destroy(filesrc);
+xil_destroy(display);
+.sp
+.fi
+.ft
+.RE
+.LP
+.SH NOTES
+.nh
+A temporary image may only be modified up until the point that it has
+been written in to. That is, the origin, ROI, and colorspace may be modified
+until the temporary image has been used as a destination.
+.P
+As soon as the temporary image has been used as a source to an operation,
+it no longer exists.
+.P
+If a temporary image has not been used as a source to an operation, it still
+exists and the user would be responsible for destroying the temporary image
+before exiting XIL. A temporary image may not be exported.
+.SH "SEE ALSO"
+.BR xil_create(3),
+.BR xil_create_from_type (3).

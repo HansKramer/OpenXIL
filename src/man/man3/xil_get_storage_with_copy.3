@@ -1,0 +1,186 @@
+.\" @(#)xil_get_storage_with_copy.3 1.5 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_storage_with_copy 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_get_storage_with_copy, xil_set_storage_with_copy \- get and set the image's
+storage through a copy to or from contiguous memory
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilStorage xil_get_storage_with_copy (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.BI "int xil_set_storage_with_copy (XilImage " image ,
+.br
+.BI "XilStorage " storage ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these calls as a convenient way of copying a contiguous memory buffer
+into an image or accessing a copy of an image's storage as a
+contiguous memory buffer.
+.P
+.IX xil_get_storage_with_copy
+.IX Functions xil_get_storage_with_copy
+.IX "Storage Functions" "xil_get_storage_with_copy"
+.BR xil_get_storage_with_copy (\^)
+provides a convenient way of retrieving
+storage for the
+.I image
+without having to loop over tiles. The
+returned XilStorage object has been filled in with the appropriate
+data layout information and a valid data pointer. The type of the storage
+can be ascertained through the
+.BR xil_storage_is_type (3)
+call.
+The storage data pointer is to a copy of
+.I image's
+storage and therefore
+no changes made to the storage will propogate to the image.
+.P
+If the image is very large there will be a peformance penalty caused by a copy
+of the image data. This call returns a created and filled XilStorage object.
+It is not necessary to call 
+.BR xil_storage_create (3)
+before using this call, although the user is still expected to destroy the XilStorage object after use with a call to 
+.BR xil_storage_destroy (3).
+.P
+.IX xil_set_storage_with_copy
+.IX Functions xil_set_storage_with_copy
+.IX "Storage Functions" "xil_set_storage_with_copy"
+.BR xil_set_storage_with_copy (\^)
+provides a convenient way to set the storage
+associated with
+.I image
+without having to loop over tiles. The data described by
+.I storage
+will be copied into the various storage tiles of the image and
+subsequent changes to the original data pointer will not affect
+.I image's
+data. Before calling
+.BR xil_set_storage_with_copy (\^),
+the user is expected to fill in
+the appropriate data layout fields for the storage type.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Retrieve a copy of the data associated with an XIL image. Copy the
+data to a file.
+.ft B
+.nf
+.sp
+XilImage image;
+int width, height, nbands;
+XilDataType datatype;
+XilStorage storage;
+Xil_unsigned8* data;
+unsigned int pstride;
+unsigned int sstride;
+Xil_unsigned8* scanline;
+Xil_unsigned8* pixel;
+
+/*
+ * This is assuming a byte image
+ */
+
+xil_get_info(image,&width,&height,&nbands,&datatype);
+xil_export(image);
+
+storage = xil_get_storage_with_copy(image);
+/*
+ *  Optimize for the PIXEL_SEQUENTIAL case with packed
+ *  data
+ */
+if((xil_storage_is_type(XIL_PIXEL_SEQUENTIAL)) &&
+   (xil_storage_get_pixel_stride(storage, 0) == nbands) &&
+   (xil_storage_get_scanline_stride(storage, 0) == width*nbands)) {
+    /*
+     *  You only need to pick up the 0 band data ptr
+     *  because information is consistent across all bands
+     */
+     data = xil_storage_get_data(storage,0);
+    /*
+     *  Copy from the data ptr to the file for
+     *  nbands*width*height bytes
+     */
+} else {
+/*
+ *  A general case to handle any type of storage
+ */
+    for(h=0; h<height; h++) {
+       for(w=0; w<width; w++) {
+           for(b=0; b<nbands; b++) {
+              /*
+               *  Get the information for this band.
+               */
+               Xil_unsigned8* data =
+                              (Xil_unsigned8*)xil_storage_get_data(storage, b);
+               unsigned int   sstride =
+                              xil_storage_get_scanline_stride(storage, b);
+               unsigned int   pstride =
+                              xil_storage_get_pixel_stride(storage, b);
+
+              /*
+               *  Get the byte we're expected to write for
+               *  this band.
+               */
+               Xil_unsigned8 val = *(data + h*sstride + w*pstride);
+
+              /* write the byte to the output file */    
+           }
+       }
+   }
+}
+xil_storage_destroy(storage);
+xil_import(image,FALSE);
+
+Copy data from a file on disk into an XilImage.
+
+XilImage image;	
+XilStorage storage;
+
+/*
+ * Gain access to input file via mmap....
+ * Then create a storage object.
+ */
+
+storage = xil_storage_create(state,image);
+/*
+ *  Describe the storage to XIL. 
+ *  In this case it's an XIL_PIXEL_SEQUENTIAL, XIL_BYTE image
+ */
+xil_storage_set_pixel_stride(storage, 0, nbands);
+xil_storage_set_scanline_stride(storage, 0, nbands*width);
+xil_storage_set_data(storage, 0, mmap_ptr, NULL);
+/*
+ *  Export the image to gain control of storage
+ */
+xil_export(image);
+xil_set_storage_with_copy(image, storage);
+/*
+ *  Cleanup by destroying the storage object and unmapping the file.
+ */
+xil_storage_destroy(storage);
+xil_import(image, TRUE);
+.fi
+.ft
+.sp
+.SH SEE ALSO
+.BR Storage (3),
+.BR xil_get_memory_storage(3),
+.BR xil_set_memory_storage(3),
+.BR xil_get_tile_storage(3),
+.BR xil_set_tile_storage(3).

@@ -1,0 +1,112 @@
+.\" @(#)xil_dithermask_create.3 1.4 97/05/30 SMI/VPG;
+.so man3/xil.macs
+.TH xil_dithermask_create 3 "16 August 1993" "" "XIL Library"
+.SH NAME
+xil_dithermask_create, xil_dithermask_create_copy, xil_dithermask_destroy \- create and destroy dither mask objects
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilDitherMask xil_dithermask_create ( XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "unsigned int " width , 
+.br
+.BI "unsigned int " height , 
+.br
+.BI "unsigned int " nbands ,
+.br
+.BI "float *" data );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "XilDitherMask xil_dithermask_create_copy ( XilDitherMask " mask );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_dithermask_destroy ( XilDitherMask " mask );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+These routines create and destroy the
+.I XilDitherMask
+objects used in the
+.BR xil_ordered_dither (3)
+operation.
+.P
+.IX xil_dithermask_create
+.IX Functions xil_dithermask_create
+.IX "Dither Mask Functions" "xil_dithermask_create"
+.nh
+.BR xil_dithermask_create (\^)
+creates an 
+.I XilDitherMask 
+object of the specified size with the specified data.
+.I width
+is the width of the dither mask in pixels.
+.I height
+is the height of the dither mask in pixels.
+.I nbands
+is the number of bands in the dither mask.
+.I data
+is a pointer to the data to be stored in the dither mask.
+.P
+.IX xil_dithermask_create_copy
+.IX Functions xil_dithermask_create_copy
+.IX "Dither Mask Functions" "xil_dithermask_create_copy"
+.nh
+.BR xil_dithermask_create_copy (\^)
+creates and returns a copy of the specified dither mask.  The name of 
+a copy is initially empty (NULL).
+.P
+.IX xil_dithermask_destroy
+.IX Functions xil_dithermask_destroy
+.IX "Dither Mask Functions" "xil_dithermask_destroy"
+.nh
+.BR xil_dithermask_destroy (\^)
+destroys the specified dither mask.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create a 4x4 1-band dither mask:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+unsigned int width=4, height=4, nbands=1;
+XilDithermask dithermask;
+float data[] =	   {	
+			0.0,	0.5,	0.125,	0.625,
+			0.75,	0.25,	0.875,	0.375,
+			0.1875,	0.6875,	0.0625,	0.5625,
+			0.9375,	0.4375,	0.8125,	0.3125 
+		   };
+.sp
+dithermask = xil_dithermask_create (State, width, height, nbands, data);
+.RE
+.fi
+.ft 1
+Note - For multiband dither masks (nbands > 1), the data in the array are not interleaved. Instead, append the data for each additional band to the data for the previous band. If the example above were a 2-band dither mask, add another 4 rows by 4 columns of floating point values to the array for band 1.
+.SH SEE ALSO
+.BR xil_dithermask_get_height (3),
+.BR xil_dithermask_get_by_name (3),
+.BR xil_dithermask_get_values (3),
+.BR xil_dithermask_get_state (3),
+.BR xil_ordered_dither (3).

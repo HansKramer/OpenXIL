@@ -1,0 +1,77 @@
+.\" @(#)xil_get_storage_movement.3 1.2 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_storage_movement 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_get_storage_movement, xil_set_storage_movement \- get and set the storage
+movement flag on an image.
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.sp .5v
+.BI "XilStorageMovement xil_get_storage_movement (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_set_storage_movement (XilImage " image ,
+.if t .in +5n
+.br
+.BI "XilStorageMovement " move_flag );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+The storage movement flag is described as an enumerated type with one of three
+values:  XIL_ALLOW_MOVE, XIL_KEEP_STATIONARY and XIL_REPLACE. The values have
+the following meaning:
+.P
+XIL_ALLOW_MOVE - Allows XIL to move the data to a different storage device or
+to reformat it after the image has been imported, in order to take advantage
+of acceleration.  On the next call to
+.BR xil_export (\^),
+the user has no guarantee
+as to the location or format of the image's memory storage and must call XIL
+functions to get storage information. By activating this flag, some storage  devices may refuse to operate on the image and therefore the image will not be
+available for acceleration by the device's imaging  routines which may have a  negative  effect on the application's performance.
+.P
+XIL_KEEP_STATIONARY - Instructs XIL to leave the storage in exactly the same
+place and in the same format even after the
+.BR xil_import (\^)
+function has been
+called.  This setting typically would be used when the user expects to
+export the image again after one or a very few operations, and wants to avoid
+the cost of any data copying or reformatting that may occur. 
+.P
+XIL_REPLACE - Instructs XIL to return the storage to the same location and
+format on subsequent calls to
+.BR xil_export (\^).
+This allows XIL to move the storage if an accelerator is available to speed processing operations, but ensures that the caller gets the data back in the same location and format when the image is again exported. XIL_REPLACE may also have drastic negative effects on application performance due to repeated  copying of the data from one format to another.
+.P
+.nh
+.IX xil_get_storage_movement
+.IX Functions xil_get_storage_movement
+.IX "Image Functions" "xil_get_storage_movement"
+.BR xil_get_storage_movement (\^)
+returns the value currently associated with the image's
+movement flag. The default value is XIL_ALLOW_MOVE.
+.P
+.IX xil_set_storage_movement
+.IX Functions xil_set_storage_movement
+.IX "Image Functions" "xil_set_storage_movement"
+.BR xil_set_storage_movement (\^)
+allows the user to change the image's movement flag from
+the default. 
+.P
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH SEE ALSO
+.BR Storage (3),
+.BR xil_import (3),
+.BR xil_export (3).

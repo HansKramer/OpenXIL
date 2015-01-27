@@ -1,0 +1,71 @@
+.\" @(#)xil_cis_get_write_invalid.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_write_invalid 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_write_invalid \- determine whether a CIS is able to continue to be compressed
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "Xil_boolean xil_cis_get_write_invalid ( XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_get_write_invalid
+.IX Functions xil_cis_get_write_invalid
+.IX "Video Compression Functions" "xil_cis_get_write_invalid"
+This function determines whether compression is able to continue for a compressed image sequence (CIS).
+.I cis 
+is the CIS that is being compressed.  The default value returned by this routine is 
+.I FALSE,
+which indicates that the CIS is valid and compression can continue.  If a bitstream error occurs during compression, this routine  returns  
+.I TRUE,
+indicating that the CIS was marked 
+.I CIS_WRITE_INVALID.  
+.P
+.nh
+Two types of bitstream errors can occur during compression of a CIS: autorecoverable and non-autorecoverable.   An autorecoverable error is one with a predefined method of recovery.  A non-autorecoverable error requires user intervention for recovery.   When a non-autorecoverable error is detected, the CIS is marked invalid before the user is notified of the error.  If a CIS is marked
+.I CIS_WRITE_INVALID
+for compression,  no further operations can be performed on this CIS until it is marked valid again. 
+.sp
+After a non-autorecoverable error occurs, the user can revalidate the CIS in one of two ways: by calling
+.BR xil_cis_reset (3)
+to remove any compressed data currently stored in the CIS, 
+or attempting recovery using
+.BR xil_cis_attempt_recovery (3).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Determine if an error has occurred in the compression of a CIS:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+    XilCis cis;
+    XilImage src;
+.sp
+    xil_compress( src, cis );
+.sp
+    /* check to see if the cis is still valid. */
+    if (xil_cis_get_write_invalid(cis) == TRUE)  {
+       printf(" There is a problem with this CIS.\\n"); 
+    }
+.sp
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_cis_get_autorecover (3),
+.BR xil_cis_get_read_invalid (3),
+.BR xil_cis_attempt_recovery (3),
+.BR xil_cis_reset (3).

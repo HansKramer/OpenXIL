@@ -1,0 +1,64 @@
+.\" @(#)xil_get_child_offsets.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_child_offsets 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_get_child_offsets \- get values of the offsets into a parent image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_get_child_offsets (XilImage " image ,
+.if t .in +5n
+.br
+.BI "unsigned int *" offsetX ,
+.br
+.BI "unsigned int *" offsetY ,
+.br
+.BI "unsigned int *" offsetBand );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_get_child_offsets
+.IX Functions xil_get_child_offsets
+.IX "Image Functions" "xil_get_child_offsets"
+This function gets the values of the offsets into a
+parent image that were used in the
+.BR xil_create_child (3)
+call that created the specified child image.
+.I offsetX
+is the horizontal offset in pixels from the upper-left corner of 
+the parent image to the upper-left corner of the child image.
+.I offsetY
+is the vertical offset in pixels from the upper-left corner of the 
+parent image to the upper-left corner of the child image.
+.I offsetBand
+is the offset in bands, starting from the first band of the parent
+image to the first band in the child image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.fi
+.ft 1
+.nh
+Get the offsets used to create a child image:
+.LP
+.nf
+.RS
+.ft 3
+XilImage image;
+unsigned int x_offset, y_offset, band_offset;
+.sp
+xil_get_child_offsets(image, &x_offset, &y_offset, &band_offset);
+.RE
+.SH SEE ALSO
+.BR xil_create_child (3),
+.BR xil_get_width (3),
+.BR xil_get_height (3),
+.BR xil_get_nbands (3).

@@ -1,0 +1,94 @@
+.\" @(#)xil_create_from_type.3 1.4 97/05/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_create_from_type 3 "12 August 1993" "" "XIL Library"
+.SH NAME
+xil_create_from_type \- create an image from an XilImageType object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage xil_create_from_type ( XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "XilImageType " imagetype );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_create_from_type
+.IX Functions xil_create_from_type
+.IX "Image Functions" "xil_create_from_type"
+This routine creates an image from an 
+.I XilImageType 
+object.  All the parameters needed to create the image are contained within the
+.I XilImageType
+object.  An
+.I XilImageType
+object is often used to describe the characteristics of an image that will be
+generated (or expected) by a particular device (for example, a frame grabber
+or an output device).  It can also be used as a shortcut for creating new
+images equivalent to an existing image or imagetype without having to query
+the image or imagetype for its individual characteristics.  The
+characteristics of an
+.I XilImageType
+object are
+.I xsize, ysize, nbands, datatype,
+and
+.I colorspace.
+You can obtain an
+.I XilImageType
+object from a call to
+.BR xil_get_imagetype (3),
+.BR xil_imagetype_create (3),
+.BR xil_cis_get_output_type (3)
+or 
+.BR xil_cis_get_input_type (3).
+The origin of the returned image is initialized to (0.0, 0.0).
+.SS ROI Behavior
+.nh
+The default ROI is NULL.  If an ROI is NULL, operations are performed on the entire image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Create an image of the appropriate type to decompress a CIS into:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState state;
+XilImageType imagetype;
+XilImage image;
+XilCis cis;
+.sp
+imagetype = xil_cis_get_output_type (cis);
+image = xil_create_from_type ( state, imagetype);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.fi
+The data associated with the image is not automatically zeroed.  Use 
+.BR xil_set_value (3)  
+to do this.
+.SH SEE ALSO
+.BR xil_get_imagetype (3),
+.BR xil_create (3),
+.BR xil_create_copy (3),
+.BR xil_create_from_device (3),
+.BR xil_create_from_window (3),
+.BR xil_create_temporary_from_type (3),
+.BR xil_destroy (3),
+.BR xil_get_origin (3),
+.BR xil_set_origin (3),
+.BR xil_get_roi (3),
+.BR xil_set_roi (3),
+.BR xil_cis_get_output_type (3),
+.BR xil_cis_get_input_type (3).

@@ -1,0 +1,72 @@
+.\" @(#)xil_histogram.3 1.1 96/09/11 SMI/VPG;
+.so man3/xil.macs
+.TH xil_histogram 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_histogram \- generate histogram data from an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_histogram (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilHistogram " histogram ,
+.br
+.BI "unsigned int " skip_x , 
+.br
+.BI "unsigned int " skip_y );
+.br
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_histogram
+.IX Functions xil_histogram
+.IX "Image Processing Operations" "xil_histogram"
+This routine accumulates histogram information from the source image into a histogram object that
+was created with the
+.BR xil_histogram_create (\^)
+function.
+.LP
+.I src
+is the source image handle.
+.I histogram
+is the handle for the histogram object that holds the histogram data.
+.I skip_x
+and
+.I skip_y
+indicate the frequency with which pixels will be counted. If
+.I skip_x
+is set to 1,
+.BR xil_histogram (\^)
+counts every pixel on a scanline; if it is set to 2, the function counts every other
+pixel; and so on. The value of
+.I skip_y
+has an analogous effect on how
+.BR xil_histogram (\^)
+counts pixels in the vertical direction.
+Using skip values greater than 1 allows a faster construction of a histogram by considering fewer pixels.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Generate the histogram of an image, only counting every third pixel on every
+third scanline:
+.nf
+.sp
+.RS
+.ft 3
+XilImage src;
+XilHistogram histogram;
+.sp
+xil_histogram(src, histogram, 3, 3);
+.RE
+.fi
+.ft 1
+.SH NOTES
+The number of bands in the histogram must match the number of bands in the source image.  The data values in the histogram are not initialized to zero at the beginning of this operation, thereby allowing the generation of multi-image histograms.
+.SH SEE ALSO
+.BR xil_histogram_create (3)

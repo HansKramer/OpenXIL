@@ -1,0 +1,21 @@
+##
+##  @(#)mapfile	1.26 96/05/29 
+##
+##
+##  Linker MapFile for xilCompute_memoryBIT.so.2
+##
+
+xilCompute_memoryBIT.so.2 {
+    global:
+        ##
+        ##  Exported Members.
+        ##
+        ##  Only non-virtual members that the XIL core need to access must be
+        ##  listed here.  Functions called through pointers (like virtual
+        ##  functions) do not require symbol linker resolution.
+        ##
+        __0fXXilDeviceManagerComputeGcreateUiTBPUiTDT;
+
+     local:
+        *;
+};

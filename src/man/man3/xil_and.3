@@ -1,0 +1,107 @@
+.\" @(#)xil_and.3 1.2 97/05/12 SMI/VPG;
+.so man3/xil.macs
+.TH xil_and 3 "03 August 1993" "" "XIL Library"
+.SH NAME
+xil_and, xil_and_const \- bitwise logical AND operations
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_and (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "XilImage " src2 ,
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_and_const (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "unsigned int *" constants , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R 
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_and
+.IX Functions xil_and
+.IX "Arithmetic and Logical Operations" "xil_and" 
+.nh
+.B xil_and
+(\^) performs a bitwise logical AND operation on each pixel of the 
+.I src2
+(source) image with the
+.I src1
+and stores the results in the 
+.I dst
+(destination) image.
+.P
+.IX xil_and_const
+.IX Functions xil_and_const
+.IX "Arithmetic and Logical Operations" "xil_and_const" 
+.nh
+.B xil_and_const
+(\^) performs a bitwise logical AND operation on each pixel of the
+.I src1
+(source) image with the
+.I constants
+values and stores the results in the
+.I dst
+(destination) image.  For an n-band image, n unsigned integers must be provided, one per band.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Bitwise logical AND 
+.I image2 
+and 
+.I image1 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, image2, dst;
+.sp
+xil_and(image1, image2, dst);
+.sp
+.fi
+.ft
+.RE
+.LP
+Bitwise logical AND 4-band 
+.I image1 
+and 4 constants and store the result in 
+.I dst:
+.RS
+.ft B
+.nf
+.sp
+XilImage image, dst;
+unsigned int constants[4];
+.sp
+constants[0] = 1;
+constants[1] = 0;
+constants[2] = 0;
+constants[3] = 0;
+xil_and_const(image, constants, dst);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the same number of bands.  In-place operations are supported. Logical operations (AND, OR, XOR, NOT, and so on) are not supported for XIL_FLOAT data type.
+

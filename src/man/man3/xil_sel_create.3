@@ -1,0 +1,127 @@
+.\" @(#)xil_sel_create.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_sel_create 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_sel_create, xil_sel_create_copy, xil_sel_destroy \- create and destroy structuring element objects
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilSel xil_sel_create ( XilSystemState " State , 
+.if t .in +5n
+.br
+.BI "unsigned int " width ,
+.br
+.BI "unsigned int " height , 
+.br
+.BI "unsigned int " keyx , 
+.br
+.BI "unsigned int " keyy , 
+.br
+.BI "unsigned int *" data );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilSel xil_sel_create_copy ( XilSel " sel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_sel_destroy ( XilSel " sel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+These routines create and control access to the structuring element (SEL) objects used in the XIL erosion and dilation imaging operations.
+Structuring elements are similar to convolution kernels, except that the member values are Boolean (
+.I unsigned int
+).
+.LP
+.I width
+and
+.I height
+are the width of the structuring element in pixels. Common sizes for structuring elements are
+3-by-3 and 5-by-5.
+.I keyx
+and
+.I keyy
+are the coordinates of the key value in the kernel. The coordinates are specified with
+respect to the upper-left value in the structuring element (0,0). 
+.I data
+is a pointer to the Boolean values that will be written to the kernel.
+.LP
+Key values specify the key pixel position - a position relative to the upper left corner of the SEL.  The key pixel aligns with the output pixel and constrains which input pixels are used to generate the output.
+.P
+.nh
+.IX xil_sel_create
+.IX Functions xil_sel_create
+.IX "SEL Functions" "xil_sel_create"
+.B xil_sel_create
+(\^) creates a SEL of the specified size with the specified data.
+.P
+.nh
+.IX xil_sel_create_copy
+.IX Functions xil_sel_create_copy
+.IX "SEL Functions" "xil_sel_create_copy"
+.B xil_sel_create_copy
+(\^) returns a copy of the specified SEL.
+The name of a copy is initially empty (NULL).  
+.P
+.nh
+.IX xil_sel_destroy
+.IX Functions xil_sel_destroy
+.IX "SEL Functions" "xil_sel_destroy"
+.B xil_sel_destroy
+(\^) destroys the specified SEL.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.br
+.if t .ne 30
+.SH EXAMPLES
+.nh
+Create a 3x3, cross-shaped structuring element, with the key value 
+located at the center of the SEL:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+unsigned int width=3, height=3, key_x=1, key_y=1;
+XilSel sel;
+unsigned int data[] = {	
+.in +8
+0, 1, 0,
+1, 1, 1,
+0, 1, 0 
+.in
+};
+.ta 3.5i
+.sp
+sel = xil_sel_create (State, width, height, key_x, key_y, data);
+.RE
+.fi
+.ft 1
+.SH NOTES
+The key pixel must lie within the boundaries of the SEL.
+.SH SEE ALSO
+.BR xil_erode (3),
+.BR xil_dilate (3),
+.BR xil_sel_get_height (3),
+.BR xil_sel_get_width (3),
+.BR xil_sel_get_key_x (3),
+.BR xil_sel_get_key_y (3),
+.BR xil_sel_get_state (3).

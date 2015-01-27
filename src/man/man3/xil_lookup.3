@@ -1,0 +1,69 @@
+.\" @(#)xil_lookup.3 1.2 97/05/20 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup 3 "29 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup \- pass an image through a lookup table.
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_lookup (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "XilLookup " lookup );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_lookup
+.IX Functions xil_lookup
+.IX "Image Processing Operations" "xil_lookup"
+.nh
+This routine passes the source image through a lookup table and writes the
+result into the destination image. The parameters
+.I src
+and
+.I dst
+are handles to the source and destination images.
+The source and destination can be of different data types.
+.I lookup
+is the lookup table.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Pass an image through a lookup table:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+.ta 1.5i
+#define BITSIZE 0x2
+
+XilImage image, retained_image;
+XilLookup lookup;
+Xil_unsigned8 lookupdata[\^] = {0, 0, 0, 255, 255, 255};
+
+retained_image = xil_create(state, width, height, 3, XIL_BYTE);
+lookup = xil_lookup_create(state, XIL_BIT, XIL_BYTE, 3,
+	BITSIZE, 0, lookupdata);
+xil_lookup(image, retained_image, lookup);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.fi
+.nh
+Input and output of the entries in the lookup table must be the same data types as the source
+and destination images, respectively.
+.SH SEE ALSO
+.BR xil_lookup_create (3),
+.BR xil_lookup_create_combined (3),
+.BR xil_lookup_destroy (3).

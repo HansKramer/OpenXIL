@@ -1,0 +1,52 @@
+.\" @(#)xil_squeeze_range.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_squeeze_range 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_squeeze_range \- produce a lookup table that will map an image into contiguous entries
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.sp .5v
+.BI "XilLookup xil_squeeze_range ( XilImage " src );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_squeeze_range
+.IX Functions xil_squeeze_range
+.IX "Presentation Functions" "xil_squeeze_range"
+This function examines the source image,
+.I src, 
+and produces a lookup table that will map
+.I src
+into an image with contiguous entries.
+.I src
+must be a single-banded image. Both
+.I src
+and the image's colormap must be passed through the resulting lookup table for it to be displayed correctly.
+.SH RETURN VALUES
+.TP 10
+.SM NULL
+if function fails
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Produce a lookup table that will map an image into continuous entries:
+.sp
+.RS
+.ft B
+.nf
+XilLookup result_lut;
+XilImage src;
+result_lut = xil_squeeze_range(src);
+.fi
+.ft
+.RE
+.SH SEE ALSO
+.BR xil_lookup (3)

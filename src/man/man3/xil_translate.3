@@ -1,0 +1,82 @@
+.\" @(#)xil_translate.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_translate 3 "17 June 1993" "" "XIL Library"
+.SH NAME
+xil_translate \- translate an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_translate (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "char *" interpolation ,
+.br
+.BI "float " xoffset ,
+.br
+.BI "float " yoffset );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_translate
+.IX Functions xil_translate
+.IX "Geometric Operations" "xil_translate"
+This function translates an image.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I interpolation 
+is a string that specifies the type of interpolation to be used.  The supported interpolation types are  
+.I nearest
+(nearest neighbor),
+.I bilinear,
+.I bicubic,
+and
+.I general.  xoffset 
+and
+.I yoffset
+are the number of pixels to translate or shift the image in
+the horizontal or vertical directions, respectively.
+Postive values for
+.I xoffset
+and
+.I yoffset
+shift an image to the right and down, respectively.
+Negative values shift to left and up.
+.ft 1
+.fi
+.SS ROI Behavior
+.nh
+If an ROI (region of interest) is attached to the source image, it is used as a read mask and is translated into the destination image's space, where it is intersected with the destination ROI (if there is one).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Translate an image by 12.3 pixels horizontally and 43.2 pixels vertically
+using nearest neighbor interpolation.
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+.ta 3.5i
+xil_translate(src, dst, "nearest", 12.3, 43.2);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The source and destination images must be 
+the same data type and number of bands.  This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_affine (3)

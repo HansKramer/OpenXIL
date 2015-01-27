@@ -1,0 +1,179 @@
+.\" @(#)xil_subtract.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_subtract 3 "03 August 1993" "" "XIL Library"
+.SH NAME
+xil_subtract, xil_subtract_const, xil_subtract_from_const \- image subtraction operations
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.sp .5v
+.fi
+.BI "void xil_subtract (XilImage "src1 , 
+.if t .in +5n
+.br
+.BI "XilImage " src2 , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_subtract_const (XilImage " src1 ,
+.if t .in +5n
+.br
+.BI "float *" constants ,
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_subtract_from_const (float *" constants ,
+.if t .in +5n
+.br
+.BI "XilImage " src1 ,
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_subtract
+.IX Functions xil_subtract
+.IX "Arithmetic and Logical Operations" "xil_subtract"
+.B xil_subtract
+(\^) performs a pixel-by-pixel subtraction of the
+.I src2 
+image from the 
+.I src1 
+image and stores the result in the 
+.I dst
+(destination) image.
+If the result of the operation is out of range for a particular data type, the
+result is clamped to the minimum or maximum value for the data type.
+Results for XIL_BYTE operations, for example, are clamped to 0 if they are less than
+0 and 255 if they are greater than 255.
+.P
+.nh
+.IX xil_subtract_const
+.IX Functions xil_subtract_const
+.IX "Arithmetic and Logical Operations" "xil_subtract_const"
+.B xil_subtract_const
+(\^) performs a pixel-by-pixel subtraction of the
+.I constants
+values from the
+.I src1
+image and stores the result in the
+.I dst
+(destination) image.  For an n-band image, n float values must be provided, one per band.
+The value in
+.I constants[0]
+is subtracted from the values in band 0 of
+.I src
+and so on.
+If the result of the operation is out of range for a particular data type, the
+result is clamped to the minimum or maximum value for the data type.
+Results for XIL_BYTE operations, for example, are clamped to 0 if they are less than
+0 and 255 if they are greater than 255.
+.P
+.nh
+.IX xil_subtract_from_const
+.IX Functions xil_subtract_from_const
+.IX "Arithmetic and Logical Operations" "xil_subtract_from_const"
+.B xil_subtract_from_const
+(\^) performs a pixel-by-pixel subtraction of the
+.I src1
+image from the
+.I constants
+values and stores the result in the
+.I dst
+(destination) image.  For an n-band image, n float values must be provided, one per band.
+The values in band 0 of
+.I src
+are subtracted from the value in
+.I constants[0]
+and so on.
+Resulting pixel values are rounded and clipped according to image data type.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Subtract 
+.I image2 
+from 
+.I image1 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, image2, dst;
+.sp
+xil_subtract(image1, image2, dst);
+.fi
+.ft
+.RE
+.LP
+Subtract   
+.I constants 
+values from 4-band
+.I image1 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf 
+.sp
+XilImage image1, dst;
+float constants[4];
+.sp
+constants[0] = 1.0;
+constants[1] = 1.0;
+constants[2] = 1.0;
+constants[3] = 0.0;
+xil_subtract_const(image1, constants, dst);
+.fi
+.ft
+.RE
+.ne 30
+.LP 
+Subtract 4-band
+.I image1  
+from
+.I constants  
+values and store the result in  
+.I dst 
+:
+.RS 
+.ft B 
+.nf  
+.sp 
+XilImage image1, dst;
+float constants[4];
+.sp 
+constants[0] = 255.0;
+constants[1] = 255.0;
+constants[2] = 255.0;
+constants[3] = 255.0;
+xil_subtract_from_const(constants, image1, dst); 
+.fi 
+.ft 
+.RE
+.SH NOTES
+Source and destination images must be the same data type and have the same number of bands.  In-place operations are supported.
+.SH SEE ALSO
+.nh
+.BR xil_add (3),
+.BR xil_add_const (3).
+

@@ -1,0 +1,72 @@
+.\" @(#)xil_roi_add_rect.3 1.2 97/05/20 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_add_rect 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_roi_add_rect \- add a rectangle to an ROI
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_roi_add_rect ( XilRoi " roi ,
+.if t .in +5n
+.br
+.BI "long " x ,
+.br
+.BI "long " y ,
+.br
+.BI "long " width ,
+.br
+.BI "long " height );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_roi_add_rect
+.IX Functions xil_roi_add_rect
+.IX "ROI Functions" "xil_roi_add_rect"
+This function adds the specified rectangle to the specified region of interest (ROI).
+.LP
+The coordinates of the rectangle are with respect to the storage of the image. That is, an ROI coordinate of (0.0, 0.0) always refers to the upper left pixel in an image, regardless of the image's origin.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Add two rectangles to an ROI object, one beginning 
+at (0,0) and ending at (34,94), the other beginning at (10,20) and ending 
+at (109,69):
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilRoi roi = xil_roi_create(state);
+long  xstart, ystart, width, height;   
+.ta 3.5i
+.sp
+xstart=0; ystart=0; width=35; height=95;   
+xil_roi_add_rect (roi, xstart, ystart, width, height);
+xstart=10; ystart=20; width=100; height=50;   
+xil_roi_add_rect (roi, xstart, ystart, width, height);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_roi (3),
+.BR xil_set_roi (3),
+.BR xil_roi_add_image (3),
+.BR xil_roi_add_region (3),
+.BR xil_roi_create (3),
+.BR xil_roi_create_copy (3),
+.BR xil_roi_destroy (3),
+.BR xil_roi_get_as_image (3),
+.BR xil_roi_get_as_region (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_translate (3),
+.BR xil_roi_unite (3).

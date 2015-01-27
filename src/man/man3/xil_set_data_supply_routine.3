@@ -1,0 +1,187 @@
+.\" @(#)xil_set_data_supply_routine.3 1.6 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_set_data_supply_routine 3 "10 February 1997" "" "XIL Library"
+.SH NAME
+xil_set_data_supply_routine - Set the routine that will be used to fill in the
+storage for an image
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_set_data_supply_routine(XilImage " image,
+.if t .in +5n
+.br
+.BI "XilDataSupplyFuncPtr " supply_ptr,
+.br
+.BI "void* " user_args);
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+It is not always possible to provide a description of the entire image's storage. For example, tiles may be located across the network or in a file whose data cannot be memory mapped (for example, a compressed image file). In these cases, it is more efficient to provide the tile data to XIL on demand. So, only one tile is loaded into memory at a time. An additional benefit is that only those tiles that are actually needed get loaded.
+.P
+XIL supports this demand-based supply by allowing the application to specify a "data supply routine" for an image. When an XIL operation needs data for a tile of the image, XIL calls the routine to obtain the data. The routine is only called when there is no data associated with a tile. The first time a tile from the image is needed, the application's routine is called to provide data. From that point on, the data remains under XIL control as if the storage had been set.
+.P
+To set the "data supply routine" for an image, the application calls
+.B xil_set_data_supply_routine
+(\^).
+.P
+The prototype for the "data supply routine" is:
+.nf
+.ft B
+.LP
+.sp .5v
+.fi
+.BI "int app_data_supply_routine(XilImage " image,
+.if t .in +5n
+.br
+.BI "XilStorage " storage,
+.br
+.BI "unsigned int " x,
+.br
+.BI "unsigned int " y,
+.br
+.BI "unsigned int " xsize,
+.br
+.BI "unsigned int " ysize,
+.br
+.BI "void* " user_args);
+.br
+.ft R
+.fi
+.in
+.P
+The \f2image\fP is included as an argument in the event that the same data supply routine is used for multiple images. The image should only be used as an identifier.
+.P
+The user provides the data to the image through the \f2storage\fP object argument. The routine must call the appropriate storage functions, such as
+.B xil_storage_set_data
+(3), 
+.B xil_storage_set_pixel_stride
+(3), 
+and
+.B xil_storage_set_scanline_stride 
+(3) in order to set the image data.
+.P
+The \f2x\fP and \f2y\fP arguments indicate the upper left coordinate of the data portion required.
+.P
+The \f2xsize\fP and \f2ysize\fP will most likely be the tile \f2xsize\fP and tile \f2ysize\fP, but as the image may have been re-imported, the programmer will have no way to access the tile size at the time of the callback.
+.P
+\f2user_args\fP are available to provide any specific data that the routine may require, and will match the \f2user_args\fP provided in the
+.B xil_set_data_supply_routine
+(\^) for the image.
+.SH EXAMPLES
+.nh
+A program that uses a data supply routine to provide data to an XIL image for processing. The supply data is stored in a contiguous buffer, 256 x 256. The image tile size is initially set to 64 x 64, but may change before the data supply routine is called.  The supply data is a a buffer of 4 banded (RGBA) BYTE data that represents an RGB image.
+.sp
+.nf
+.RS
+.ft 3
+struct arg_info {
+unsigned int width;
+unsigned int height;
+unsigned int nbands;
+};
+
+XilSystemState  state;
+XilImage        tile_image;
+struct arg_info myarg_info;
+                
+state = xil_open();
+xil_state_set_default_tiling_mode(state, XIL_TILING);
+tile_image = xil_create(state, 256, 256, nbands, XIL_BYTE);
+xil_export(tile_image);
+xil_set_tilesize(tile_image, 64, 64);
+xil_import(tile_image,TRUE);
+                
+/*
+ * myarg_info holds the image information
+ */
+myarg_info.width = width;
+myarg_info.height = height;
+myarg_info.nbands = nbands;
+
+xil_set_data_supply_routine(tile_image, myapp_supply_routine,
+                            (void*)&myarg_info);
+
+/*
+ *  Run program that uses tile_image as it would any other image 
+ */
+
+xil_destroy(tile_image);
+xil_close(state);
+}
+
+/*
+ *  The XilDataSupplyFuncPtr
+ *  used in a callback to fill in image tiles
+ *  We're assuming that the source data is already memory
+ *  mapped and referenced by a pointer global_mmap_ptr
+ */
+int
+myapp_supply_routine(XilImage     image,
+                     XilStorage   storage,
+                     unsigned int x,
+                     unsigned int y,
+                     unsigned int xsize,
+                     unsigned int ysize,
+                     void        *myArgs)
+{
+    struct arg_info* argptr;
+    unsigned int   width;
+    unsigned int   height;
+    unsigned int   bands;
+    Xil_unsigned8* dataptr;
+    unsigned int   scanline_stride;
+    unsigned int   pixel_stride;
+
+    /*
+     *  Remember - you can't call any XIL functions on the
+     *  image in this routine. It is purely for identification!
+     *  So pick up the passed in image particulars
+     */
+    argptr = (struct arg_info*)myArgs;
+    width =  argptr->width;
+    height = argptr->height;
+    bands = argptr->nbands;
+
+    /*
+     *  Example file data is pixel sequential, so
+     *  band stride is always 1 and you only need to
+     *  set storage for the 0th band.
+     *  In this example our data is RGBARGBARGBA...
+     *  with the A an unused band of a 3 band BYTE image
+     *  The image is a contiguous 256x256 memory buffer, 
+     *  but we're filling in for requested blocks.
+     */
+    pixel_stride = 4;
+    xil_storage_set_pixel_stride(storage,0,pixel_stride);
+
+    scanline_stride = pixel_stride * 256;
+    xil_storage_set_scanline_stride(storage,0, scanline_stride);
+
+    /*
+     *  Now go mmap the data for this image starting at x,y
+     *  and of size xsize, ysize
+     */
+    dataptr = go_mmap_data(image, x, y, xsize, ysize);
+    xil_storage_set_data(storage, 0, dataptr);
+    return XIL_SUCCESS;
+}
+.RE
+.ft 1
+.fi
+.SH NOTES
+.nh
+The user must not call any other XIL operations on the image while in the callback in order to avoid deadlock.
+.P
+After the callback has been called for a particular part of the image, the user may not access that data again without calling
+.B xil_export(3) 
+and one of the other storage access routines such as
+.B xil_get_tile_storage(3).
+.SH "SEE ALSO"
+.BR Storage (3),
+.BR xil_get_tile_storage (3).

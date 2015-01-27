@@ -1,0 +1,25 @@
+##
+##  @(#)mapfile	1.3 96/05/29 
+##
+##
+##  Linker MapFile for xilCompress_Jpeg.so.2
+##
+
+xilCompress_Jpeg {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fbXilDeviceManagerCompressionGcreateUiTBPUiTDT;
+
+        ##
+        ##  Codec Device Members
+        ##
+
+    local:
+        *;
+};
+
+
+
+

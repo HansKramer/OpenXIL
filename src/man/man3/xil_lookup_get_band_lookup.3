@@ -1,0 +1,75 @@
+.\" @(#)xil_lookup_get_band_lookup.3 1.1 96/09/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup_get_band_lookup 3 "17 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup_get_band_lookup \- get a single
+lookup table out of a combined lookup
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilLookup xil_lookup_get_band_lookup ( XilLookup " lookup ,
+.if t .in +5n
+.br
+.BI "unsigned int " band_num )
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+This function creates a copy of the lookup for the specified band in a
+combined lookup table.
+.I lookup
+is the handle to the combined lookup table, and
+.I band_num
+is the band number to be copied.
+.P
+.nh
+The lookup table that is returned is a single lookup table with
+one output element per input value. It can be used to convert a
+single-band input image to another single-band input image, or it can
+be used as the lookup table for one band of a multiband input image.
+It cannot be used to convert single-band data to multiband data.
+.P
+.nh
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 20
+.SH EXAMPLES
+Get a copy of the lookup table in the first band of a combined lookup
+table built for converting a 24-bit color image to another 24-bit
+color image:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilLookup band1_lookup;
+XilLookup combined_lookup_table;
+.ta 3.5i
+.sp
+band1_lookup = xil_lookup_get_band_lookup(combined_lookup_table, 0);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_lookup (3),
+.BR xil_lookup_create (3),
+.BR xil_lookup_create_combined (3),
+.BR xil_lookup_convert (3),
+.BR xil_lookup_get_input_nbands (3),
+.BR xil_lookup_get_input_datatype (3),
+.BR xil_lookup_get_num_entries (3),
+.BR xil_lookup_get_offset (3),
+.BR xil_lookup_get_output_datatype (3),
+.BR xil_lookup_get_output_nbands (3),
+.BR xil_lookup_get_colorcube (3),
+.BR xil_lookup_set_offset (3),
+.BR xil_lookup_get_colorcube_info (3),
+.BR xil_lookup_set_values (3).

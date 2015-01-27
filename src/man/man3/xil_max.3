@@ -1,0 +1,68 @@
+.\" @(#)xil_max.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_max 3 "04 March 1994" "" "XIL Library"
+.SH NAME
+xil_max \- find the larger of pixels in two images
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_max (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "XilImage " src2 , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_max
+.IX Functions xil_max
+.IX "Arithmetic and Logical Operations" "xil_max" 
+.nh
+.B xil_max
+(\^) performs a pixel-by-pixel max() operation of the 
+.I src1 
+and
+.I src2 
+images and stores the result in the 
+.I dst
+(destination) image.
+.P
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Find the larger of
+.I image1 
+and 
+.I image2 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, image2, dst;
+.sp
+xil_max(image1, image2, dst);
+.sp
+.fi
+.ft
+.RE
+.SH NOTES
+.LP
+Source and destination images must be of the same data type and have the same number of bands.
+In-place operations are supported.
+.sp
+.SH SEE ALSO
+.BR xil_extrema (3)

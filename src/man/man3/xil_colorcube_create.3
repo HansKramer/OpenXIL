@@ -1,0 +1,162 @@
+.\" @(#)xil_colorcube_create.3 1.3 97/05/12 SMI/VPG;
+.so man3/xil.macs
+.TH xil_colorcube_create 3 "04 August 1993" "" "XIL Library"
+.SH NAME
+xil_colorcube_create, xil_lookup_get_colorcube, xil_lookup_get_colorcube_info \- operations on lookup tables used as colormap attributes of images
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.LP
+.BI "XilLookup xil_colorcube_create ( XilSystemState " State , 
+.if t .in +5n
+.br
+.BI "XilDataType " input_type ,
+.br
+.BI "XilDataType " output_type ,
+.br
+.BI "unsigned int " nbands ,
+.br
+.BI "short " offset ,
+.br
+.BI "int " multipliers[] ,
+.br
+.BI "unsigned int " dimensions[] );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "Xil_boolean xil_lookup_get_colorcube ( XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "Xil_boolean xil_lookup_get_colorcube_info ( XilLookup " lookup , 
+.if t .in +5n
+.br
+.BI "int *" multipliers ,
+.br
+.BI "unsigned int *" dimensions ,
+.br
+.BI "short *" origin );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_colorcube_create
+.IX Functions xil_colorcube_create
+.IX "Lookup Table Functions" "xil_colorcube_create"
+.nh
+.B xil_colorcube_create
+(\^) creates a lookup table that represents a colorcube.
+.I input_type
+is the data type of the input (either XIL_BIT, XIL_BYTE, or XIL_SHORT).
+.I output_type
+is the data type of the output (either XIL_BIT, XIL_BYTE, XIL_SHORT or XIL_FLOAT).
+.I nbands
+is the number of bands of the colorcube.
+.I offset
+is the index of the first entry of the colorcube.
+.I multipliers
+is the distance between each color level in each dimension of the colorcube.  These can be negative numbers to indicate decreasing color ramps rather than increasing color ramps.
+.I dimensions
+is a list of the sizes of each side of the colorcube.
+.P
+.IX xil_lookup_get_colorcube
+.IX Functions xil_lookup_get_colorcube
+.IX "Lookup Table Functions" "xil_lookup_get_colorcube"
+.nh
+.B xil_lookup_get_colorcube
+(\^) returns TRUE or FALSE, depending on whether the specified lookup table
+was created as a colorcube. 
+.P
+.IX xil_lookup_get_colorcube_info
+.IX Functions xil_lookup_get_colorcube_info
+.IX "Lookup Table Functions" "xil_lookup_get_colorcube_info"
+.nh
+.B xil_lookup_get_colorcube_info
+(\^) returns TRUE or FALSE, depending on whether the specified lookup table
+was created as a colorcube.  It also returns the 
+.I multipliers ,
+.I dimensions
+and
+.I origin
+for the colorcube.  The dimension of the arrays 
+.I multipliers 
+and 
+.I dimensions
+is
+.I nbands .
+The arrays must be allocated by the user/application.
+The pointers to 
+.I multipliers ,
+.I dimensions
+and
+.I origin
+may be NULL if the information is not needed.
+.P
+.nh
+.I origin
+is the index of the origin of the colorcube.  In most cases, this should be
+the black pixel.  If the
+.I origin
+is used as the starting index, then the 
+.I multipliers
+can be used whether they have positive or negative values.  The pointer may be NULL if the
+.I origin
+is not needed.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 10
+.SH EXAMPLES
+.nh
+Create an RGB colorcube with 4 shades of blue, 9 shades of green, and 6 shades
+of red that starts at index 16.  When incrementing through the colors, blue
+changes most quickly, followed by greens, and then red.
+.LP
+.nf
+.sp
+.ft 3
+static unsigned int dimensions[3] = { 4, 9, 6 };
+static int multipliers[3] = { 1, 4, 36 };
+.sp
+xil_create_colorcube(State, XIL_BYTE, XIL_BYTE,
+                     3, 16, multipliers, dimensions);
+.fi
+.ft 1
+.SH NOTES
+.nh
+A colorcube does not have to be three dimensional.  It can have any number of
+dimensions.  This makes it possible to have a colorcube for any color space.
+.P
+.nh
+Because the functions
+.BR xil_ordered_dither (3),
+.BR xil_nearest_color (3),
+and
+.BR xil_error_diffusion (3)
+effectively push data backwards through a lookup table, the output of the
+colorcube must match the input to these functions, and the input of
+the colorcube must match the output of these functions.
+.P
+.nh
+XIL also supplies some "common" colorcubes via
+.BR xil_lookup_get_by_name (3).
+.SH SEE ALSO
+.BR xil_lookup_convert (3),
+.BR xil_lookup_create (3),
+.BR xil_lookup_create_copy (3),
+.BR xil_lookup_destroy (3),
+.BR xil_lookup_get_by_name (3),
+.BR xil_lookup_set_values (3).

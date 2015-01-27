@@ -1,0 +1,96 @@
+.\" @(#)xil_get_roi.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_roi 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_get_roi, xil_set_roi \- get or set an image's ROI
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilRoi xil_get_roi ( XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_set_roi ( XilImage " image ,
+.if t .in +5n
+.br
+.BI "XilRoi " roi );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+These functions get and set the region of interest (ROI) associated with an image.
+.P
+.nh
+.IX xil_get_roi
+.IX Functions xil_get_roi
+.IX "Image Functions" "xil_get_roi"
+.BR xil_get_roi (\^)
+returns a copy of the ROI associated with the specified 
+.I image.
+.P
+.nh
+.IX xil_set_roi
+.IX Functions xil_set_roi
+.IX "Image Functions" "xil_set_roi"
+.BR xil_set_roi (\^)
+sets the ROI associated with the specified 
+.I image 
+to the one supplied.
+.SS ROI Behavior
+.nh
+An efficient way to specify an ROI that encompasses an entire image is to
+set the image's ROI to NULL.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Get the ROI associated with an image, remove a rectangular region from
+the ROI, and replace the image's ROI with the modified one.  Then
+destroy the ROI:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilImage image;
+XilRoi roi;
+.ta 3.5i
+.sp
+roi = xil_get_roi (image);
+if (roi == NULL) {
+    /* The image had no ROI associated with it,
+       create one that encompasses the whole image */
+    roi = xil_roi_create (State);
+    xil_roi_add_rect (roi, 0, 0, xil_get_width(image), xil_get_height(image));
+}
+xil_roi_subtract_rect (roi, 10, 10, 20, 20);
+xil_set_roi (image, roi);
+xil_roi_destroy (roi);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_roi_add_rect (3),
+.BR xil_roi_create (3),
+.BR xil_roi_create_copy (3),
+.BR xil_roi_destroy (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_translate (3)
+.BR xil_roi_add_image (3),
+.BR xil_roi_add_region (3),
+.BR xil_roi_get_as_image (3),
+.BR xil_roi_get_as_region (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_unite (3).

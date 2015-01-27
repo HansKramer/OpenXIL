@@ -1,0 +1,154 @@
+.\" @(#)xil_sync.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_sync 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_sync, xil_get_synchronize, xil_set_synchronize, xil_state_get_synchronize,
+xil_state_set_synchronize \- force computation of image values when it would
+otherwise defer
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_sync(XilImage "image);
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "Xil_boolean xil_get_synchronize(XilImage " image);
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_set_synchronize(XilImage " image, " Xil_boolean " onoff);
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "Xil_boolean xil_state_get_synchronize(XilSystemState " State);
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_state_set_synchronize(XilSystemState " State,
+.if t .in +5n
+.br
+.BI "Xil_boolean " onoff);
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_sync
+.IX Functions xil_sync
+.IX "Image Functions" "xil_sync"
+.BR xil_sync (3)
+forces the computation of the value of an image in cases in which that
+operation might otherwise have been deferred.  This prevents deferred
+execution from attempting to optimize beyond the point at which the 
+.BR xil_sync (3)
+call is made.
+.P
+.nh
+.IX xil_get_synchronize
+.IX Functions xil_get_synchronize
+.IX "Image Functions" "xil_get_synchronize"
+.IX xil_set_synchronize
+.IX Functions xil_set_synchronize
+.IX "Image Functions" "xil_set_synchronize"
+.BR xil_get_synchronize (3)
+and
+.BR xil_set_synchronize (3)
+set and get the synchronization status of an image.  If an image is
+synchronous, operations on that image are never deferred.
+.P
+.nh
+.IX xil_state_get_synchronize
+.IX Functions xil_state_get_synchronize
+.IX "Image Functions" "xil_state_get_synchronize"
+.IX xil_state_set_synchronize
+.IX Functions xil_state_set_synchronize
+.IX "Image Functions" "xil_state_set_synchronize"
+.B xil_state_get_synchronize (3)
+and
+.B xil_state_set_synchronize (3)
+turn synchronization on or off for all operations using an object created from
+.I State
+as its destination.
+The default synchronization for  
+.I State
+is FALSE, which means that deferred execution is used.  If the synchronization
+status of 
+.I State
+is set to TRUE, then any pending operations writing into objects created from
+.I State
+are executed immediately and no further deferral occurs.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Measure the performance of an image rotate operation with bilinear interpolation:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+#include <sys/time.h>
+#include <math.h>
+
+XilImage src;
+XilImage dst;
+hrtime_t start_time;
+hrtime_t end_time;
+
+/*
+ *  Store the starting time.
+ */
+start_time = gethrtime();
+
+/*
+ *  Rotate an image by 45 degrees (PI/2)
+ */
+xil_rotate(src, dst, "bilinear", M_PI_2);
+
+/*
+ *  Force the rotate to execute
+ */
+xil_sync(dst);
+
+/*
+ *  Store the ending time.
+ */
+end_time  = gethrtime();
+
+/*
+ *  Print out the number of nanoseconds rotate took to execute.
+ */
+printf("xil_rotate() took %lld nanoseconds",
+       end_time - start_time);
+
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+None of these functions produces a semantic difference in the execution of
+the program.  These functions are only useful for debugging, performance
+measurement, and performance tuning.
+.SH SEE ALSO
+.BR xil_cis_sync (3)

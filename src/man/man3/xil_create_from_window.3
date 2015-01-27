@@ -1,0 +1,191 @@
+.\" @(#)xil_create_from_window.3 1.9 98/01/07 SMI/VPG;
+.so man3/xil.macs
+.TH xil_create_from_window 3 "24 February 1997" "" "XIL Library"
+.SH NAME
+xil_create_from_window, xil_create_from_device, xil_create_double_buffered_window \- create device images
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage xil_create_from_window ( XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "Display *" display ,
+.br
+.BI "Window " window );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "XilImage xil_create_from_device ( XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" devicename , 
+.br
+.BI "XilDevice " deviceObj );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "XilImage xil_create_double_buffered_window ( XilSystemState " system_state ,
+.if t .in +5n
+.br
+.BI "Display*" display , 
+.br
+.BI "Window " window );
+.br
+.ft R
+.fi
+
+.SH DESCRIPTION
+.nh
+These routines create images that are tied to particular devices.
+They allow X windows and various image input and output devices to be treated
+as if they were ordinary XIL images. After an image is created with the routines,
+the image can be read from the device or written to it by using the device as the
+source or destination of an image processing operation.
+.P
+.IX xil_create_from_window
+.IX Functions xil_create_from_window
+.IX "Image Functions" "xil_create_from_window"
+.nh
+.BR xil_create_from_window
+(\^) creates an image associated with the specified X
+window.  Images can then be copied to this image for display. 
+The default origin for images created with this function is (0.0, 0.0), and
+the default region of interest (ROI) is NULL.
+.P 
+.IX xil_create_from_device
+.IX Functions xil_create_from_device
+.IX "Image Functions" "xil_create_from_device"
+.nh
+.BR xil_create_from_device
+(\^) creates an image associated with the device named
+.I devicename.
+The parameter
+.I deviceObj
+is the handle to the device object associated with this device type. The device object is created with the
+.BR xil_device_create (3)
+function and is used to store device-initialization values. 
+If the device doesn't require attribute initialization, you may pass NULL for the
+.I deviceObj
+parameter. The supplier of the device handler should indicate whether the
+device requires attribute initialization.
+.P 
+.IX xil_create_double_buffered_window
+.IX Functions xil_create_double_buffered_window
+.IX "Image Functions" "xil_create_double_buffered_window"
+.nh
+.BR xil_create_double_buffered_window
+(\^) creates an image associated with the specified X window in the same way that 
+.BR xil_create_from_window
+(\^) does, except that it attempts to establish hardware double-buffering.  If hardware double-buffering is not supported for the device, 
+.BR xil_create_double_buffered_window
+(\^) returns NULL, and the developer must catch the failure and call
+.BR xil_create_from_window
+(\^) instead.  At construction time the back buffer is the active buffer.
+.P
+.nh
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide." 
+.SH EXAMPLES
+.nh
+Create an XIL display image and copy it to a display image.
+.sp
+.nf
+.ft 3
+    XilSystemState State;
+    XilImage display_image;
+    XilImage image0;
+    Display* display;
+    Window window;
+
+    /* Create an XIL display image from existing X display and window */
+    display_image = xil_create_from_window(State, display, window);
+
+    /* Copy image0 to the display */
+    xil_copy(image0, display_image);
+.sp
+.ft 1
+Attempt to create a double-buffered window:
+.sp
+.ft 3
+    XilSystemState State;
+    XilImage display_image;
+    XilImage image0;
+    Display* display;
+    Window window;
+    Xil_boolean is_double_buffered = TRUE;
+
+    /* Create an XIL display image from existing X display and window */
+    if(display_image = xil_create_double_buffered_window(State,
+                                              display,window) == NULL) {
+    
+        is_double_buffered = FALSE;
+        display_image = xil_create_from_window(State, display, window);
+    }
+
+    /* Copy image0 to the display */
+    xil_copy(image0, display_image);
+
+    if(is_double_buffered) {
+        /*  Move the back buffers contents to the front buffer */
+        xil_swap_buffers(display_image);
+    }
+.ft 1
+.fi
+.SH NOTES
+.nh
+As with standard images, device images can have origins, color spaces, and so on.
+Subsets of device images can be referenced or written using ROIs or child images.  
+.sp
+To resize a window that contains an
+.I XilImage,
+destroy the
+.I XilImage
+attached
+to the window, resize the window, wait for a
+.I ConfigureNotify
+event to ensure the
+.BR XResizeWindow(3)
+is complete, and then call
+.BR xil_create_from_window
+(\^) to recreate the image in the new window size.  Detaching and attaching an XIL image to a window is a very lightweight process.
+.sp
+XIL does not support using an X window's 
+.I backing_store
+attribute to maintain an image in the window when the window is obscured 
+or unmapped (see the 
+.I Xlib Programming Manual). 
+Your code should always check for an 
+.I Expose 
+event and take
+the appropriate measures for displaying the image again when the 
+window is exposed.
+.sp
+.nh
+You cannot attach an XIL image to an unmapped window.  The application should
+wait for the first
+.I Expose
+event and then attach the XIL image to the window.
+.SH SEE ALSO
+.BR xil_get_device_attribute (3),
+.BR xil_set_device_attribute (3),
+.BR xil_get_readable (3),
+.BR xil_get_writable (3),
+.BR xil_device_create (3),
+.BR xil_device_set_attribute (3),
+.BR xil_device_destroy (3),
+.BR xil_create_from_special_window (3),
+.BR xil_swap_buffers (3),
+.BR xil_get_active_buffer (3),
+.BR xil_set_active_buffer (3).
+

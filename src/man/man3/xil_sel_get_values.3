@@ -1,0 +1,71 @@
+.\" @(#)xil_sel_get_values.3 1.6 97/05/30 SMI/VPG;
+.so man3/xil.macs
+.TH xil_sel_get_values 3 "10 February 1997" "" "XIL Library"
+.SH NAME
+xil_sel_get_values - get the values stored internally for a structuring
+element.
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_sel_get_values(XilSel " sel,
+.if t .in +5n
+.br
+.BI "unsigned int " *data);
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_sel_get_values
+.IX Functions xil_sel_get_values
+.IX "SEL Functions" "xil_sel_get_values"
+.nh
+.B xil_sel_get_values
+(\^) returns the internal values stored in \f2sel\fP. The user must allocate the array of 
+.B unsigned int 
+\f2data\fP to hold the values of the structruing element object. The size of the \f2data\fP array will be the width of the 
+.B XilSel 
+object * height of the 
+.B XilSel 
+object. These values can be retrieved by calling
+.B xil_sel_get_width
+(3) and 
+.B xil_sel_get_height
+(3).
+.SH ERRORS
+For a complete list of XIL error messages by number, consult Appendix B of the \f2XIL Programmer's Guide\fP.
+.SH EXAMPLES
+Get the values of an structuring element object:
+.RS
+.ft B
+.nf
+.sp
+XilSel sel;
+unsigned int* data;
+unsigned int width;
+unsigned int height;
+
+width = xil_sel_get_width(sel);
+height = xil_sel_get_height(sel);
+
+data = malloc(width*height);
+if(data == NULL) 
+
+/* cleanup and exit */
+
+}
+xil_sel_get_values(sel, data);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+.SH "SEE ALSO"
+.BR xil_sel_create (3),
+.BR xil_sel_get_width (3),
+.BR xil_sel_get_height (3),
+.BR xil_sel_get_key_x (3),
+.BR xil_sel_get_key_y (3).

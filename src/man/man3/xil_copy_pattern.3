@@ -1,0 +1,62 @@
+.\" @(#)xil_copy_pattern.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_copy_pattern 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_copy_pattern \- replicate the source image into the destination image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_copy_pattern (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_copy_pattern
+.IX Functions xil_copy_pattern
+.IX "Image Processing Operations" "xil_copy_pattern"
+This routine replicates the source image into the destination image.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.P
+.nh
+For example, if the the size of the source image is 64 x 64 and the size of the destination image is 256 x 128, then the destination
+image will have (256 / 64 ) * (128 / 64) = 8 copies of the source image.
+The size of the destination image does not have to be an even multiple
+of the size of the source image.
+.ft 1
+.fi
+.SS ROI Behavior
+.nh
+The source image ROI is repeated to be the same size as the destination image before
+intersection with the destination ROI.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Replicate the source image into the destination image:
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+.ta 3.5i
+xil_copy_pattern(src, dst);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the same number of bands.  In-place operations are not supported.
+.SH SEE ALSO
+.BR xil_copy (3)
+

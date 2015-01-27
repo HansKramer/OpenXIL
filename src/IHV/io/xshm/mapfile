@@ -1,0 +1,22 @@
+##
+##  @(#)mapfile	1.1 96/11/07 
+##
+##
+##  Linker MapFile for xilIO_SUNWxlib.so.2
+##
+
+xilIO_SUNWxlib.so.2 {
+    global:
+        ##
+        ##  Required IO device manager methods
+        ##
+        __0fSXilDeviceManagerIOGcreateUiTBPUiTDT;
+
+        ##
+        ##  Do not need to put virtual functions in here because they are
+        ##  called through a function pointer.
+        ##
+
+    local:
+        *;
+};

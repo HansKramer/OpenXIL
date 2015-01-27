@@ -1,0 +1,136 @@
+.\" @(#)xil_kernel_create.3 1.2 97/02/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_kernel_create 3 "04 August 1993" "" "XIL Library"
+.SH NAME
+xil_kernel_create, xil_kernel_create_copy, xil_kernel_create_separable,  xil_kernel_destroy \- create and destroy kernels
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilKernel xil_kernel_create (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "unsigned int " width ,
+.br
+.BI "unsigned int " height ,
+.br
+.BI "unsigned int " key_x ,
+.br
+.BI "unsigned int " key_y ,
+.br
+.BI "float *" data );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilKernel xil_kernel_create_copy (XilKernel " kernel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilKernel xil_kernel_create_separable (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "unsigned int " width ,
+.br
+.BI "unsigned int " height ,
+.br
+.BI "unsigned int " keyx ,
+.br
+.BI "unsigned int " keyy ,
+.br
+.BI "float *" x_data ,
+.BI "float *" y_data );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_kernel_destroy (XilKernel " kernel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX "Kernel Functions" "kernel overview"
+These routines create and destroy XilKernel 
+objects.  Kernels are used in image convolution, error diffusion, painting,
+and band combine operations. The key values specify the key pixel position -
+a position relative to the upper left corner of the kernel.  The key pixel
+aligns with the output pixel and constrains which input pixels are used to
+generate the output. Kernel data is single-precision floating point.
+.P
+.IX xil_kernel_create
+.IX Functions xil_kernel_create
+.IX "Kernel Functions" "xil_kernel_create"
+.BR xil_kernel_create (\^)
+creates an XilKernel 
+object of the specified size and with the
+specified data.
+.P
+.IX xil_kernel_create_copy
+.IX Functions xil_kernel_create_copy
+.IX "Kernel Functions" "xil_kernel_create_copy"
+.BR xil_kernel_create_copy (\^)
+creates and returns a copy of the specified kernel.  The name of a 
+copy is initially empty (NULL). 
+.P
+.IX xil_kernel_create_separable
+.IX Functions xil_kernel_create_separable
+.IX "Kernel Functions" "xil_kernel_create_separable"
+.BR xil_kernel_create_separable (\^)
+creates an 
+.I XilKernel 
+object that represents a separable kernel of the specified size and with the specified horizontal and vertical data. Separable kernels may provide much better performance than standard combined kernals. In addition the user does not have to allocate as much memory as would be needed to represent the equivalent combined kernel.
+.P
+.IX xil_kernel_destroy
+.IX Functions xil_kernel_destroy
+.IX "Kernel Functions" "xil_kernel_destroy"
+.BR xil_kernel_destroy (\^)
+destroys the specified kernel.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create a 3x3 kernel for edge-sharpening, with the key value 
+located at the center of the kernel:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+unsigned int width=3, height=3, key_x=1, key_y=1;
+XilKernel kernel;
+float data[]={ 0., -1.,  0.,
+	         -1.,  5., -1.,
+	          0., -1.,  0. };
+.ta 3.5i
+.sp
+kernel = xil_kernel_create (State, width, height, key_x, key_y, data);
+.RE
+.fi
+.ft 1
+.SH NOTES
+The key pixel must lie within the boundaries of the kernel.
+.SH SEE ALSO
+.BR xil_convolve (3),
+.BR xil_kernel_get_height (3),
+.BR xil_kernel_get_width (3),
+.BR xil_kernel_get_key_x (3),
+.BR xil_kernel_get_key_y (3),
+.BR xil_kernel_get_state (3),
+.BR xil_error_diffusion (3),
+.BR xil_paint (3),
+.BR xil_band_combine (3).

@@ -1,0 +1,65 @@
+.\" @(#)xil_lookup_get_version.3 1.1 96/09/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup_get_version 3 "29 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup_get_version \- get a unique version number for a lookup table
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilVersionNumber xil_lookup_get_version ( XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_lookup_get_version
+.IX Functions xil_lookup_get_version
+.IX "Lookup Table Functions" "xil_lookup_get_version"
+This function gets a unique identifier associated with a lookup table.  This identifier changes whenever the lookup table values change.  Unchanged
+copies created with 
+.BR xil_lookup_create_copy (3)
+will have the same version number as the original.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Get a version number for a lookup table:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilVersionNumber version1, version2;
+XilLookup table1, table2;
+.sp
+version1=xil_lookup_get_version(table1);
+table2=xil_lookup_create_copy(table1);
+version2=xil_lookup_get_version(table2);
+if (version1!=version2)
+	printf("Error in lookup copy, different verson numbers.\\n");
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_lookup_create (3),
+.BR xil_lookup_create_combined (3),
+.BR xil_lookup_create_copy (3),
+.BR xil_lookup_destroy (3),
+.BR xil_lookup_get_input_datatype (3),
+.BR xil_lookup_get_num_entries (3),
+.BR xil_lookup_get_offset (3),
+.BR xil_lookup_get_output_datatype (3),
+.BR xil_lookup_get_input_nbands (3),
+.BR xil_lookup_get_output_nbands (3),
+.BR xil_lookup_get_band_lookup (3),
+.BR xil_lookup_set_offset (3),
+.BR xil_lookup_convert (3),
+.BR xil_lookup_get_values (3),
+.BR xil_lookup_set_values (3).

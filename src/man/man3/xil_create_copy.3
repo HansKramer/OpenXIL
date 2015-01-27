@@ -1,0 +1,83 @@
+.\" @(#)xil_create_copy.3 1.2 97/05/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_create_copy 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_create_copy \- create a new image with a copy of the source's data
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage xil_create_copy ( XilImage " src ,
+.if t .in +5n
+.br
+.BI "unsigned int " xstart ,
+.br
+.BI "unsigned int " ystart ,
+.br
+.BI "unsigned int " width ,
+.br
+.BI "unsigned int " height ,
+.br
+.BI "unsigned int " startband ,
+.br
+.BI "unsigned int " numbands );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_create_copy
+.IX Functions xil_create_copy
+.IX "Image Functions" "xil_create_copy"
+This routine creates a new image with its own copy of the source's data.  
+.I xstart
+is the horizontal offset in pixels from the upper-left corner of the source image to the upper-left corner of the subimage.  
+.I ystart
+is the vertical offset in pixels from the upper-left corner of the source image to the upper-left corner of the subimage.  
+.I width
+is the width of the subimage in pixels.  
+.I height
+is the height of the subimage in pixels.  
+.I startband
+is the offset in bands, starting from the first band, to the first band in the subimage.  
+.I numbands
+is the number of bands in the subimage.
+.P
+.nh
+Copies of images have the same XilVersion number as the original image.  
+The name of a copy is initially empty (NULL).
+.SS ROI Behavior
+.nh
+The default ROI is NULL.  If an ROI is NULL, operations are performed on the entire image.  The ROI and the origin of the source image are ignored in 
+the copy operation and are therefore set to the default value. The color space will be that of the source image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.ft 1
+.nh
+Create a 512 x 512 5-band, 16-bit image. Then copy a 100 x 100 image that 
+begins at offset (200, 250) comprising the middle 3 bands into a new image:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage image1, image2;
+.sp
+image1 = xil_create(512, 512, 5, XIL_SHORT);
+image2 = xil_create_copy (image1, 200, 250, 100, 100, 1, 3);
+.RE
+.SH SEE ALSO
+.BR xil_create (3),
+.BR xil_create_child (3),
+.BR xil_create_from_device (3),
+.BR xil_create_from_type (3),
+.BR xil_create_from_window (3),
+.BR xil_destroy (3),
+.BR xil_set_roi (3),
+.BR xil_get_roi (3).

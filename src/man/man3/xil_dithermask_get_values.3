@@ -1,0 +1,77 @@
+.\" @(#)xil_dithermask_get_values.3 1.6 97/05/30 SMI/VPG;
+.so man3/xil.macs
+.TH xil_dithermask_get_values 3 "10 February 1997" "" "XIL Library"
+.SH NAME
+xil_dithermask_get_values - returns a copy of the internal values in a dither mask
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_dithermask_get_values(XilDitherMask " mask,
+.if t .in +5n
+.br
+.BI "float*  " data);
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.B xil_dithermask_get_values
+(\^) returns the internal values stored in mask. (See 
+.BR xil_dithermask_create (3)
+man page for a description of how the values are arranged. The user must allocate the array of float data to hold the values of the dither mask. The size of the data array will be the width of mask * height of mask * number of bands in mask. The width, height, and number of bands can be retrieved by calling
+.BR xil_dithermask_get_width (3), 
+.BR xil_dithermask_get_height (3), 
+and
+.BR xil_dithermask_get_nbands (3).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the \f2XIL Programmer's Guide\fP.
+.SH EXAMPLES
+Get the values of a dither mask object:
+.RS
+.ft B
+.nf
+.sp
+XilDithermask mask;
+float* data;
+unsigned int width;
+unsigned int height;
+unsigned int nbands;
+.sp
+/* process filesrc into the display */
+.sp
+xil_lookup(filesrc, tmp1);
+tmp2 = xil_create_temporary(State, width, height, nbands,datatype);
+xil_convolve(tmp1, tmp2);
+xil_ordered_dither (tmp2, display);
+.sp
+width = xil_dithermask_get_width(mask);
+height = xil_dithermask_get_height(mask);
+nbands = xil_dithermask_get_nbands(mask);
+.sp
+data = malloc(width*height*nbands*sizeof(float));
+if(data == NULL)
+.sp
+/* cleanup and exit */
+.sp
+}
+xil_dithermask_get_values(mask, data);
+.fi
+.ft
+.RE
+.LP
+.SH NOTES
+.nh
+The values returned in 
+.I data
+are copies of the internal values. The only way to alter the internal values are to create a new mask.
+.SH "SEE ALSO"
+.BR xil_dithermask_create(3),
+.BR xil_dithermask_get_width(3),
+.BR xil_dithermask_get_height(3),
+.BR xil_dithermask_get_nbands(3).

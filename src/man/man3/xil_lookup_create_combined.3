@@ -1,0 +1,127 @@
+.\" @(#)xil_lookup_create_combined.3 1.1 96/09/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup_create_combined 3 "16 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup_create_combined \- create combined lookup tables
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilLookup xil_lookup_create_combined ( XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "XilLookup " lookup_list[] , 
+.br
+.BI "unsigned int " num_lookups )
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_lookup_create_combined
+.IX Functions xil_lookup_create_combined
+.IX "Lookup Table Functions" "xil_lookup_create_combined"
+.B xil_lookup_create_combined
+(\^) creates a combined lookup table.  
+A combined lookup table
+is used for transforming multiband data to multiband data.
+Compare this function with 
+.BR xil_lookup_create (3),
+which converts single-band data to single-band or multiband data.
+.P
+.nh
+Combined lookups
+are a combination of 
+.I n
+single lookup tables, where
+.I n
+is the number of bands in the input image you want to convert.
+Each single lookup must be
+a 1-band to 1-band lookup table; the tables must all have
+the same data type, but each can use a different offset.
+.P
+.nh
+To create a lookup table for a multiband input image, you call
+.B xil_lookup_create
+(3) once for each band in the input image, then combine the
+single lookup tables into a 
+.I combined
+lookup table by calling
+.B xil_lookup_create_combined 
+(\^).
+.P
+.nh
+.B xil_lookup_create_combined
+(\^) returns a handle to a data structure of type
+.I XilLookup,
+which is the combined lookup. The parameter
+.I State
+is a handle to the system-state data structure created when you initialize
+the XIL library,
+.I lookup_list[]
+is an array of type
+.I XilLookup
+that stores the single lookup tables created for each of the
+input image's bands, and
+.I num_lookups
+indicates how many lookup tables are stored in the
+.I lookup_list[]
+array.
+.P
+.nh
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.SH EXAMPLES
+Create a combined lookup table for converting a 24-bit color image
+to another 24-bit color image whose green band is accented
+but whose red and blue bands are subdued: 
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilLookup lookup_tables[3];
+XilLookup combined_lookup_table;
+Xil_unsigned8 red[256];	/* red component of lookup */
+Xil_unsigned8 green[256];	/* green component of lookup */
+Xil_unsigned8 blue[256];	/* blue  component of lookup */
+int i;
+.ta 3.5i
+.sp
+for(i=0; i<256; i++) {
+    green[i] = (i + 20) < 255 ? i + 20 : 255;
+     blue[i] = red[i] = (i - 10) < 0 ? 0 : i - 10;
+}
+lookup_tables[0] = xil_lookup_create(State, XIL_BYTE, XIL_BYTE, 
+                                     1, 256, 0, red);
+lookup_tables[1] = xil_lookup_create(State, XIL_BYTE, XIL_BYTE, 
+                                     1, 256, 0, green);
+lookup_tables[2] = xil_lookup_create(State, XIL_BYTE, XIL_BYTE, 
+                                     1, 256, 0, blue);
+combined_lookup_table = xil_lookup_create_combined(State, 
+                                                   lookup_tables, 3);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_lookup (3),
+.BR xil_lookup_create (3),
+.BR xil_lookup_convert (3),
+.BR xil_lookup_get_band_lookup (3),
+.BR xil_lookup_get_input_nbands (3),
+.BR xil_lookup_get_input_datatype (3),
+.BR xil_lookup_get_num_entries (3),
+.BR xil_lookup_get_offset (3),
+.BR xil_lookup_get_output_datatype (3),
+.BR xil_lookup_get_output_nbands (3),
+.BR xil_lookup_get_colorcube (3),
+.BR xil_lookup_set_offset (3),
+.BR xil_lookup_get_colorcube_info (3),
+.BR xil_lookup_set_values (3).

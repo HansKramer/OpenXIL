@@ -1,0 +1,717 @@
+.\" @(#)Jpeg.3 1.2 96/09/17 SMI/VPG;
+.so man3/xil.macs
+.TH "Jpeg" 3 "29 July 1993" "" "XIL Library"
+.SH NAME
+Jpeg \- JPEG compressor/decompressor for compressed image sequences
+.SH DESCRIPTION
+.IX Jpeg
+.IX Functions Jpeg
+.IX Jpeg overview
+.nh
+The Joint Photographic Experts Group (JPEG) is a joint ISO/CCITT
+technical committee.  JPEG has developed a general-purpose international
+standard for the compression of continuous tone (grayscale or color)
+still images. The standard has three categories:
+.nf
+.sp
+	The baseline specification for lossy compression.
+	An extended features specification, and
+	A lossless compression specification.
+.fi
+.P
+.nh
+XIL currently supports the baseline lossy Jpeg codec and the Jpeg
+Lossless codec (See
+.BR JpegLL(3)\^).
+The baseline codec uses the
+Discrete Cosine Transform (DCT) and uniform quantization in
+combination with statistical Huffman coding techniques for 8-bit image
+components.  
+.P
+.nh
+Certain combinations of XIL operations are accelerated.  These
+combinations should be used for the highest performance in JPEG
+decompression.  For more information and example programs, see the 
+.I "XIL Programmer's Guide."
+.SS Creating a CIS
+.nh
+To compress a compressed image sequence (CIS) with the XIL JPEG compressor, specify "Jpeg" for the 
+.I compressorname
+argument in
+.BR xil_cis_create (3).
+.SS Getting and Setting JPEG Attributes
+.nh
+Use 
+.BR xil_cis_get_attribute (3)
+and 
+.BR xil_cis_set_attribute (3)
+to get and set JPEG CIS attributes.  These attributes are as described in the
+following sections.  Refer to the example section for additional information.
+.SS JPEG Compression Attributes
+.nh
+The following paragraphs describe the JPEG CIS attributes available with the 
+XIL library. All structures and enumerations are defined via 
+.B xil.h.  
+Note that some attributes are "set-only" and others are "get-only."  This is noted under the 
+.I Access 
+heading for each attribute.  
+.PP
+Note that if you are setting an attribute and 
+that attribute is a structure, you must pass the address of that structure.  If
+you are getting an attribute, you must always pass its address.
+.IX "Jpeg" "compression attributes"
+.P
+.I BAND_HUFFMAN_TABLE
+.TP 15
+Description
+Instructs the encoder to use a specific Huffman table number for a 
+given band.
+.TP 15
+Access
+set-only
+.TP 15
+Type
+typedef struct {
+.nf
+                int band;
+                int table;
+                XilJpegHTableType type;
+} XilJpegBandHTable;
+.fi
+.TP 15
+Values
+.I band: 
+Can have a value in the range 0-255.
+.sp 
+.I table: 
+For Baseline JPEG, legal values are 0 and 1.
+.sp
+.I type: 
+For Baseline JPEG, you can have a value 
+.I DC 
+or 
+.I AC. 
+.TP 15
+Default
+.nh
+.I band 0's DC 
+component is associated to 
+.I table 0, type DC 
+and 
+.I band 0's AC 
+component is associated to 
+.I table 0, type AC. 
+All other bands' 
+.I DC
+component is associated to 
+.I table 1, type DC,
+and their 
+.I AC 
+component is associated to 
+.I table 1, type AC.
+.TP 15
+Notes
+.nh
+This attribute assigns a band to a specific table number.
+Bands may be associated to tables that have not yet been set. However,
+the tables must be set before a call to compress is made or an error
+occurs. Note that to set both the DC and AC Huffman tables for a band,
+two 
+.BR xil_set_attribute (3) 
+calls must be made, one to set the DC and one to set the AC table.
+.nf
+.sp
+.fi
+.P
+.I BAND_QUANTIZER
+.TP 15
+Description
+Instructs the encoder to use a specific quantization table for a given band.
+.TP 15
+Access
+set-only
+.TP 15
+Type
+typedef struct {
+.nf
+                int band;
+                int table;
+} XilJpegBandQTable;
+.fi
+.TP 15
+Values
+.I band: 
+Can have a value in the range 0-255.
+.sp 
+.I table: 
+Can have a value in the range 0-3. 
+.TP 15
+Default
+.nh
+.I band 0 
+is associated to 
+.I table 0. 
+All other bands are associated to
+.I table 1. 
+This default assignment generally assumes that the first band 
+contains luminance data and the other bands contain chrominance data.
+.TP 15
+Notes
+.nh
+Bands may be associated to tables that have not yet been set. However,
+the tables must be set before a call to compress is made or an error
+occurs. 
+.nf
+.sp
+.fi
+.P
+.I BYTES_PER_FRAME
+.TP 15
+Description
+.nh
+Number of bytes in the last frame compressed by a CIS. This value can be used to assist in selecting a 
+.I COMPRESSION_QUALITY 
+to achieve a desired bit rate.
+.TP 15
+Access
+get-only
+.TP 15
+Type
+int
+.TP 15
+Default
+.nh
+Not applicable. Value is undefined for a CIS that has not compressed
+any frames.
+.nf
+.sp
+.fi
+.P
+.I COMPRESSED_DATA_FORMAT
+.P
+.TP 15
+Description
+defines output format for JPEG compressor
+.TP 15
+Access     
+set
+.TP 15 
+Type
+typedef enum{
+.nf
+              INTERCHANGE, ABBREVIATED_FORMAT
+} XilJpegCompressedDataFormat;
+.fi
+.TP 15
+Values
+.I INTERCHANGE:
+.nh 
+Use JPEG interchange format. All quantization and entropy-coding table specifications needed by the decoding process are included in each compressed frame.
+.sp  
+.I ABBREVIATED_FORMAT: 
+.nh
+Use JPEG abbreviated format for compressed images. Quantization and  entropy-coding table specifications are not included in a compressed frame if the specifications are defined in a previous frame in the compressed sequence. If any table values change after they are defined in the compressed sequence, a new table definition is included in the first compressed frame that uses the new table values.
+.TP 15
+Default
+.I ABBREVIATED_FORMAT
+.TP 15
+Notes 
+.nh
+This does not include the third type: 
+.I ABBREVIATED_TABLE, 
+in which a frame contains only table specifications. However, the decoder will accept this format.
+.nf
+.sp
+.fi
+.P
+.I COMPRESSION_QUALITY
+.TP 15
+Description
+.nh
+Provide a hint to the compressor, enabling it to increase the 
+compression ratio by reducing the compressed image quality.
+.TP 15
+Access
+set-only
+.TP 15
+Type
+int value
+.sp
+.TP 15
+Values
+.I value 
+.nh
+can be an integer from 1 to 100. Setting 
+.I value 
+to 100 requests the highest quality achievable by the compressor. A 
+.I value 
+equal to 1 sets the compression ratio to the maximum achievable while
+substantially reducing quality. This attribute applies a scaling factor to
+all elements of the currently selected quantization tables for all bands.
+The compression ratio may also be affected by modifying the actual
+quantization tables themselves using the
+.I QUANTIZATION_TABLE 
+attribute.
+.TP 15
+Default
+50
+.nf
+.sp
+.fi
+.P
+.I ENCODE_INTERLEAVED
+.TP 15  
+Description
+.nh
+If the image to compress is composed of 4 bands or less, having this attribute set to TRUE will generate an interleaved JPEG-compliant bitstream . If the number of bands exceeds 4  or if this attribute is set to FALSE, a noninterleaved JPEG-compliant bitstream is generated. Note, that the
+.I ENCODE_411_INTERLEAVED
+attribute takes precedence over
+.I ENCODE_INTERLEAVED
+for Baseline JPEG.
+.sp
+.in +4
+Note:
+Interleaved bitstreams are far more common than non-interleaved. In fact 
+some (non-compliant) JPEG decoders do not even support non-interleaved bitstreams.
+.in
+.sp
+.TP 15  
+Access
+set-only
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE: 
+.nh
+For images of 4 bands or less, produce an interleaved JPEG-compliant bitstream.
+.sp
+.I FALSE: 
+Produce a noninterleaved JPEG-compliant bitstream.
+.TP 15
+Default
+.I TRUE
+.nf
+.sp
+.fi
+.P
+.I ENCODE_411_INTERLEAVED
+.TP 15
+Description
+.nh
+For Baseline JPEG, if the image to compress is a 3-banded image, setting this attribute
+to TRUE generates a JPEG-compliant bitstream in which the second and third 
+components are subsampled by two in both axes, while the 
+first component is at full resolution.
+This is useful to gain additional compression for YCbCr images
+and is mandatory for most decompression molecules.  It is
+not appropriate for RGB images.
+If an image is not 3-banded, then the
+.I ENCODE_411_INTERLEAVED
+attribute is treated as if it were false, and therefore the
+.I ENCODE_INTERLEAVED
+attribute controls the interleaved format of the bitstream. 
+.sp
+Otherwise, the
+.I ENCODE_411_INTERLEAVED
+attribute takes precedence over
+.I ENCODE_INTERLEAVED.
+.nh
+Because some decompressor molecules require the bitstream image size
+to be a multiple of 16 in both width and height, source images should
+be clipped (for example, by using a child image) before compression, if 
+the highest decompression speed is desired.
+.TP 15
+Access
+set-only
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE: 
+.nh
+Generate a 2x2:1:1 macroblock, JPEG-compliant
+bitstream if the input image is a 3-banded image.
+.sp
+.I FALSE: 
+Do not generate a 2x2:1:1 macroblock, JPEG-compliant bitstream.
+.TP 15
+Default
+.I FALSE
+.nf
+.sp
+.fi
+.P
+.I HUFFMAN_TABLE
+.TP 15
+Description
+Set values in specified Huffman table
+.TP 15
+Access
+set-only
+.TP 15
+Type
+typedef struct {
+.nf
+                int table;
+                XilJpegHTableType type;
+                XilJpegHTableValue *value;
+} XilJpegHTable;
+.sp
+.ne 10
+typedef enum {
+              DC, AC
+} XilJpegHTableType;
+.sp
+.ne 10
+typedef struct {
+                int bits;
+                int pattern;
+} XilJpegHTableValue;
+.sp
+.fi
+.TP 15
+Values
+.I table: 
+For Baseline JPEG, you can have a value in the range from 0-1.
+.sp 
+.I type: 
+.nh
+For Baseline JPEG, you can have a value 
+.I DC 
+or 
+.I AC. 
+It also specifies how many entries are in the value array: 16 if type is 
+.I DC; 
+256 if type is 
+.I AC.
+.sp
+.I value: 
+.nh
+A pointer to an array of data pairs, each pair representing a Huffman code. 
+The first element `bits' indicates the length of the Huffman code word. 
+The second element `pattern' contains the actual value of the Huffman code 
+in its least significant `bits' bits. For DC Huffman tables, entry value[k],
+k=0,15, 
+represents the code for a quantized DC coefficient of size category k=ssss. 
+For AC Huffman tables entry value[k], k=0,255 represents the code for run length/size
+category k=rrrrssss. See sections F.1.2.1.1 and F.1.2.2.1 of the 
+Jpeg Specification (ITU Recommendation T.81 - 09/92), for more detail on 
+Jpeg Huffman table specification.
+.sp
+.TP 15
+Default
+.nh
+By default, the values in each of the tables are pre-initialized to the
+example values given in Annex K of the ANSI JPEG specification.  
+.sp
+.nh
+Default values for 
+.I table 0, type DC 
+are given in Table K.3 and are useful for the 
+.I DC 
+coefficients of the luminance band of 8-bit Y,Cb,Cr images. Default values for 
+.I table 1, type DC 
+are given in Table K.4 and are useful for the 
+.I DC 
+coefficients of the chrominance bands of 8-bit Y,Cb,Cr images.
+.sp
+.nh
+Default values for 
+.I table 0, type AC 
+are given in Table K.5 and are useful for the 
+.I AC 
+coefficients of the luminance band of 8-bit Y,Cb,Cr images. Default values for 
+.I table 1, type AC 
+are given in Table K.6 and are useful for the 
+.I AC 
+coefficients of the chrominance bands of 8-bit Y,Cb,Cr images.
+.nf
+.sp
+.fi 
+.P
+OPTIMIZE_HUFFMAN_TABLES
+.TP 15
+Description
+.nh
+Provide a hint to the compressor, enabling it to generate optimal 
+Huffman tables instead of using the default example values specified in the
+ANSI specification. Note that setting this attribute can increase the time required
+to compress a frame, since the compresor must make two passes through
+the image, one to gather statistics to build the optimal tables and a 
+second pass to actually encode the data. This is only a hint; the 
+compressor is free to ignore the hint.
+.TP 15
+Access
+set-only
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE: 
+.nh
+Huffman tables may vary from image to image to achieve higher compression.
+.sp
+.I FALSE: 
+Use fixed Huffman tables for each image in the sequence.
+.TP 15
+Default
+.I FALSE
+.nf
+.sp
+.fi
+.P
+.I QUANTIZATION_TABLE
+.TP 15
+Description
+Set the values in a specific quantization table
+.TP 15
+Access
+set-only
+.TP 15
+Type
+typedef struct {
+.nf
+                int table;
+                int (*value)[8];
+} XilJpegQTable;
+.fi
+.TP 15
+Values
+.I table: 
+Can have a value in the range 0-3. 
+.sp
+.I value: 
+.nh
+For Baseline JPEG, the 64 quantization table elements are defined to be 8-bit values; the compressor uses the least significant 8 bits of the input table value. This precision assumption may vary according to the compressor/decompressor configuration. The quantization operation for a DCT coefficient uses the corresponding element from the input quantization table.
+.sp
+.TP 15
+Default
+.nh
+Default values for 
+.I table 0 
+are given in Table K.1 of Annex K of the ANSI JPEG specification, and are useful for the luminance band of 8-bit Y,Cb,Cr images. The default values for 
+.I table 1 
+are given in Table K.2 of Annex K of the ANSI JPEG specification, and are useful for the chrominance bands of 8 bit Y,Cb,Cr images. 
+.I tables 2 
+and 
+.I table 3 
+are not loaded with any values.
+.TP 15
+Notes
+.nh
+A table that is to be used to compress an image must be set before the
+call to compress. The compressor issues an error if a band has been set to use a particular quantization table that has not yet been set.
+.nf
+.sp
+.fi
+.nf
+.sp
+.fi
+.P
+.I TEMPORAL_FILTERING
+.TP 15
+Description
+.nh
+Turns on or off a form of temporal filtering that may reduce noise in video
+sequences.  The filtering may also introduce undesirable artifacts in
+sequences containing motion.  Filtering is only performed on 3-banded images.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Filtering turned on
+.sp
+.I FALSE:
+.nh
+Filtering turned off
+.TP 15
+Default
+FALSE
+.SS JPEG Decompression Attributes
+.IX "Jpeg" "decompression attributes
+.I DECOMPRESSION_QUALITY
+.TP 15
+Description
+.nh
+Provide a suggestion to the decompressor, enabling it to trade off 
+reconstruction quality in exchange for an increase in decoding speed.
+.TP 15
+Access
+set
+.TP 15
+Type
+int value
+.TP 15
+Values
+.I value 
+.nh
+can be between 1 and 100. A 
+.I value 
+of 100 sets the quality to maximum. A 
+.I value 
+of 1 sets the speed to its maximum and allows the quality to decrease to the minimum allowed by the decompressor. The decompressor is free to ignore this hint.
+.TP 15
+Default
+100
+.TP 15
+Notes
+.nh
+The JPEG decompressor will increase speed by decreasing the number of
+quantized coefficients that it uses in reconstruction.
+.nf
+.sp
+.fi
+.P
+.I IGNORE_HISTORY
+.TP 15
+Description
+.nh
+Some JPEG bitstreams contain images that define tables (Huffman and/or
+Quantization) and images that use tables defined in previous images.  These
+bitstreams are not, in general, randomly seekable, because it is possible
+to backup to a point where the required tables for decoding the next
+image have not been loaded into the decoder.  The JPEG decoder detects
+such bitstreams.
+.TP 15
+Access
+set-only
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I FALSE: 
+.nh
+The decoder will set the 
+.I RandomAccess
+attribute of such CISs to FALSE (i.e., 
+.BR xil_cis_get_random_access (3)
+returns FALSE), and it is impossible to seek backwards.
+.sp
+.I TRUE:
+.nh
+The function
+.BR xil_cis_get_random_access (3)
+returns TRUE, regardless of the type of bitstream, and it is always 
+possible to seek backwards.  If 
+.I IGNORE_HISTORY
+is set to TRUE, the application should not seek forward beyond frames that
+contain table definitions if those definitions are needed for subsequent
+decoding; the decoder will not ensure that these table definitions are 
+loaded.
+.TP 15
+Default
+.I FALSE
+.TP 15
+Notes
+.nh
+If this attribute is set to TRUE, it is the responsibility of the application
+to seek to a spot in the bitstream that will decode correctly (either the
+image defines its own tables, or it depends on tables that have been most 
+recently loaded into the decoder).
+.sp
+.nh
+If you have a CIS that is randomly seekable and you never back up,
+you can seek forward to any frame and get the correct answer, regardless of
+the setting of
+.I IGNORE_HISTORY.
+.sp
+If you have a CIS that is randomly seekable and if 
+.I IGNORE_HISTORY
+is FALSE, you can seek forward to any frame and get the correct answer
+(regardless of whether you have ever backed up).
+.sp
+.nh
+If you have a CIS that is randomly seekable and if the attribute is TRUE,
+and if you have ever backed up, you need to control the loading of Q tables
+yourself by explicitly decompressing the frames that contain the tables.
+This is only practical if (1) you are decompressing every frame, or (2) you
+know the location of the Q tables because you glued together two CISs so
+that you know the location of the boundary. 
+.SH EXAMPLES
+.nh
+The following example opens and closes a JPEG CIS using the XIL library:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilCis cis;
+.ta 3.5i
+State = xil_open(\^);
+cis = xil_cis_create(State, \^"Jpeg\^");  
+
+-- calls to Jpeg-specific compression routines --
+
+xil_cis_destroy(cis);
+xil_close(State);
+.RE
+.fi
+.ft 1
+.fi
+.sp
+.ne 15
+.PP
+The following example sets a JPEG CIS attribute called
+.I ENCODE_INTERLEAVED 
+to TRUE.  Note that because this attribute is not a structure, it is not
+necessary to pass the address of 
+.I ENCODE_INTERLEAVED
+when setting it.
+.RS
+.ft B
+.nf
+.sp
+XilCis cis;
+.sp
+xil_cis_set_attribute(cis,"ENCODE_INTERLEAVED", (void *) TRUE);
+.sp
+.fi
+.ft
+.RE
+.P
+The following example returns the value of a JPEG CIS attribute called
+.I ENCODE_INTERLEAVED.  
+Note that when getting an attribute it is always
+necessary to pass the address.
+.RS
+.ft B
+.nf
+.sp
+Xil_boolean encode_type;
+XilCis cis;
+.sp
+xil_cis_get_attribute(cis, "ENCODE_INTERLEAVED", (void **) &encode_type);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+Note that although Jpeg is primarily a standard for still image
+compression, it is still perfectly permissible to encode sequences of Jpeg
+compressed images into a CIS. While this is commonly referred to as 
+"motion Jpeg", no explicit standard exists to describe the 
+syntax of a motion Jpeg bitstream.
+.P
+The 
+.BR xil_cis_set_attribute (\^)
+and
+.BR xil_cis_get_attribute (\^)
+calls are used to modify the default behavior of a specific compressor.  Generic attributes of compressors are set by individual function calls.
+.SH SEE ALSO
+.BR xil_cis_create (3),
+.BR xil_cis_get_attribute (3),
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_compress (3),
+.BR xil_decompress (3).

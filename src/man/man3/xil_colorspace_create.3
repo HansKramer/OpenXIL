@@ -1,0 +1,109 @@
+.\" @(#)xil_colorspace_create.3 1.2 96/09/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_colorspace_create 3 "6 May 1997" "" "XIL Library"
+.SH NAME
+xil_colorspace_create, xil_colorspace_destroy, xil_colorspace_get_type, xil_colorspace_get_name, xil_colorspace_set_name \- create, destroy, get the type, get or set the name of an XilColorspace object
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilColorspace* xil_colorspace_create(XilSystemState* " system_state ,
+.if t .in +5n
+.br
+.BI "XilColorspaceType " type ,
+.br
+.BI "void* " data );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_colorspace_destroy(XilColorspace* " colorspace );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_colorspace_get_type(XilColorspace* " colorspace );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_colorspace_get_name(XilColorspace* " colorspace );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_colorspace_set_name(XilColorspace* " colorspace ,
+.if t .in +5n
+.br
+.BI "char* " name );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_colorspace_create
+.IX Functions xil_colorspace_create
+.IX xil_colorspace_destroy
+.IX Functions xil_colorspace_destroy
+.IX xil_colorspace_get_type
+.IX Functions xil_colorspace_get_type
+.IX xil_colorspace_get_name
+.IX Functions xil_colorspace_get_name
+.IX xil_colorspace_set_name
+.IX Functions xil_colorspace_set_name
+These functions create, destroy, get the type, and set and get a name for an 
+.br
+XilColorspace 
+object.
+.P
+.B xil_colorspace_create() 
+creates an XilColorspace 
+object of the type specified by 
+.br
+XilColorspaceType and stores the data specified by \f2data\fP. XilColorspaceType 
+can be any of 3 types: XIL_COLORSPACE_NAME, XIL_COLORSPACE_FILENAME, or XIL_COLORSPACE_KCS_ID.  XIL_COLORSPACE_KCS_ID corresponds to a name (default color spaces created by XIL), filename, or a KCMS id.
+.P
+.B xil_colorspace_destroy() 
+destroys the specified \f2colorspace\fP.
+.P
+.B xil_colorspace_get_type() 
+gets the type of \f2colorspace\fP and associated data.
+.P
+.B xil_colorspace_set_name() 
+sets the name on \f2colorspace\fP with name.
+.P
+.B xil_colorspace_get_name() 
+gets any associated name of \f2colorspace\fP. If no name is set on \f2colorspace\fP, it returns NULL.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide." 
+.SH EXAMPLES
+.nh
+This example sets a name on an existing color space.
+.sp
+.nf
+.ft 3
+
+   /*
+    * Set a name on a color space 
+    */
+    xil_colorspace_set_name(colorspace, "myname");	
+.sp
+.ft 1
+.fi
+.SH "SEE ALSO"
+.BR xil_set_colorspace (3), 
+.BR xil_color_convert(3), 
+.BR xil_color_correct(3).

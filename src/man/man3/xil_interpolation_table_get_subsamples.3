@@ -1,0 +1,53 @@
+.\" @(#)xil_interpolation_table_get_subsamples.3 1.1 96/09/10 SMI/VPG;
+.so man3/xil.macs
+.TH xil_interpolation_table_get_subsamples 3 "18 March 1993" "" "XIL Library"
+.SH NAME
+xil_interpolation_table_get_subsamples \- get the number of
+subsamples in an interpolation table object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "unsigned int xil_interpolation_table_get_subsamples ( XilInterpolationTable "table ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_interpolation_table_get_subsamples
+.IX Functions xil_interpolation_table_get_subsamples
+.IX "Interpolation Table Functions" "xil_interpolation_table_get_subsamples"
+.B xil_interpolation_table_get_subsamples
+(\^) gets 
+.I subsamples
+from the interpolation table object
+.I table.
+Subsamples refer to the number of divisions between pixels in the
+source image. Subsampling is used when the reverse mapping from
+destination pixel to source pixel falls between two source pixels.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get subsamples of an interpolation table object:
+.nf 
+.sp
+.RS
+.ft 3
+XilInterpolationTable table;
+unsigned int subsamples;
+.sp
+subsamples = xil_interpolation_table_get_subsamples(table);
+.RE 
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_interpolation_table_create (3),
+.BR xil_interpolation_table_destroy (3),
+.BR xil_interpolation_table_get_kernel_size (3),
+.BR xil_interpolation_table_get_data (3),
+.BR xil_state_get_interpolation_tables (3).

@@ -1,0 +1,75 @@
+.\" @(#)xil_cis_get_bits_ptr.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_bits_ptr 3 "16 August 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_bits_ptr \- get compressed data from a compressed image sequence
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void* xil_cis_get_bits_ptr (XilCis " cis , 
+.if t .in +5n
+.br
+.BI "int *" nbytes ,
+.br
+.BI "int *" nframes ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.LP
+.IX xil_cis_get_bits_ptr
+.IX Functions xil_cis_get_bits_ptr
+.IX "Video Compression Functions" "xil_cis_get_bits_ptr"
+This function returns a generic pointer to data in a compressed image sequence.  
+.P
+.I cis
+is the compressed image sequence that contains the compressed data for which a pointer is needed.
+.P
+.I nbytes
+is an output parameter indicating the number of bytes of data to which the generic pointer is pointing.
+.P
+.I nframes
+is an output parameter indicating the number of frames the compressed data represents.
+.P
+.nh
+The data pointed to is valid until one of the following routines is called,
+.B xil_cis_get_bits_ptr
+(\^),
+.BR xil_cis_reset (3), 
+.BR xil_compress (3), 
+or until the compressed image sequence is destroyed.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Extract the current information from a CIS and put it in a file.
+.RS
+.ft B
+.nf
+XilCis cis; 
+char *data; 
+int nframes; 
+int nbytes;
+FILE *f;
+.sp
+while (xil_cis_has_frame(cis)) {
+	data = (char*)xil_cis_get_bits_ptr(cis, &nbytes, &nframes);
+	fwrite(data, nbytes, 1, f);
+}
+.fi
+.ft
+.RE
+.SH SEE ALSO
+.BR xil_cis_create (3),
+.BR xil_cis_reset (3),
+.BR xil_cis_put_bits_ptr (3),
+.BR xil_compress (3),
+.BR xil_cis_has_data (3),
+.BR xil_cis_has_frame (3).

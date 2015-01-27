@@ -1,0 +1,140 @@
+##
+##  @(#)mapfile	1.14 97/05/07 
+##
+##
+##  Linker MapFile for xiliUtils_ComputeInfo.so.2
+##
+
+xiliUtils_ComputeInfo.so.2 {
+    global:
+        __0dLComputeInfoG__vtbl;
+        __0dOComputeInfoBITG__vtbl;
+        __0dPComputeInfoBYTEG__vtbl;
+        __0dQComputeInfoFLOATG__vtbl;
+        __0dQComputeInfoSHORTG__vtbl;
+        __0dSComputeInfoGENERALG__vtbl;
+        __0fLComputeInfoKgetNextBoxv;
+        __0fLComputeInfoLhasMoreInfov;
+        __0fLComputeInfoNisStorageType6OXilStorageType;
+        __0fOComputeInfoBITEisOKv;
+        __0fOComputeInfoBITLgetDestDataUi;
+        __0fOComputeInfoBITLgetSrc1DataUi;
+        __0fOComputeInfoBITLgetSrc2DataUi;
+        __0fOComputeInfoBITLgetSrc3DataUi;
+        __0fOComputeInfoBITNgetDestOffsetUi;
+        __0fOComputeInfoBITNgetSrc1OffsetUi;
+        __0fOComputeInfoBITNgetSrc2OffsetUi;
+        __0fOComputeInfoBITNgetSrc3OffsetUi;
+        __0fOComputeInfoBITQupdateForNewRectv;
+        __0fOComputeInfoBITVgetDestScanlineStrideUi;
+        __0fOComputeInfoBITVgetSrc1ScanlineStrideUi;
+        __0fOComputeInfoBITVgetSrc2ScanlineStrideUi;
+        __0fOComputeInfoBITVgetSrc3ScanlineStrideUi;
+        __0fPComputeInfoBYTEEisOKv;
+        __0fPComputeInfoBYTELgetDestDataUi;
+        __0fPComputeInfoBYTELgetSrc1DataUi;
+        __0fPComputeInfoBYTELgetSrc2DataUi;
+        __0fPComputeInfoBYTELgetSrc3DataUi;
+        __0fPComputeInfoBYTEQupdateForNewRectv;
+        __0fPComputeInfoBYTESgetDestPixelStrideUi;
+        __0fPComputeInfoBYTESgetSrc1PixelStrideUi;
+        __0fPComputeInfoBYTESgetSrc2PixelStrideUi;
+        __0fPComputeInfoBYTESgetSrc3PixelStrideUi;
+        __0fPComputeInfoBYTEVgetDestScanlineStrideUi;
+        __0fPComputeInfoBYTEVgetSrc1ScanlineStrideUi;
+        __0fPComputeInfoBYTEVgetSrc2ScanlineStrideUi;
+        __0fPComputeInfoBYTEVgetSrc3ScanlineStrideUi;
+        __0fQComputeInfoFLOATEisOKv;
+        __0fQComputeInfoFLOATLgetDestDataUi;
+        __0fQComputeInfoFLOATLgetSrc1DataUi;
+        __0fQComputeInfoFLOATLgetSrc2DataUi;
+        __0fQComputeInfoFLOATLgetSrc3DataUi;
+        __0fQComputeInfoFLOATQupdateForNewRectv;
+        __0fQComputeInfoFLOATSgetDestPixelStrideUi;
+        __0fQComputeInfoFLOATSgetSrc1PixelStrideUi;
+        __0fQComputeInfoFLOATSgetSrc2PixelStrideUi;
+        __0fQComputeInfoFLOATSgetSrc3PixelStrideUi;
+        __0fQComputeInfoFLOATVgetDestScanlineStrideUi;
+        __0fQComputeInfoFLOATVgetSrc1ScanlineStrideUi;
+        __0fQComputeInfoFLOATVgetSrc2ScanlineStrideUi;
+        __0fQComputeInfoFLOATVgetSrc3ScanlineStrideUi;
+        __0fQComputeInfoSHORTEisOKv;
+        __0fQComputeInfoSHORTLgetDestDataUi;
+        __0fQComputeInfoSHORTLgetSrc1DataUi;
+        __0fQComputeInfoSHORTLgetSrc2DataUi;
+        __0fQComputeInfoSHORTLgetSrc3DataUi;
+        __0fQComputeInfoSHORTQupdateForNewRectv;
+        __0fQComputeInfoSHORTSgetDestPixelStrideUi;
+        __0fQComputeInfoSHORTSgetSrc1PixelStrideUi;
+        __0fQComputeInfoSHORTSgetSrc2PixelStrideUi;
+        __0fQComputeInfoSHORTSgetSrc3PixelStrideUi;
+        __0fQComputeInfoSHORTVgetDestScanlineStrideUi;
+        __0fQComputeInfoSHORTVgetSrc1ScanlineStrideUi;
+        __0fQComputeInfoSHORTVgetSrc2ScanlineStrideUi;
+        __0fQComputeInfoSHORTVgetSrc3ScanlineStrideUi;
+        __0fSComputeInfoGENERALEisOKv;
+        __0fSComputeInfoGENERALLgetDestDataUi;
+        __0fSComputeInfoGENERALLgetSrc1DataUi;
+        __0fSComputeInfoGENERALLgetSrc2DataUi;
+        __0fSComputeInfoGENERALLgetSrc3DataUi;
+        __0fSComputeInfoGENERALNgetDestOffsetUi;
+        __0fSComputeInfoGENERALNgetSrc1OffsetUi;
+        __0fSComputeInfoGENERALNgetSrc2OffsetUi;
+        __0fSComputeInfoGENERALNgetSrc3OffsetUi;
+        __0fSComputeInfoGENERALQupdateForNewRectv;
+        __0fSComputeInfoGENERALSgetDestPixelStrideUi;
+        __0fSComputeInfoGENERALSgetSrc1PixelStrideUi;
+        __0fSComputeInfoGENERALSgetSrc2PixelStrideUi;
+        __0fSComputeInfoGENERALSgetSrc3PixelStrideUi;
+        __0fSComputeInfoGENERALVgetDestScanlineStrideUi;
+        __0fSComputeInfoGENERALVgetSrc1ScanlineStrideUi;
+        __0fSComputeInfoGENERALVgetSrc2ScanlineStrideUi;
+        __0fSComputeInfoGENERALVgetSrc3ScanlineStrideUi;
+        __0oLComputeInfoctP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0oOComputeInfoBITctP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0oPComputeInfoBYTEctP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0oQComputeInfoFLOATctP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0oQComputeInfoSHORTctP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0oSComputeInfoGENERALctP6FXilOpUiP6GXilRoiP6KXilBoxList;
+
+        ##
+        ##  XiliNearestIndexSelector
+        ##
+        __0fYXiliNearestIndexSelectorLnewColormapP6PXilLookupSingle;
+        __0fYXiliNearestIndexSelectorLselectIndexUcNCB;
+        __0fYXiliNearestIndexSelectorRsetNewSystemStateP6OXilSystemState;
+        __0oYXiliNearestIndexSelectorctP6OXilSystemStateP6PXilLookupSingle;
+        __0oYXiliNearestIndexSelectordtv;
+
+	##
+	##  XiliDiffusionUtils for Error Diffusion
+	##
+        __0FXxili_find_nearest_colorPfP6PXilLookupSinglePi;
+        __0Fexili_is_floyd_steinberg_kernelP6JXilKernel;
+	__0FVxili_diffusion_copy_1PUcUiTBNCCP6GXilRoiP6GXilBoxiTI;
+	__0FVxili_diffusion_copy_8PUcUiTBNCCP6GXilRoiP6GXilBoxiTI;
+	__0FWxili_diffusion_copy_16PsUiTBNCCP6GXilRoiP6GXilBoxiTI;
+	__0FXxili_diffusion_copy_f32PfUiTBNCCP6GXilRoiP6GXilBoxiTI;
+
+	##
+	##  XiliOrderedDitherLut
+	##
+        __0fUXiliOrderedDitherLutEisOKv;
+        __0fUXiliOrderedDitherLutHdither8PUcUiTCTBNGC;
+        __0fUXiliOrderedDitherLutIcvtCellBUcNDBUsPUcUi;
+        __0fUXiliOrderedDitherLutJdither411PUcNCBUiNCETBNCE;
+        __0fUXiliOrderedDitherLutJdither411PsNCBUiNCEPUcNCE;
+        __0fUXiliOrderedDitherLutNcvtMacroBlockPUcNCBUiNCETBNCE;
+        __0fUXiliOrderedDitherLutNcvtMacroBlockPsNCBUiNCEPUcNCE;
+        __0fUXiliOrderedDitherLutNgetUDitherLutv;
+        __0fUXiliOrderedDitherLutNgetVDitherLutv;
+        __0fUXiliOrderedDitherLutNgetYDitherLutv;
+        __0fUXiliOrderedDitherLutOdither8GeneralP6KXilStoragePUcUiNDDiNDH;
+        __0oUXiliOrderedDitherLutctP6SXilLookupColorcubeP6NXilDitherMask;
+        __0oUXiliOrderedDitherLutctP6SXilLookupColorcubeP6NXilDitherMaskPfTD;
+        __0oUXiliOrderedDitherLutctP6SXilLookupColorcubeP6NXilDitherMaskPfTDi;
+        __0oUXiliOrderedDitherLutdtv;
+
+    local:
+	*;
+};

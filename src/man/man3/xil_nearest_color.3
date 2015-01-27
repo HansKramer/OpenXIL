@@ -1,0 +1,71 @@
+.\" @(#)xil_nearest_color.3 1.3 97/05/27 SMI/VPG;
+.so man3/xil.macs
+.TH xil_nearest_color 3 "23 September 1996" "" "XIL Library"
+.SH NAME
+xil_nearest_color \- find nearest match of pixel values to entries in colormap
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.sp .5v
+.fi
+.BI "void xil_nearest_color (XilImage " src , 
+.if t .in +5n
+.br
+.BI "XilImage " dst , 
+.br
+.BI "XilLookup " cmap );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_nearest_color
+.IX Functions xil_nearest_color
+.IX "Presentation Functions" "xil_nearest_color"
+This routine performs a pixel-by-pixel search for the nearest matching 
+color in the supplied lookup table and sets the destination image pixel 
+value to the appropriate colormap index.  Nearest color is determined by
+calculating Euclidean distance for n-bands. 
+.I src
+is the source image.
+.I dst
+is the destination image.
+.I cmap 
+is a lookup table with the number of output bands equal to the number 
+of bands in the source image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Match nearest color for a 3-band image:
+.P
+.RS
+.ft B
+.nf
+XilImage src;			/* 3-band source image */
+XilImage dst;			/* 1-band destination image */
+XilLookup colormap;		/* colormap */
+.sp
+xil_nearest_color(src, dst, colormap);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+The source image must have the same data type and the same number of bands
+as the lookup table.  The destination image must have the same data type
+as the lookup table's input data type.
+
+A performance improvement is available for colorcube lookup tables.  In
+this case, 
+.BR xil_ordered_dither (3)
+with a mask containing all values of 0.5 can be
+used to get essentially the same results as nearest color.
+.SH SEE ALSO
+.BR xil_colorcube_create (3),
+.BR xil_lookup_create (3),
+.BR xil_lookup_get_by_name (3),
+.BR xil_ordered_dither (3).

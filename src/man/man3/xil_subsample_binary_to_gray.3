@@ -1,0 +1,105 @@
+.\" @(#)xil_subsample_binary_to_gray.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_subsample_binary_to_gray 3 "10 June 1994" "" "XIL Library"
+.SH NAME
+xil_subsample_binary_to_gray \- subsample a binary image and produce a
+grayscale (byte) image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_subsample_binary_to_gray (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "float " xscale ,
+.br
+.BI "float " yscale );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_subsample_binary_to_gray
+.IX Functions xil_subsample_binary_to_gray
+.IX "Geometric Operations" "xil_subsample_binary_to_gray"
+This function subsamples a binary image and produces a grayscale (byte) image.
+.I src
+is the source image handle.
+.I dst
+.nh
+is the destination image handle.
+.I xscale 
+and
+.I yscale
+are the 
+.I x 
+and 
+.I y 
+scale factors, which must be less than or equal to 1.0 and
+greater than 0.0.
+.sp
+The subsampling algorithm performs the scaling operation
+by accumulating all the bits in the source image
+that correspond to the destination pixel and, based on the
+.I x
+and
+.I y
+scaling factors,
+reserving consecutive indexes in the colormap for
+the maximum number of gray levels possible in the destination image.
+You must modify your colormap to define a gray level for each resulting
+index. 
+.sp
+For representing the source block of pixels that is used to 
+determine destination pixel values, the
+index 0 represents a block with no 1's (all 0's),
+the index 1 represents a block with a single 1, and so on.
+If the scaling factors require a fractional block of source pixels
+to determine the destination pixel values, the block size is rounded up.
+For example, if a 2.2-by-2.2 block of source pixels would be
+required to determine destination pixel values, a 3-by-3 block is
+used, resulting in 10 possible gray levels and therefore
+10 colormap indexes, whose values are 0 through 9.
+.ft 1
+.fi
+.SS ROI Behavior
+.LP
+.nh
+If an ROI (region of interest) is attached to the source image, it is used as
+a read mask and is scaled into the destination image's space, where it is
+intersected with the destination ROI (if there is one).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Subsample a binary image by .3 in the 
+.I x 
+direction and .4 in the 
+.I y 
+direction to produce a byte image:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+.ta 3.5i
+xil_subsample_binary_to_gray(src, dst, .3, .4);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.fi
+.nh
+This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_subsample_adaptive (3),
+.BR xil_scale (3).
+

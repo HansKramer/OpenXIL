@@ -1,0 +1,107 @@
+.\" @(#)xil_paint.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_paint 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_paint \- perform paint on specified point list
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_paint (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "float *" color ,
+.br
+.BI "XilKernel " brush ,
+.br
+.BI "unsigned int " count ,
+.br
+.BI "float *" coord_list );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_paint
+.IX Functions xil_paint
+.IX "Presentation Functions" "xil_paint"
+This function blends portions of an image with a single color using a 2-D brush.  The brush is applied for each point in a list of coordinates.  For each entry in the brush, the associated pixel in the image is colored.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I color
+is a pointer to the floating-point array that specifies the brush color [0...(nbands-1)] for each pixel.
+.I brush
+is a kernel with values between 0.0 and 1.0.  
+.P
+The destination value is 
+determined by this equation:
+.sp 
+.nf
+dst_pixel = (brush_value * color) + ((1.0 - brush_value) * src_pixel)
+.sp
+.fi
+Where the brush value is 0.0, the destination value is the source value.
+Where the brush value is 1.0, the destination value is the paint color.
+.P
+.I count
+is the count of 
+.I x,y
+coordinate pairs.
+.I coord_list
+is a pointer to the floating-point array that specifies the
+.I x,y
+coordinate
+pairs.
+.ft 1
+.fi
+.SS ROI Behavior
+.nh
+This function performs the paint operation in the source image on each point in the coordinate list.  The painted pixels within the ROI (region of interest) are output to the destination image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 25
+.SH EXAMPLES
+For this example, the source and destination images contain 2 bands.  Create a 2 x 2 brush with the key pixel at the upper left corner of the kernel.  Perform paint at pixel (x,y) = (100,75).
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src;
+XilImage dst;
+float paint_color[2] = {127.0, 255.0};
+XilKernel brush;
+float brush_data[4] = {1.0, 0.5, 0.5, 0.0};
+unsigned int count = 1;
+float coord_list[2] =  {100.0, 75.0};
+.sp
+brush = xil_kernel_create(system_state,2,2,0,0,brush_data);
+.sp
+.ta 3.5i
+xil_paint(src, dst, paint_color, brush, count, coord_list);
+.RE
+.fi
+.ne 20
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the
+same number of bands.  For an n-band image, the array of floating point numbers for 
+.I color 
+must be of size n.  Only pixels that are blended with the paint color are output to the destination image.  In-place operations are supported.
+.SH SEE ALSO
+.BR xil_kernel_create (3),
+.BR xil_kernel_destroy (3),
+.BR xil_blend (3).
+
+
+

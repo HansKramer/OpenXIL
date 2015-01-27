@@ -1,0 +1,80 @@
+.\" @(#)xil_cis_get_read_invalid.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_read_invalid 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_read_invalid \- determine whether a CIS is able to be decompressed 
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "Xil_boolean xil_cis_get_read_invalid ( XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_get_read_invalid
+.IX Functions xil_cis_get_read_invalid
+.IX "Video Compression Functions" "xil_cis_get_read_invalid"
+This function determines whether a compressed image sequence (CIS) is able to be decompressed. 
+.I cis 
+is the CIS that is being decompressed.  The default value returned by this routine is 
+.I FALSE,
+which indicates that the CIS is valid and able to be decompressed.  If a bitstream error occurs during decompression, this routine  returns  
+.I TRUE,
+indicating that the CIS was marked 
+.I CIS_READ_INVALID.  
+.P
+.nh
+Two types of bitstream errors can occur during decompression of a CIS: autorecoverable and non-autorecoverable.   An autorecoverable error is one with a predefined method of recovery.  A non-autorecoverable error requires user intervention for recovery.   When a non-autorecoverable error is detected, the CIS is marked invalid before the user is notified of the error.  If a CIS is marked
+.I CIS_READ_INVALID
+for decompression, no further operations can be performed on this CIS until it has been marked valid again. 
+.P
+After a non-autorecoverable error  occurs, the user can revalidate the CIS in one of three ways: by calling
+.BR xil_cis_reset (3)
+to remove any compressed data currently stored in the CIS, by calling 
+.BR xil_cis_seek (3) 
+to seek to a valid frame, or by attempting recovery using
+.BR xil_cis_attempt_recovery (3).
+If the user attempts to seek to a valid frame and the CIS cannot successfully complete the request, a seek error is generated.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Note that 
+.BR xil_cis_get_read_invalid (\^)
+is not called until after the molecule runs.  For information
+on molecules and deferred execution, consult the
+.I "XIL Programmer's Guide."
+.LP
+.nf
+.sp
+.RS
+.ft 3
+    XilCis cis;
+    XilImage image;
+    XilImage displayimage;
+    XilLookup lookup;
+.sp
+    while(xil_cis_has_frame(cis)) {
+        xil_decompress(cis, image);
+        xil_nearest_color(image, displayimage, lookup);
+.sp
+        if (xil_cis_get_read_invalid(cis) == TRUE) 
+	printf(" There is a problem with this CIS.\\n"); 
+    }
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_cis_get_autorecover (3),
+.BR xil_cis_get_write_invalid (3),
+.BR xil_cis_attempt_recovery (3),
+.BR xil_cis_seek (3),
+.BR xil_cis_reset (3).

@@ -1,0 +1,104 @@
+.\" @(#)xil_kernel_get_height.3 1.1 96/09/10 SMI/VPG;
+.so man3/xil.macs
+.TH xil_kernel_get_height 3 "04 August 1993" "" "XIL Library"
+.SH NAME
+xil_kernel_get_height, xil_kernel_get_width, xil_kernel_get_key_x,  xil_kernel_get_key_y \- read attributes of kernels
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "unsigned int xil_kernel_get_height (XilKernel " kernel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_kernel_get_width (XilKernel " kernel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_kernel_get_key_x (XilKernel " kernel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_kernel_get_key_y (XilKernel " kernel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+These routines read the attributes of
+.I XilKernel
+kernel objects.  Kernels are used in image convolution, error diffusion, painting,
+and band combine operations.  The key values specify the key pixel 
+position - a position relative to the upper left corner of the kernel.  
+The key pixel aligns with the output pixel and constrains which input 
+pixels are used to generate the output.
+.P
+.IX xil_kernel_get_height
+.IX Functions xil_kernel_get_height
+.IX "Kernel Functions" "xil_kernel_get_height"
+.BR xil_kernel_get_height (\^)
+gets the height of a kernel.
+.P
+.IX xil_kernel_get_width
+.IX Functions xil_kernel_get_width
+.IX "Kernel Functions" "xil_kernel_get_width"
+.BR xil_kernel_get_width (\^)
+gets the width of a kernel.
+.P
+.IX xil_kernel_get_key_x
+.IX Functions xil_kernel_get_key_x
+.IX "Kernel Functions" "xil_kernel_get_key_x"
+.BR xil_kernel_get_key_x (\^)
+gets the 
+.I x 
+coordinate of the key value of the specified kernel.
+.P
+.IX xil_kernel_get_key_y
+.IX Functions xil_kernel_get_key_y
+.IX "Kernel Functions" "xil_kernel_get_key_y"
+.BR xil_kernel_get_key_y (\^)
+gets the 
+.I y 
+coordinate of the key value of the specified kernel.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the coordinates of a kernel's key value:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilKernel kernel;
+unsigned int key_x, key_y;
+.sp
+key_x = xil_kernel_get_key_x (kernel);
+key_y = xil_kernel_get_key_y (kernel);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_convolve (3),
+.BR xil_kernel_create (3),
+.BR xil_kernel_create_copy (3),
+.BR xil_kernel_destroy (3),
+.BR xil_error_diffusion (3),
+.BR xil_paint (3),
+.BR xil_band_combine (3).

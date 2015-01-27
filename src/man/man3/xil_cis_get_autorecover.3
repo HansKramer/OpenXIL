@@ -1,0 +1,105 @@
+.\" @(#)xil_cis_get_autorecover.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_autorecover 3 "12 August 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_autorecover, xil_cis_set_autorecover \- allow autorecovery after a CIS error occurs
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "Xil_boolean xil_cis_get_autorecover ( XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_cis_set_autorecover (XilCis " cis ,
+.if t .in +5n
+.br
+.BI "Xil_boolean " on_off );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_get_autorecover
+.IX Functions xil_cis_get_autorecover
+.IX "Video Compression Functions" "xil_cis_get_autorecover"
+.IX xil_cis_set_autorecover
+.IX Functions xil_cis_set_autorecover
+.IX "Video Compression Functions" "xil_cis_set_autorecover"
+This function gives permission to the XIL CIS compression and decompression functions to attempt recovery if an autorecoverable bitstream error occurs.
+.P
+.I cis 
+is the compressed image sequence (CIS) that is being compressed or decompressed.  
+.P
+.I on_off 
+is a boolean value use in
+.BR xil_cis_set_autorecover(3)
+to set the autorecover state.
+.P
+The default value returned by 
+.B xil_cis_get_autorecover
+(\^) is 
+.I FALSE 
+(or OFF), which indicates that autorecovery will not be attempted after a bitstream error occurs unless 
+.B xil_cis_set_autorecover
+(\^) is called to turn it ON. 
+.P
+.nh
+Two types of bitstream errors can occur during decompression of a 
+CIS: autorecoverable and non-autorecoverable.   An autorecoverable error 
+is one with a predefined method of recovery.  A non-autorecoverable 
+error requires user intervention for recovery.   When a non-autorecoverable
+error is detected, the CIS is marked invalid before the user is notified 
+of the error.  If a CIS is marked CIS_READ_INVALID for decompression, 
+no further operations can be performed on this CIS until it has been 
+marked valid again.  A bitstream error in CIS compression and 
+decompression can occur in any action on a CIS that requires the CIS 
+to decode the bitstream or change the current read frame.
+.P
+.nh
+Calling this routine for codecs that do not have autorecoverable errors (for
+example, Cell) will have no effect.
+.P
+.nh
+After a non-autorecoverable error occurs, the user can revalidate the CIS in one of three ways: by calling
+.BR xil_cis_reset (3)
+to remove any compressed data currently stored in the CIS, by calling 
+.BR xil_cis_seek (3) 
+to seek to a valid frame, or by attempting recovery using
+.BR xil_cis_attempt_recovery (3).
+If the user attempts to seek to a valid frame and the CIS cannot successfully complete the request, a seek error is generated.
+.sp 
+See
+.BR xil_cis_attempt_recovery (3)
+for further information on CIS error recovery.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+This example turns on auto-recovery:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+	XilCis cis;
+.sp
+	xil_cis_set_autorecover(cis TRUE); 
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_cis_get_write_invalid (3),
+.BR xil_cis_attempt_recovery (3),
+.BR xil_cis_seek (3),
+.BR xil_cis_reset (3).

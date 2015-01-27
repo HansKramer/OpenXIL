@@ -1,0 +1,119 @@
+.\" @(#)xil_imagetype_get_by_name.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_imagetype_get_by_name 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_imagetype_get_by_name, xil_imagetype_get_name, xil_imagetype_set_name \- get and set an image-type object name and get a handle to an image type by specifying its name
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImageType xil_imagetype_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_imagetype_get_name (XilImageType " imagetype );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_imagetype_set_name (XilImageType " imagetype ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to image type objects, to read the names of image types, and to
+retrieve image type objects by name.  
+.P
+.nh
+.IX xil_imagetype_get_by_name
+.IX Functions xil_imagetype_get_by_name
+.IX "Image Type Functions" "xil_imagetype_get_by_name"
+.BR xil_imagetype_get_by_name (\^)
+returns the handle to the image type object with the specified name 
+.I name.  
+If such an image type object does not exist, NULL is returned.  
+.BR xil_get_by_name (\^)
+does not make a copy of the image type object.
+.P
+.nh
+.IX xil_imagetype_get_name
+.IX Functions xil_imagetype_get_name
+.IX "Image Type Functions" "xil_imagetype_get_name"
+.BR xil_imagetype_get_name (\^)
+returns a copy of the specified image type object's name.  A call to 
+.B free
+(3) should be used to free the space allocated by 
+.BR xil_imagetype_get_name (\^).
+If the specified image type object has no name, NULL is returned.
+.P
+.nh
+.IX xil_imagetype_set_name
+.IX Functions xil_imagetype_set_name
+.IX "Image Type Functions" "xil_imagetype_set_name"
+.BR xil_imagetype_set_name (\^)
+sets the name of the specified image type object to the one provided.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create an image type object that characterizes a particular display
+and call it "Sun_bw2_hires":
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage image;
+XilImageType imagetype;
+unsigned int height, width, nbands;
+.sp
+width = 1600;
+height = 1280;
+nbands = 1;
+image = xil_create(State, width, height, nbands, XIL_BIT);
+imagetype = xil_get_imagetype(image);
+xil_imagetype_set_name(imagetype, "Sun_bw2_hires");
+.fi
+.ft
+.RE
+.sp
+.ne 20
+.P 
+Use an image type object named "Sun_bw2_hires" to create an image
+appropriate for display on a particular frame buffer:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImageType imagetype;
+XilImage display_image;
+.sp
+imagetype = xil_imagetype_get_by_name(State,"Sun_bw2_hires");
+display_image = xil_create_from_type(State, imagetype);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+If you give two image type objects the same name, it is not defined which image type object will be retrieved by a call to 
+.BR xil_imagetype_get_by_name (\^).
+
+

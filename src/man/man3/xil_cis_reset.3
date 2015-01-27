@@ -1,0 +1,47 @@
+.\" @(#)xil_cis_reset.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_reset 3 "13 August 1993" "" "XIL Library"
+.SH NAME
+xil_cis_reset \- clears data in a compressed image sequence
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_cis_reset (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_reset
+.IX Functions xil_cis_reset
+.IX "Video Compression Functions" "xil_cis_reset" 
+This function removes any compressed data currently stored in the specified compressed image sequence and sets the 
+.I cis
+state parameters to their intitial values.
+.I cis
+is the compressed image sequence that contains the data to be cleared.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+.nf
+.sp
+.RS
+.ft 3
+XilCis cis; 
+.sp
+xil_cis_reset(cis);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_compress (3)

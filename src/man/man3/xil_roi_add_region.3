@@ -1,0 +1,60 @@
+.\" @(#)xil_roi_add_region.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_add_region 3 "16 June 1993" "" "XIL Library"
+.SH "NAME"
+xil_roi_add_region \- add an X region to an ROI
+.SH "SYNOPSIS"
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_roi_add_region ( XilRoi " roi ,
+.if t .in +5n
+.br
+.BI "Region " region );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_roi_add_region
+.IX Functions xil_roi_add_region
+.IX "ROI Functions" "xil_roi_add_region"
+.nh
+This function adds a specified X region to a specified region of interest (ROI).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Add an X region to an ROI:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilRoi roi;
+Region region;   
+.ta 3.5i
+.sp
+xil_roi_add_region (roi, region);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_roi (3),
+.BR xil_set_roi (3),
+.BR xil_roi_add_image (3),
+.BR xil_roi_add_rect (3),
+.BR xil_roi_create (3),
+.BR xil_roi_create_copy (3),
+.BR xil_roi_destroy (3),
+.BR xil_roi_get_as_image (3),
+.BR xil_roi_get_as_region (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_translate (3),
+.BR xil_roi_unite (3).
+

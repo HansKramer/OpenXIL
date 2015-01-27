@@ -1,0 +1,59 @@
+.\" @(#)xil_interpolation_table_get_data.3 1.2 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_interpolation_table_get_data 3 "18 March 1994" "" "XIL Library"
+.SH NAME
+xil_interpolation_table_get_data \- get the data of an interpolation table object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "float * xil_interpolation_table_get_data ( XilInterpolationTable "table ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_interpolation_table_get_data
+.IX Functions xil_interpolation_table_get_data
+.IX "Interpolation Table Functions" "xil_interpolation_table_get_data"
+.B xil_interpolation_table_get_data
+(\^) gets the  
+.I data
+from an interpolation table object
+.I table.
+This function allocates enough memory to hold subsamples*kernel_size floating point data elements and returns the address of the floating point array. The user is subsequently responsible for deallocating the array memory.
+.P
+Note that new applications should use 
+.BR xil_interpolation_table_get_values (3)
+rather than this function. Unlike
+.B xil_interpolation_table_get_data
+(\^), 
+.BR xil_interpolation_table_get_values (3)
+requires that the user allocate memory for, and provide the address of, the floating point array.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get data of an interpolation table object:
+.nf 
+.sp
+.RS
+.ft 3
+XilInterpolationTable table;
+float* data;
+.sp
+data = xil_interpolation_table_get_data(table);
+.RE 
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_interpolation_table_create (3),
+.BR xil_interpolation_table_destroy (3),
+.BR xil_interpolation_table_get_values (3),
+.BR xil_interpolation_table_get_subsamples (3),
+.BR xil_interpolation_table_get_kernel_size (3),
+.BR xil_state_get_interpolation_tables (3).

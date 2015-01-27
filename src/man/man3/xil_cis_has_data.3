@@ -1,0 +1,141 @@
+.\" @(#)xil_cis_has_data.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_has_data 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_has_data, xil_cis_has_frame, xil_cis_number_of_frames \- determine number of bytes or frames in a compressed image sequence
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "int xil_cis_has_data (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "Xil_boolean xil_cis_has_frame (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "int xil_cis_number_of_frames (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_cis_has_data
+.IX Functions xil_cis_has_data
+.IX "Video Compression Functions" "xil_cis_has_data" 
+.nh
+.BR xil_cis_has_data
+(\^) determines how many bytes of compressed data the compressed image sequence
+.I cis
+contains. This number reflects the number of bytes from the current read frame in the compressed image sequence (CIS) to the end of the CIS. 
+.P
+.nh
+The number includes any bytes in an uncompleted frame at the end of a CIS. If the number of bytes is greater than zero, you can get a pointer to the data in the CIS by calling
+.BR xil_cis_get_bits_ptr (3).
+However, you may not be able to read all of the data from the CIS at one time,
+because that data may not be in one contiguous buffer.  
+.P
+.nh
+Also note that if all data has been retrieved from the CIS except for an incomplete frame at the CIS's end,
+.BR xil_cis_has_data (\^)
+returns a value greater than zero even though 
+.BR xil_cis_get_bits_ptr (3)
+will not be able to retrieve the data, because the last frame is not complete.
+.P
+.IX xil_cis_has_frame
+.IX Functions xil_cis_has_frame
+.IX "Video Compression Functions" "xil_cis_has_frame"
+.nh
+.BR xil_cis_has_frame (\^)
+returns TRUE if a complete frame exists at the read frame position, and returns FALSE otherwise.  This routine can be used before calls such as
+.BR xil_decompress (3)
+and
+.BR xil_cis_get_bits_ptr (3)
+to test whether data is available for the desired operation. It is
+generally a better test than 
+.BR xil_cis_has_data (\^)
+or 
+.BR xil_cis_number_of_frames (\^)
+for determining the existence of data at the read frame position.
+.P
+.IX xil_cis_number_of_frames
+.IX Functions xil_cis_number_of_frames
+.IX "Video Compression Functions" "xil_cis_number_of_frames"
+.nh
+.BR xil_cis_number_of_frames (\^)
+determines how many complete frames of compressed data the compressed image sequence
+.I cis
+contains.  This number reflects the number of frames from the current read position in the CIS to the last complete frame in the CIS. If a user inserts an unknown or partial number of frames in an 
+.I XilCis, 
+then the decompresser must parse the data to determine how many frames are in the 
+.I XilCis.  
+This can make 
+.BR xil_cis_number_of_frames (\^)
+potentially expensive if called after either
+.BR xil_cis_put_bits (3)
+or 
+.BR xil_cis_put_bits_ptr (3)
+have supplied a partial frame or an unknown number of frames.
+.SH RETURN VALUES
+.nh
+.BR xil_cis_has_data (\^)
+returns the number of bytes from the current read frame in the CIS to end of the CIS.
+.P
+.nh
+.BR xil_cis_has_frame (\^)
+returns TRUE if a complete frame exists at the read position; otherwise, FALSE.
+.P
+.nh
+.BR xil_cis_number_of_frames (\^)
+returns the number of frames from the current read frame in the CIS to end of the CIS.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."	
+.SH EXAMPLES
+.nh
+This example demonstrates that you can use any of three routines to determine if there are any frames in the CIS.  Note that if all you are trying to do is determine if any frames are left in a CIS, then 
+.BR xil_cis_has_frame (\^)
+is the preferred routine for accomplishing this.
+.P 
+.nh
+The following loops extract all the bits between (and including) the read frame and the end of the CIS.  In this example, nothing is
+done with the bits that are extracted.  As it stands, if a partial frame exists at the end of the CIS, the 
+.BR xil_cis_has_data (\^)
+loop never terminates.
+.nf
+.sp
+.RS
+.ft 3
+XilCis cis; 
+char* data;
+int nframes;
+int nbytes;
+.sp
+while (xil_cis_number_of_frames(cis))
+      data = (char *)xil_cis_get_bits_ptr(cis, &nbytes, &nframes);
+
+while (xil_cis_has_data(cis))
+      data = (char *)xil_cis_get_bits_ptr(cis, &nbytes, &nframes);
+
+while (xil_cis_has_frame(cis))
+      data = (char *)xil_cis_get_bits_ptr(cis, &nbytes, &nframes);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_cis_create (3).

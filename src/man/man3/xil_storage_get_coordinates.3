@@ -1,0 +1,71 @@
+.\" @(#)xil_storage_get_coordinates.3 1.7 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_storage_get_coordinates 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_storage_get_coordinates, xil_storage_set_coordinates \- get and set the
+position of a storage tile within an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_storage_get_coordinates (XilStorage " storage ,
+.br
+.BI "unsigned int *" x,
+.br
+.BI "unsigned int *" y);
+.br
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_storage_set_coordinates (XilStorage " storage,
+.if t .in +5n
+.br
+.BI "unsigned int " x,
+.br
+.BI "unsigned int " y);
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.P
+.IX xil_storage_get_coordinates
+.IX Functions xil_storage_get_coordinates
+.IX "Storage Functions" "xil_storage_get_coordinates
+.BR xil_storage_get_coordinates (\^)
+returns the \f2x\fP and \f2y\fP pixel coordinates of the upper, left corner of the tile represented by \f2storage\fP within the image. When an XilStorage object is first created, these values are initialized to zero. The values are set by XIL through a call to
+.BR xil_get_tile_storage (3)
+or
+.BR xil_get_storage_with_copy (3).
+If set by
+.BR xil_get_storage_with_copy (3)
+the values will always
+be zero, as the storage represents the whole image.
+.P
+.IX xil_storage_set_coordinates
+.IX Functions xil_storage_set_coordinates
+.IX "Storage Functions" "xil_storage_set_coordinates"
+.BR xil_storage_set_coordinates (\^)
+sets the upper, left corner of the tile in order
+to position the tile represented by \f2storage\fP within the image. This must be done prior to calling
+.BR xil_set_tile_storage (3).
+If the values are set to other than zero before a
+call to
+.BR xil_set_storage_with_copy (3)
+they are ignored.
+.P
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH SEE ALSO
+.BR xil_storage_create (3),
+.BR xil_get_tile_storage (3),
+.BR xil_set_tile_storage (3).

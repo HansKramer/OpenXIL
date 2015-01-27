@@ -1,0 +1,59 @@
+Building the XIL source
+-----------------------
+
+
+Building the XIL source is fairly simple. In the top level directory
+of the source tree, there are a set of "configure" files. 
+(Note that these have no relationship to gnu's autoconfigure 
+mechanism -- the XIL configure files are simple shell scripts).
+
+   configure.solaris-sparc.sh
+   configure.solaris-sparc.csh
+   configure.linux-i386.bash
+
+These files define environment variables which point to certain 
+resources required to build XIL. The most critical of these are the 
+paths to the C and C++ compiler driver programs (cc and CC).
+
+   XIL_C_PATH
+   XIL_CC_PATH
+
+An additional environment variable points to the location of the
+statically linked library for C++, libC.a . Since XIL is implemented
+in C++, it is sensitive to the exact name mangling used in a 
+specific compiler release. To remove dependencies on particular
+compiler versions, the required symbols for libC.a are statically
+linked in. For Linux, the appropriate library is libgcc.a .
+The libC.a is included in the XIL source tree for Solaris.
+
+
+Once you have edited the configure file to set up the appropriate paths,
+
+    1.  cd to the top level directory (the one containing the configure files)
+
+    2.  source configure.solaris-sparc.csh (csh)
+            or
+        . configure.solaris-sparc.sh (sh, ksh, bash)
+            or
+        . configure.linux-i386.bash
+
+
+    3.  make release_install (for a version which will install into
+                             /usr/lib and /usr/include)
+
+            or
+
+        make install  (for a version you can install anywhere you like)
+
+            or
+
+        make debug_install (for a debuggable version)
+
+
+
+XIL has been compiled using Sun's 5.0 C++ compiler, (for both
+Solaris Sparc and Solaris Intel) but working in version 4.2 
+compatibility mode. It has also been compiled using the 
+Gnu EGCS 2.95 compiler on both Solaris and Linux/i386
+
+   

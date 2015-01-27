@@ -1,0 +1,52 @@
+XIL Installation
+----------------
+
+There are two options for how XIL is installed. These are
+controlled by the choice of the make target selected for building XIL.
+
+
+Release Build
+-------------
+
+"make release_install" defines a preprocessor symbol _XIL_RELEASE_BUILD.
+This results in a set of XIL packages that are meant to be installed 
+by the standard Solaris packaging utilities (pkgadd and pkgrm), in a 
+predefined location. These packages are as follows.
+
+  Package     Contents               Installation location
+  -------     --------               ---------------------
+
+  SUNWxilh  - API header files       /usr/openwin/share/include/xil
+  SUNWxilhh - GPI header files       /usr/openwin/share/include/xil
+  SUNWxilmn - man pages              /usr/openwin/share/man
+  SUNWxilow - OWconfig file          /usr/openwin/lib/xil
+  SUNWxildh - device pipelines       /usr/openwin/lib/xil/devhandlers
+  SUNWxilrl - runtime libraries      /usr/openwin/lib
+
+Note:  The GPI is the "Graphics Porting Interface". This is the 
+       device-dependent layer of XIL, which deals with things like
+       specific framebuffers and capabilities of specific processors, 
+       e.g. VIS on UltraSparc.
+
+
+Non-release Build
+-----------------
+
+"make install" creates a set of xil files under the directory
+$XILROOT/sparc (or i386 or linux), where XILROOT is the top level XIL
+directory.  These files can be installed in a arbitrary location as
+long as the directory subtree is kept intact. For example, if XILROOT
+is /home/user/xil, then XIL could be installed in /usr/local/xil by:
+
+  cd /home/user/xil/sparc; tar cf - . | (cd /usr/local/xil; tar xfBp -)
+
+In order for this arrangement to work, there are two additional
+environment variables which must be set by applications which
+use XIL. Using the example above:
+
+   setenv XILHOME /usr/local/xil
+
+   setenv LD_LIBRARY_PATH /usr/local/xil/lib:/usr/local/xil/utils
+
+
+

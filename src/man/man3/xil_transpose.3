@@ -1,0 +1,90 @@
+.\" @(#)xil_transpose.3 1.2 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_transpose 3 "17 June 1993" "" "XIL Library"
+.SH NAME
+xil_transpose \- rotate or transpose an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_transpose (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "XilFlipType " fliptype );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_transpose
+.IX Functions xil_transpose
+.IX "Geometric Operations" "xil_transpose"
+This function reflects an image in some direction or rotates an image in multiples of 90 degrees.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I fliptype
+is an enumeration constant that represents the direction of reflection as follows:
+.sp
+.ft 2
+.ta 1.0i 2.25i 5.0i
+fliptype		Reflection Direction
+.sp
+.nf
+.ft 1
+.fi
+XIL_FLIP_Y_AXIS	rotate horizontal, across the 
+.I y 
+axis
+.nf
+.br
+.fi
+XIL_FLIP_X_AXIS	rotate vertical, across the 
+.I x 
+axis
+.nf
+.br
+XIL_FLIP_MAIN_DIAGONAL	rotate transpose across the main diagonal
+.br
+XIL_FLIP_ANTIDIAGONAL	rotate transpose across the anti-diagonal
+.br
+XIL_FLIP_90		rotate counterclockwise 90 degrees
+.br
+XIL_FLIP_180		rotate counterclockwise 180 degrees
+.br
+XIL_FLIP_270		rotate counterclockwise 270 degrees
+.ft 1	
+.fi
+.SS ROI Behavior
+.nh
+If an ROI (region of interest) is attached to the source image, it is used as a read mask and is also "flipped" into the destination image's space, where it is intersected with the destination ROI (if there is one).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Reflect an image vertically across the X axis:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+.ta 3.5i
+xil_transpose(src, dst, XIL_FLIP_X_AXIS);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+Source and destination images must be the same data type and 
+number of bands.
+This operation cannot be performed in place.  This operation ignores the
+location of an image's origin.
+

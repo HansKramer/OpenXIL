@@ -1,0 +1,66 @@
+.\" @(#)xil_interpolation_table_get_values.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_interpolation_table_get_values 3 "10 February 1997" "" "XIL Library"
+.SH NAME
+xil_interpolation_table_get_values - get the values stored in an
+XilInterpolationTable object.
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_interpolation_table_get_values(XilInterpolationTable " table,
+.if t .in +5n
+.br
+.BI "float* " data);
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_interpolation_table_get_values
+.IX Functions xil_interpolation_table_get_values
+.IX "Interpolation Table Functions" "xil_interpolation_table_get_values"
+.nh
+.B xil_interpolation_table_get_values
+(\^) gets the values from an interpolation table object table. The user is responsible for allocating the float array, 
+.I data. 
+Enough memory must be allocated to hold the subsamples * kernel_size 
+floating point data elements.
+.SH ERRORS
+For a complete list of XIL error messages by number, consult Appendix B of the \f2XIL Programmer's Guide\fP.
+.SH EXAMPLES
+Get the values of an interpolation table object:
+.RS
+.ft B
+.nf
+.sp
+XilInterpolationTable table;
+float* data;
+unsigned int kernel_size;
+unsigned int subsamples;
+
+subsamples = xil_interpolation_table_get_subsamples(table);
+kernel_size = xil_interpolation_table_get_kernel_size(table);
+
+data = malloc(subsamples*kernel_size*sizeof(float));
+if(data == NULL) 
+
+/* cleanup and exit */
+
+}
+xil_interpolation_table_get_values(table, data);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+.sp
+.SH "SEE ALSO"
+.BR xil_interpolation_table_get_data(3),
+.BR xil_interpolation_table_create(3),
+.BR xil_interpolation_table_destroy(3),
+.BR xil_interpolation_table_get_subsamples(3),
+.BR xil_interpolation_table_get_kernel_size(3),
+.BR xil_state_get_interpolation_tables(3).

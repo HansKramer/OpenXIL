@@ -1,0 +1,82 @@
+.\" @(#)xil_device_set_value.3 1.3 94/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_device_set_value 3 "28 January 1994" "" "XIL Library"
+.SH NAME
+xil_device_set_value \- stores device-initialization values
+in a device object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_device_set_value ( XilDevice "deviceObj , 
+.if t .in +5n
+.br
+.BI "char * " attribute ,
+.br
+.BI "void *" value );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_device_set_value
+.IX Functions xil_device_set_value
+.IX "Attribute Functions" "xil_device_set_value"
+.B xil_device_set_value
+(\^) stores
+.I attribute
+and
+.I value
+in the device object
+.I deviceObj.
+.I attribute
+is the name of the attribute you want to set and
+.I value
+is the attribute's value. Attribute names and their possible values
+are defined by the group that writes the device handler.
+Only attributes the device understands should be set on the device object;
+otherwise an error is generated.
+.sp
+You can store 
+in the object as many attributes and values as needed to derive all
+required initialization attributes for the device. Make a separate
+function call for each attribute.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create a device object and pass it as an
+argument on the function call that creates its associated device image:
+.nf 
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilDevice deviceObj;
+XilImage dev_image;
+int new_value = 255;
+.sp 
+deviceObj = xil_device_create (State, "device");
+.sp
+xil_device_set_value (deviceObj, "ATTRIBUTE_1",
+			 (void*) new_value);
+xil_device_set_value (deviceObj, "ATTRIBUTE_2",
+			 (void*) new_value);
+.sp
+dev_image = xil_create_from_device (State, "device", deviceObj);
+.RE 
+.fi
+.ft 1
+.SH NOTES
+Because attributes and their associated values may reference data in the 
+application's data space, any data associated with an
+XilDevice object must remain valid while the device object references
+it.
+.SH SEE ALSO
+.BR xil_device_create (3),
+.BR xil_create_from_device (3),
+.BR xil_set_device_attribute (3).

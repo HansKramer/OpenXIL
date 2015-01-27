@@ -1,0 +1,26 @@
+##
+##  @(#)mapfile	1.2 96/05/29 
+##
+##
+##  Linker MapFile for xilCompress_H261.so.2
+##
+
+xilCompress_H261 {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fbXilDeviceManagerCompressionGcreateUiTBPUiTDT;
+
+        ##
+        ##  Codec Device Members
+        ##
+
+
+    local:
+        *;
+};
+
+
+
+

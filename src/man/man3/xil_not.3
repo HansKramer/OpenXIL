@@ -1,0 +1,56 @@
+.\" @(#)xil_not.3 1.1 97/01/28 SMI/VPG; 
+.so man3/xil.macs
+.TH xil_not 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_not \- bitwise logical NOT operation.
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_not (XilImage " src , 
+.if t .in +5n
+.br
+.BI "XilImage " dst );
+.br
+.ft R 
+.fi
+.in
+ 
+.SH DESCRIPTION
+.nh
+.IX xil_not
+.IX Functions xil_not
+.IX "Arithmetic and Logical Operations" "xil_not"
+This function performs a bitwise logical NOT operation on each pixel of the 
+.I src
+(source) image and stores the results in the 
+.I dst
+(destination) image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Bitwise logical NOT 
+.I image1 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, dst;
+.sp
+xil_not(image1 dst);
+.fi
+.ft
+.RE
+.LP
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the same number of bands.  In-place operations are supported.
+

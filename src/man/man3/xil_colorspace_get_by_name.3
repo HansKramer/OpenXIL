@@ -1,0 +1,109 @@
+.\" @(#)xil_colorspace_get_by_name.3 1.2 97/05/30 SMI/VPG;
+.so man3/xil.macs
+.TH xil_colorspace_get_by_name 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_colorspace_get_by_name \- get a XilColorspace object by its name
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilColorspace xil_colorspace_get_by_name (XilSystemState " State ,
+.if t .in +5
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_colorspace_get_by_name
+.IX Functions xil_colorspace_get_by_name
+.IX "Image Functions" "xil_colorspace_get_by_name"
+This function retrieves color space objects by name.
+A number of predefined color spaces are created at the time of an 
+.BR xil_open (3)
+call.  These color spaces can be retrieved by
+.BR xil_colorspace_get_by_name (\^).  
+.SS Standard Color Spaces Provided
+The XIL library creates a number of predefined colorspaces at the time of an
+.BR xil_open (3)
+call.  These color spaces include:
+.TP 20
+.I Color Space Name
+.I Description
+.TP 20
+"rgb709"
+Nonlinear RGB primaries as defined by CCIR Rec 709
+.TP 20
+"rgblinear"
+Linearized RGB using primaries from CCIR Rec 709
+.TP 20
+"ycc709"
+YCC as defined by CCIR Rec 709
+.TP 20
+"y709"
+Luminance (black and white) from "ycc709"
+.TP 20
+"ylinear"
+Linearized version of "y709"
+.TP 20
+"photoycc"
+YCC color space defined by Kodak for PhotoCD
+.TP 20
+"ycc601"
+YCC as defined by CCIR Rec 601
+.TP 20
+"y601"
+Luminance from "ycc601"
+.TP 20
+"cmy"
+Linear CMY, derived from "rgblinear"
+.TP 20
+"cmyk"
+Linear CMYK, derived from "cmy" through undercolor removal
+.P
+.nh
+If an unsupported color space name is passed, 
+.BR xil_colorspace_get_by_name (\^)
+returns NULL. Otherwise, a handle to the specified color space object is returned.
+.P
+.nh
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilColorspace cspace;
+.sp
+State = xil_open();
+cspace = xil_colorspace_get_by_name(State, "rgblinear");
+.sp
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The set of standard objects is generated for each instantiation of an
+.I XilSystemState.
+If these standard objects are deleted, they become unavailable for the duration of the current XIL session.
+.sp
+.ne 30
+.P
+.nh
+If you give two color spaces the same name, it is not defined which color
+space will be retrieved by a call to
+.BR xil_colorspace_get_by_name (\^).
+.SH SEE ALSO
+.BR xil_color_convert (3),
+.BR xil_set_colorspace (3),
+.BR xil_black_generation (3),
+.BR xil_open (3).
+

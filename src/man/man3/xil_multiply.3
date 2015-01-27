@@ -1,0 +1,117 @@
+.\" @(#)xil_multiply.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_multiply 3 "03 August 1993" "" "XIL Library"
+.SH NAME
+xil_multiply, xil_multiply_const \- image multiplication operations.
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_multiply (XilImage " src1 ,
+.if t .in +5n
+.br
+.BI "XilImage " src2 , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_multiply_const (XilImage " src1 ,
+.if t .in +5n
+.br
+.BI "float *" constants ,
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_multiply
+.IX Functions xil_multiply
+.IX "Arithmetic and Logical Operations" "xil_multiply"
+.B xil_multiply
+() performs a pixel-by-pixel multiplication of the 
+.I src1 
+image by the 
+.I src2 
+image and stores the result in the 
+.I dst
+(destination) image. 
+.nh
+If the result of the operation is out of range for a particular data type, the
+result is clamped to the minimum or maximum value for the data type.
+Results for XIL_BYTE operations, for example, are clamped to 0 if they are less than
+0 and 255 if they are greater than 255.
+.P
+.IX xil_multiply_const
+.IX Functions xil_multiply_const
+.IX "Arithmetic and Logical Operations" "xil_multiply_const"
+.B xil_multiply_const
+() performs a pixel-by-pixel multiplication of the
+.I src1 
+image by the 
+.I constants     
+values and stores the result in the
+.I dst
+(destination) image. For an n-band image, n float values must be provided, one per band.
+The values in band 0 are multiplied by the value the first element of the
+.I constants
+array, and so on. Pixel values are rounded and clipped according to image data type.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Multiply 
+.I image2 
+by 
+.I image1 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, image2, dst;
+.sp
+xil_multiply(image1, image2, dst);
+.fi
+.ft
+.RE
+.LP
+Multiply 4-band  
+.I image1
+by
+.I constants 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf 
+.sp
+XilImage image1, dst;
+float constants[4];
+.sp
+constants[0] = 1.0;
+constants[1] = 2.0;
+constants[2] = 0.5;
+constants[3] = 2.0;
+xil_multiply_const(image1, constants, dst);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+Source and destination images must be the same data type
+and have the same number of bands.  In-place operations are supported.

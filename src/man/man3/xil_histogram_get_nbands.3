@@ -1,0 +1,170 @@
+.\" @(#)xil_histogram_get_nbands.3 1.1 96/09/11 SMI/VPG;
+.so man3/xil.macs
+.TH xil_histogram_get_nbands 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_histogram_get_nbands, xil_histogram_get_nbins, xil_histogram_get_limits,
+xil_histogram_get_values, xil_histogram_get_info \- histogram attributes
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "unsigned int xil_histogram_get_nbands ( XilHistogram " histogram );
+.br
+.P
+.BI "void xil_histogram_get_nbins ( XilHistogram " histogram ,
+.if t .in +5n
+.br
+.BI "unsigned int *" nbins );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_histogram_get_limits ( XilHistogram " histogram ,
+.if t .in +5n
+.br
+.BI "float *" low_value,
+.br
+.BI "float *" high_value );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_histogram_get_values (XilHistogram " histogram ,
+.if t .in +5n
+.br
+.BI "unsigned int *" data );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_histogram_get_info ( XilHistogram " histogram , 
+.if t .in +5n
+.br
+.BI "unsigned int *" nbands,
+.br
+.BI "unsigned int *" nbins,
+.br
+.BI "float *" low_value,
+.br
+.BI "float *" high_value );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+These routines read the values of histogram attributes and the intensity-level information
+stored in the histograms.
+Histograms are used to obtain information about the distribution of
+pixel values in an image.  Create histograms with
+.BR xil_histogram_create (3).
+.P  
+.IX xil_histogram_get_nbands
+.IX Functions xil_histogram_get_nbands
+.IX "Histogram Functions" "xil_histogram_get_nbands" 
+.BR xil_histogram_get_nbands (\^)
+returns the number of bands represented by the 
+.I histogram.  
+For example, a histogram with three bands can be thought of as a 
+cube of data, with each axis representing a single band.
+.P
+.IX xil_histogram_get_nbins
+.IX Functions xil_histogram_get_nbins
+.IX "Histogram Functions" "xil_histogram_get_nbins"
+.BR xil_histogram_get_nbins (\^)
+fills in a user-supplied array,
+.I nbins,
+with values representing the number of 
+.I histogram 
+bins for each
+histogram band.
+.P
+.IX xil_histogram_get_limits
+.IX Functions xil_histogram_get_limits
+.IX "Histogram Functions" "xil_histogram_get_limits"
+.BR xil_histogram_get_limits (\^)
+fills in user-supplied arrays,
+.I low_value
+and
+.I high_value,
+with floating point numbers that represent the central value of the first bin and
+last bin in each band.
+.P
+.IX xil_histogram_get_values
+.IX Functions xil_histogram_get_values
+.IX "Histogram Functions" "xil_histogram_get_values"
+.BR xil_histogram_get_values (\^)
+fills in the user-supplied array,
+.I data,
+with the unsigned integer values that make up the histogram data. The data
+are aligned so that values along the last band's axis are
+contiguous. 
+.ne 5
+For example, for a 3 band image, the resulting array would be
+indexed as 
+.P
+.in +4
+data[band1_bin][band2_bin][band3_bin].
+.in -4
+.P
+The user is responsible for allocating sufficient space to hold the
+histogram
+data, bearing in mind that each histgram element is an unsigned int and
+that the number of elements is the product of nbins for each band.
+.P
+.IX xil_histogram_get_info
+.IX Functions xil_histogram_get_info
+.IX "Histogram Functions" "xil_histogram_get_info"
+.BR xil_histogram_get_info (\^)
+combines the function of other attribute functions.
+.I nbands
+is filled with the number of bands in the histogram;
+.I nbins
+is filled with the number of bins per band, one for each band.
+.I low_value
+and
+.I high_value
+are arrays that contain the low and high values for each band.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 30
+.SH EXAMPLES
+Create an array to hold the histogram data and retrieve the data:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilHistogram histogram;
+unsigned int nbands;
+unsigned int *bins, *data;
+int i, total_entries;
+.sp
+nbands = xil_histogram_get_nbands (histogram);
+bins = (unsigned int*) malloc(nbands * sizeof(unsigned int));
+xil_histogram_get_nbins (histogram, bins);
+total_entries = 1;
+for (i=0; i<nbands; i++)
+	total_entries *= bins[i];
+data = (unsigned int*) malloc(total_entries * sizeof(unsigned int));
+xil_histogram_get_values(histogram, data);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_histogram (3),
+.BR xil_histogram_create (3),
+.BR xil_histogram_destroy (3).
+
+ 

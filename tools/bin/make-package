@@ -1,0 +1,68 @@
+
+#!/bin/sh
+#	@(#)make-package	1.11 94/11/03 
+# make-package
+#       $1 - name of directory to gen package
+
+USAGE="Usage: make-package dir_name 
+        Example: make-package rt-pkg "
+
+. ./ENV
+
+if [ $# -eq 0 ]
+then
+        echo 
+        echo "$USAGE"
+        echo 
+        exit 1
+fi
+
+PKGSAVE=$PKGHOME
+
+ARCH=`uname -p`
+
+for RELDIR in $*
+do
+    if [ ! -d $RELDIR ]
+    then
+            echo "Cannot access directory $RELDIR"
+            echo 
+            echo "$USAGE"
+            echo 
+            exit 1
+    fi
+
+    if [ ! -f $RELDIR/pkginfo ]
+    then
+        echo "Cannot find $RELDIR/pkginfo"
+        exit 1
+    fi
+    PACKAGE=`grep PKG= $RELDIR/pkginfo | awk -F= ' {  print $2 } '`
+
+    if [ -d $PKGSPOOLDIR/$PACKAGE ]
+    then
+        echo "Removing $PKGSPOOLDIR/$PACKAGE... "
+        sleep 5
+        rm -r $PKGSPOOLDIR/$PACKAGE
+        echo "Done."
+    fi
+
+    [ -d $PKGSPOOLDIR ] || mkdir -p $PKGSPOOLDIR
+
+    case $PACKAGE in
+        "SUNWxilte" )
+                PKGHOME=$XILCHHOME;;
+        * )
+                PKGHOME=$PKGSAVE;;
+    esac
+
+#    pkgmk -d $PKGSPOOLDIR -a $ARCH  -f $RELDIR/prototype -b $PKGHOME RELBASE=$RELBASE $PKGARGS
+    echo IN `pwd`: pkgmk -d $PKGSPOOLDIR -f $RELDIR/prototype -b $PKGHOME RELBASE=$RELBASE $PKGARGS
+    pkgmk -d $PKGSPOOLDIR -f $RELDIR/prototype -b $PKGHOME RELBASE=$RELBASE $PKGARGS
+    if [ $? -eq 1 ]
+    then
+	echo Error in $RELDIR package.
+	exit 1
+    fi
+done
+

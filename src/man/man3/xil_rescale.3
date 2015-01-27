@@ -1,0 +1,78 @@
+.\" @(#)xil_rescale.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_rescale 3 "03 August 1993" "" "XIL Library"
+.SH NAME
+xil_rescale \- rescale the data in an image
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.sp .5v
+.fi
+.BI "void xil_rescale (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst , 
+.br
+.BI "float *" scale , 
+.br
+.BI "float *" offset );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_rescale
+.IX Functions xil_rescale
+.IX "Image Processing Operations" "xil_rescale"
+This routine performs a pixel-by-pixel rescaling of the data in a
+.I src
+(source) image by first multiplying each pixel value by a scale factor and then adding an offset. The result is stored in the 
+.I dst
+(destination) image. For an n-band image, each array of constants must contain n floats
+The values in band 0 are scaled by
+.I scale[0]
+and added to
+.I offset[0],
+and so on.
+.LP
+Pixel values are clipped according to image data type.  In this function, a floating point intermediate value is calculated, so clipping/rounding is done after both the multiplication and the addition have occurred.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Rescale a 4-band short 
+.I src
+image into the range of XIL_BYTE, and store the result in 
+.I dst:
+.RS
+.ft B
+.nf
+.sp
+XilImage src, dst;
+float scale_values[4], offset_values[4];
+.sp
+src=xil_create(State, 512, 512, 3, XIL_SHORT);
+dst=xil_create(State, 512, 512, 3, XIL_SHORT);
+.sp
+/* scale factors for each band */
+scale_values[0] = 127.5/32767.0;
+scale_values[1] = 127.5/32767.0;
+scale_values[2] = 127.5/32767.0;
+scale_values[3] = 127.5/32767.0;
+.sp
+/* offset factors for each band */
+offset_values[0] = 127.5;
+offset_values[1] = 127.5;
+offset_values[2] = 127.5;
+offset_values[3] = 127.5;
+.sp
+xil_rescale(src, dst, scale_values, offset_values);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the same number of bands.  In-place operations are supported.

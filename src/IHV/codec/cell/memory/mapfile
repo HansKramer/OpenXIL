@@ -1,0 +1,25 @@
+##
+##  @(#)mapfile	1.1 96/02/06 
+##
+##
+##  Linker MapFile for xilCompress_cell.so.2
+##
+
+xilCompress_cell {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fbXilDeviceManagerCompressionGcreateUiTBPUiTDT;
+
+        ##
+        ##  Codec Device Members
+        ##
+
+    local:
+        *;
+};
+
+
+
+

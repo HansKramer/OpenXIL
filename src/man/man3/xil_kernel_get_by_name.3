@@ -1,0 +1,128 @@
+.\" @(#)xil_kernel_get_by_name.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_kernel_get_by_name 3 "04 August 1993" "" "XIL Library"
+.SH NAME
+xil_kernel_get_by_name, xil_kernel_get_name, xil_kernel_set_name \- get and set a kernel object name and get a handle to
+a kernel by specifying its name
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilKernel xil_kernel_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_kernel_get_name (XilKernel " kernel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_kernel_set_name (XilKernel " kernel ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to kernel objects, to read kernel names, and to
+retrieve kernel objects by name.  A predefined kernel is created at the time of an 
+.BR xil_open (3) 
+call.  This kernel can be retrieved by  
+.BR xil_kernel_get_by_name (\^).
+.P
+.IX xil_kernel_get_by_name
+.IX Functions xil_kernel_get_by_name
+.IX "Kernel Functions" "xil_kernel_get_by_name"
+.BR xil_kernel_get_by_name (\^)
+returns the handle to the kernel with the specified name 
+.I name.
+If such a kernel does not exist, NULL is returned.  
+.BR xil_kernel_get_by_name (\^)
+does not make a copy of the kernel.
+.P
+.nh
+.IX xil_kernel_get_name
+.IX Functions xil_kernel_get_name
+.IX "Kernel Functions" "xil_kernel_get_name"
+.BR xil_kernel_get_name (\^)
+returns a copy of the specified kernel's name.  A call to 
+.B free
+(3) should be used to free the space allocated by 
+.BR xil_kernel_get_name (\^).
+If the specified kernel has no name, NULL is returned.
+.P
+.nh
+.IX xil_kernel_set_name
+.IX Functions xil_kernel_set_name
+.IX "Kernel Functions" "xil_kernel_set_name"
+.BR xil_kernel_set_name (\^)
+sets the name of the specified kernel to the one provided.
+.SH Standard Kernel Provided
+.nh
+The XIL library creates a predefined kernel at the time of an
+.BR xil_open (3)
+call.  This kernel, "floyd-steinberg", can be used with error diffusion operations. 
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create an edge-sharpening kernel named "sharp1":
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilKernel kernel;
+float data[] = 	{ 0.0 -1.0  0.0
+		 -1.0  5.0 -1.0
+		  0.0 -1.0  0.0 };
+.sp
+kernel = xil_kernel_create(State,3,3,1,1,data);
+xil_kernel_set_name(kernel, "sharp1");
+.fi
+.ft
+.RE
+.ne 30
+.P 
+Use a kernel named "sharp1" to filter an image:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage src, dst;
+XilKernel kernel;
+.sp
+kernel = xil_kernel_get_by_name(State,"sharp1");
+xil_convolve(src, dst, kernel, XIL_EDGE_ZERO_FILL);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+The set of standard objects is generated for each instantiation
+of an 
+.I XilSystemState.
+If these standard objects are deleted, they become unavailable for the duration of the current XIL session.
+.P
+If you give two kernels the same name, it is not defined which kernel
+will be retrieved by a call to 
+.BR xil_kernel_get_by_name (\^).
+.SH SEE ALSO
+.BR xil_open (3), 
+.BR xil_kernel_create (3).

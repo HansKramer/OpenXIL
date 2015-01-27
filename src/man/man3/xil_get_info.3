@@ -1,0 +1,73 @@
+.\" @(#)xil_get_info.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_info 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_get_info \- get information about the parameters of an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_get_info (XilImage " image ,
+.if t .in +5n
+.br
+.BI "unsigned int *" width ,
+.br
+.BI "unsigned int *" height ,
+.br
+.BI "unsigned int *" nbands ,
+.br
+.BI "XilDataType *" datatype );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_get_info
+.IX Functions xil_get_info
+.IX "Image Functions" "xil_get_info"
+This function gets the following 
+.I image 
+parameters:
+.I width,
+.I height,
+.I nbands
+(number of bands), and 
+.I datatype.
+This function may be called on all images. Use
+.BR xil_get_imagetype (3)
+to get a handle to an object with the same characteristics as a given
+image; this handle can then be used in 
+.BR xil_create_from_type (3)
+calls.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get all the parameters that describe a particular image:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage image;
+unsigned int width, height, nbands;
+XilDataType datatype;
+.ta 3.5i
+.sp
+xil_get_info (image, &width, &height, &nbands, &datatype);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_datatype (3),
+.BR xil_get_imagetype (3),
+.BR xil_get_width (3),
+.BR xil_get_height (3),
+.BR xil_get_nbands (3),
+.BR xil_get_size (3),
+.BR xil_create_from_type (3),
+.BR xil_create_temporary_from_type (3).

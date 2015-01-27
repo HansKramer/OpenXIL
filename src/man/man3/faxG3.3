@@ -1,0 +1,201 @@
+.\" @(#)faxG3.3 1.2 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH "faxG3" 3 "08 June 1994" "" "XIL Library"
+.SH NAME
+faxG3, faxG4 \- CCITT Group 3 and Group 4 compressors for compressed image
+sequences
+.SH DESCRIPTION
+.IX Fax faxG3
+.IX Fax faxG4
+.IX Functions faxG3
+.IX Functions faxG4
+.IX Fax overview
+.IX "CCITT Group 3 and Group 4 compressors" "overview"
+.IX "CCITT Group 3 and Group 4 compressors" "faxG3"
+.IX "CCITT Group 3 and Group 4 compressors" "faxG4" 
+.nh
+The XIL library provides compressors that conform to the specifications 
+developed by the Consultative Committee of International Telegraph and
+Telephone (CCITT) for Group 3 and Group 4 facsimile devices.  These standards
+are supported in the XIL library as defined in recommendations T.4 and T.6 of 
+Fascicle VII.3 (blue book) with the following exceptions: 2-dimensional 
+coding and decoding for Group 3 devices is not currently supported, and no
+optional extension modes for group 4 coding and decoding are supported. 
+Support for these modes may occur in future releases.
+.P
+.nh
+These compression techniques, originally formulated for facsimile devices, 
+are now heavily used by makers of general document storage and retrieval
+systems.  The XIL library's CCITT Group 3 compressor (faxG3) uses a run-length
+encoding technique; the Group 4 (faxG4) compressor relies almost entirely on 
+a two-dimensional technique.  On standard text, the XIL library's Group 3
+compressor achieves a compression ratio of about 5:1, while the 
+Group 4 compressor achieves a ratio of about 10:1.  For more information on
+these compressors, consult the 
+.I "XIL Programmer's Guide."
+.SS Creating a CIS
+.nh
+To compress a compressed image sequence (CIS) with an XIL fax compressor, specify either "faxG3" or "faxG4" for the 
+.I compressorname
+argument in
+.BR xil_cis_create (3).
+.SS Getting and Setting Fax Attributes
+.nh
+Although other compression standards encode size information
+(the image width, height,
+and number of bands) within the bitstream, the fax standards do not.
+Thus, if you put compressed data into your CIS using
+.BR xil_cis_put_bits (3)
+or
+.BR xil_cis_put_bits_ptr (3)
+you must set the decompressor attributes for width, height,
+and number of bands; otherwise a call to
+.BR xil_decompress (3)
+generates an error.
+.sp
+Use 
+.BR xil_cis_get_attribute (3)
+and 
+.BR xil_cis_set_attribute (3)
+to get and set the fax decompression attributes.
+.SS Fax Decompression Attributes
+.nh
+The following paragraphs describe the faxG3 and faxG4 CIS attributes available
+with the XIL library. All structures and enumerations are defined in
+.B xil.h.  
+These attributes are "set-only," as indicated under the 
+.I Access 
+heading for each attribute.  
+.PP
+To set an attribute that is a structure, 
+you must pass that structure's address.  To get an attribute,
+you always pass its address.
+.sp 2
+.IX "Fax" "decompression attributes"
+.IX "CCITT Group 3 and Group 4 compressors" "decompression attributes"
+.P
+.ne 10
+.I WIDTH
+.P
+.TP 15
+Description
+defines width of image for fax decompressor
+.TP 15
+Access     
+set-only
+.TP 15 
+Type       
+short
+.TP 15
+Values
+.I 0 - 32767
+.TP 15
+Default
+.I 0
+.ne 5
+.TP 15
+Notes 
+.nh
+Set the value of this attribute to the width in pixels of the
+images to be decompressed.  If you do not set it, its value is 0 and 
+an error occurs when you call
+.BR xil_decompress (3),
+as discussed above in "Getting and Setting Fax Attributes."
+.nf
+.sp
+.fi
+.P
+.I HEIGHT
+.P
+.TP 15
+Description
+defines height of image for fax decompressor
+.TP 15
+Access     
+set-only
+.TP 15 
+Type       
+short
+.TP 15
+Values
+.I 0 - 32767
+.TP 15
+Default
+.I 0
+.ne 5
+.TP 15
+Notes 
+.nh
+Set the value of this attribute to the height in pixels of the
+images to be decompressed.  If you do not set it, its value is 0 and 
+an error occurs when you call
+.BR xil_decompress (3),
+as discussed above in "Getting and Setting Fax Attributes."
+.nf
+.sp
+.fi
+.P
+.I BANDS
+.P
+.TP 15
+Description
+defines number of bands in image for fax decompressor
+.TP 15
+Access    
+set-only
+.TP 15
+Type      
+short
+.TP 15
+Values
+.I 0 - 32767
+.TP 15
+Default
+.I 0
+.ne 5
+.TP 15
+Notes
+.nh
+Set the value of this attribute to the number of bands in the
+images to be decompressed.  If you do not set it, its value is 0 and 
+an error occurs when you call
+.BR xil_decompress (3),
+as discussed above in "Getting and Setting Fax Attributes."
+.sp 5
+.SH EXAMPLES
+.nh
+The following example opens and closes a faxG3 CIS using the XIL library:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilCis cis;
+.ta 3.5i
+State = xil_open(\^);
+cis = xil_cis_create(State, \^"faxG3\^");  
+
+-- calls to faxG3-specific compression routines --
+
+xil_cis_destroy(cis);
+xil_close(State);
+.RE
+.fi
+.ft 1
+.fi
+.SH NOTES
+.nh
+The 
+.B xil_cis_set_attribute
+(\^) and
+.B xil_cis_get_attribute
+(\^) calls are used to modify the default behavior of a specific compressor.  Generic attributes of compressors are set by individual function calls.
+.SH SEE ALSO
+.BR xil_cis_create (3),
+.BR xil_cis_get_attribute (3),
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_compress (3),
+.BR xil_decompress (3),
+.BR xil_cis_put_bits (3),
+.BR xil_cis_put_bits_ptr (3).

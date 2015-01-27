@@ -1,0 +1,118 @@
+.\" @(#)xil_set_colorspace.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_set_colorspace 3 "19 July 1993" "" "XIL Library"
+.SH NAME
+xil_set_colorspace \- set an image's color space
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_set_colorspace (XilImage " image ,
+.if t .in +5n
+.br
+.BI "XilColorspace " cspace );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+This function specifies the 
+.I XilColorspace 
+object associated with the image. The default value of this
+attribute is 
+.I NULL,
+which means the image has no color space attached to it.
+.P 
+.nh
+Images can be supplied in any of the supported color spaces.  The following table indicates the character string used to identify the supported color spaces and describes the source of each color space definition:
+.TP 20
+"rgb709"
+Nonlinear RGB primaries as defined by CCIR Rec 709
+.TP 20
+"rgblinear"
+Linearized RGB using primaries from CCIR Rec 709
+.TP 20
+"ycc709"
+YCC as defined by CCIR Rec 709
+.TP 20
+"y709"
+Luminance (black and white) from "ycc709"
+.TP 20
+"ylinear"
+Linearized version of "y709"
+.TP 20
+"photoycc"
+YCC color space defined by Kodak for PhotoCD
+.TP 20
+"ycc601"
+YCC as defined by CCIR Rec 601
+.TP 20
+"y601"
+Luminance from "ycc601"
+.TP 20
+"cmy"
+Linear CMY, derived from "rgblinear"
+.TP 20
+"cmyk"
+Linear CMYK, derived from "cmy" through undercolor removal
+.P
+.nh
+These color spaces
+are created by the XIL library at the time of a call to
+.BR xil_open (3).
+Handles to these color space objects can be obtained by calling 
+.BR xil_colorspace_get_by_name (3).
+.IX xil_set_colorspace
+.IX Functions xil_set_colorspace
+.IX "Image Functions" "xil_set_colorspace"
+.SS XIL Color Spaces
+.IX "Image Functions" "colorspace overview"
+.nh
+The XIL library supports specification of the color spaces of images and the conversion of images between supported color spaces.  Color space conversion is useful for a number of reasons.
+.P
+.nh
+Some operations are more easily performed on certain color spaces.  JPEG compression, for example, produces better results on color data when the input is supplied as YCC instead of RGB.  Extracting luminance information from color data allows the simple use of monochrome output devices.  The library supports conversion between a variety of these spaces, and treats luminance as a separate color space.
+.P
+.nh
+In most cases for 16-bit image data, there is little concern with artifacts due to limited precision.  For 8-bit data, using nonlinear or gamma-corrected color spaces (such as YCC or nonlinear RGB) can prevent the contouring in low-intensity regions of the image that occurs with 8-bit linear data storage.  The library supports both linear and nonlinear color spaces in both 8 and 16 bits.
+.sp 
+.ne 20
+.P
+.nh
+Color separations produce images for output on subtractive color printers.  The XIL library supports both CMY and CMYK spaces.  Some flexibility in the generation of black color (K) and the associated undercolor removal is provided.  The library also provides the ability to separate images into a specified group of process colors by dithering to a user-defined colormap.  Sophisticated separations (nonlinear black mappings, for example) are not
+currently supported by the XIL library.  Currently, the library only
+supports certain standard, or objective, color spaces.  
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 30
+.SH EXAMPLES
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilImage image;
+XilColorspace cspace;
+.sp
+/* get handle to the predefined "rgblinear" colorspace */
+/* and specify this colorspace for image */
+State = xil_open();
+image = xil_create(State);
+cspace = xil_colorspace_get_by_name(State, "rgblinear");
+xil_set_colorspace(image, cspace);
+.sp
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_colorspace_get_by_name (3),
+.BR xil_color_convert (3),
+.BR xil_black_generation (3),
+.BR xil_open (3).
+

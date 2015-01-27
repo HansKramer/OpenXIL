@@ -1,0 +1,109 @@
+.\" @(#)xil_edge_detection.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_edge_detection 3 "04 March 1994" "" "XIL Library"
+.SH NAME
+xil_edge_detection \- detect edges within an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_edge_detection (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "XilEdgeDetection " edge_detection_method );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_edge_detection
+.IX Functions xil_edge_detection
+.IX "Image Processing Operations" "xil_edge_detection"
+This function detects edges within an image using the method specified by
+the
+.I edge_detection_method
+parameter.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.LP
+.I edge_detection_method
+is an enumeration type that specifies the edge detection algorithm 
+to be used in the operation.
+Currently, the only available method is
+.SM XIL_EDGE_DETECT_SOBEL, 
+which uses the following masks:
+.sp
+.nf
+	   Vertical	  	  Horizontal
+
+	-0.5  0.0  0.5		-0.5  -1.0  -0.5
+	-1.0  0.0  1.0		 0.0   0.0   0.0
+	-0.5  0.0  0.5		 0.5   1.0   0.5
+.fi
+.sp
+The
+.SM XIL_EDGE_DETECT_SOBEL
+method performs two correlation
+operations on the source image, using the vertical filter to detect vertical
+edges and the horizontal filter to detect horizontal edges. 
+This yields the intermediate images 
+.I a
+and
+.I b.
+It then squares pixel values in 
+.I a
+and
+.I b,
+yielding intermediate images
+.I c
+and
+.I d.
+To form the final destination image, it takes the square root of
+.I c + d.
+The correlation operations
+duplicate the source-image
+edges during the correlation, similar to using the
+.SM XIL_EDGE_EXTEND
+edge detection method on the
+.BR xil_convolve (3)
+function.
+.SS ROI Behavior
+.nh
+An ROI (region of interest) is used as a read mask for key pixels in the source image and as a write mask in the destination image. The edge detection operation may access data outside a source ROI as long as the key pixel remains inside.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+This example performs edge detection operation on
+.I src 
+image using Sobel algorithm, and writes the result into
+.I dst.
+.LP
+.nf
+.RS
+.ft 3
+XilImage src, dst;
+.sp
+.ta 3.5i
+xil_edge_detection(src, dst, XIL_EDGE_DETECT_SOBEL);
+.RE
+.fi
+.ft 1
+.sp
+.ne 10
+.SH NOTES
+.nh
+Source and destination images must be the same data type and
+have the same number of bands. The images need not have the same width and height.
+This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_convolve (3)

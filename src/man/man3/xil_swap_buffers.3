@@ -1,0 +1,65 @@
+.\" @(#)xil_swap_buffers.3 1.2 97/02/25 SMI/VPG;
+.so man3/xil.macs
+.TH xil_swap_buffers 3 "24 February 1997" "" "XIL Library"
+.SH NAME
+xil_swap_buffers - move the contents of the back buffer to the front buffer for
+a double-buffered device image
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_swap_buffers ( XilImage " image );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+This function moves the contents of the back buffer of a double-buffered device image to the front buffer. After the swap, the contents of the back buffer are undefined and must set before the next call to 
+.B xil_swap_buffers
+(\^). If the image does not represent a double-buffered device, an error is generated.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the
+.I "XIL Programmer's Guide." 
+.SH EXAMPLES
+.nh
+.sp
+.nf
+.ft 3
+    XilSystemState State;
+    XilImage display_image;
+    XilImage image0, image1;
+    Display* display;
+    Window window;
+
+    /* Create an XIL display image from existing X display and window */
+    if(display_image = xil_create_double_buffered_window(State,
+                                              display,window) == NULL) {
+    
+        /* return with error */
+    }
+
+    /* We know that this device image is double buffered */
+
+    /* Copy image0 to the back buffer of display */
+    xil_copy(image0, display_image);
+
+    /* Move the back buffers contents to the front buffer */
+    xil_swap_buffers(display_image);
+
+    /* refill the back buffer with a new image */
+    xil_copy(image1, display_image);
+.ft 1
+.fi
+.SH NOTES
+.nh
+.B xil_swap_buffers
+(\^) always moves the contents of the back buffer to the front buffer. There is no way to swap the contents of the front buffer to the back buffer.
+.SH SEE ALSO
+.BR xil_create_double_buffered_window (3),
+.BR xil_get_active_buffer (3),
+.BR xil_set_active_buffer (3).

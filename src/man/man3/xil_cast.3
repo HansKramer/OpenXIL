@@ -1,0 +1,62 @@
+.\" @(#)xil_cast.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cast 3 "16 September 1996" "" "XIL Library"
+.SH NAME
+xil_cast \- cast an image from one data type into another
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_cast (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cast
+.IX Functions xil_cast
+.IX "Image Processing Operations" "xil_cast"
+This routine casts an image of one data type into the data type specified by the 
+.I dst
+(destination) image. When a data type with a lesser number of bits is cast into a data type with a greater number of bits, the destination pixel values are the 
+.I src
+(source) image's pixel values padded with zeroes in the most significant bits.  When a data type with a greater number of bits is cast into a data type with a  lesser number of bits, the destination image's  pixel values are a mask of the appropriate number of least significant bits of the source image's pixel values. To control the indices in the output image, pass the image through
+a lookup table rather than casting it.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Cast byte image 
+.I image1 
+into a bit image and store the result in 
+.I image2
+:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState state;
+XilImage image1, image2;
+.sp
+image1 = xil_create(state, 512, 512, 3, XIL_BYTE);
+image2 = xil_create(state, 512, 512, 3, XIL_BIT);
+	.
+	.
+	.
+xil_cast(image1, image2);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+Source and destination images must have the same width, height, and number of bands.  
+.SH SEE ALSO
+.BR xil_lookup_create (3).

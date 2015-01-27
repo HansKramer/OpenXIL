@@ -1,0 +1,58 @@
+.\" @(#)xil_set_value.3 1.2 97/05/27 SMI/VPG;
+.so man3/xil.macs
+.TH xil_set_value 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_set_value \- set pixels of an image to constant values
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.sp .5v
+.fi
+.BI "void xil_set_value (XilImage " dst ,
+.if t .in +5n
+.br
+.BI "float *" constants );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_set_value
+.IX Functions xil_set_value
+.IX "Image Processing Operations" "xil_set_value"
+This routine assigns floating point constant values on a pixel-by-pixel basis to the
+.I dst 
+(destination) image. For an n-band image, the array of 
+.I constants 
+must contain n floating point values. Pixel values are clipped according to image data type.
+.P
+.nh
+For XIL_BIT images, values below 0.5 cause the pixel to be set to 0, and values 0.5 and above cause the pixel to be set to 1.  For XIL_BYTE images, values below 0.5 cause the pixel to be set to 0, values above 254.5 cause the pixel to be set to 255, and all values in between are rounded to the nearest integer.  For XIL_SHORT images, values below -32768.5 cause the pixel to be set to -32768, values above 32766.5 cause the pixel to be set to 32767, and all values in between are rounded to the nearest signed integer.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Assign pixel values of a 4-band image and store the result in 
+.I dst:
+.RS
+.ft B
+.nf
+.sp
+XilImage dst;
+float values[4];
+.sp
+values[0] = 1.0;
+values[1] = 127.5;
+values[2] = 256.0;
+values[3] = 0.0;
+.sp
+xil_set_value(dst, values);
+.fi
+.ft
+.RE
+.SH SEE ALSO
+.BR xil_set_pixel (3)

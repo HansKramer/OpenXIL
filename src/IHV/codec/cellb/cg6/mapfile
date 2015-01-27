@@ -1,0 +1,26 @@
+##
+##  @(#)mapfile	1.2 96/04/10 
+##
+##
+##  Linker MapFile for xilCompute_CellBSUNWcg6.so.2
+##
+
+xilCompute_CellBSUNWcg6 {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fXXilDeviceManagerComputeGcreateUiTBPUiTDT;
+
+        ##
+        ##  Codec Device Members
+        ##
+
+
+    local:
+        *;
+};
+
+
+
+

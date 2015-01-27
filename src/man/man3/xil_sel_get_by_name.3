@@ -1,0 +1,117 @@
+.\" @(#)xil_sel_get_by_name.3 1.1 96/09/11 SMI/VPG;
+.so man3/xil.macs
+.TH xil_sel_get_by_name 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_sel_get_by_name, xil_sel_get_name, xil_sel_set_name \- get and set a structuring element (SEL) object name
+and get a handle to a SEL by specifying its name
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilSel xil_sel_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_sel_get_name (XilSel " sel );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_sel_set_name (XilSel " sel ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to SEL objects, get the name of a SEL, and to
+retrieve SEL objects by name. 
+.P
+.nh
+.IX xil_sel_get_by_name
+.IX Functions xil_sel_get_by_name
+.IX "SEL Functions" "xil_sel_get_by_name"
+.B xil_sel_get_by_name
+(\^) returns the handle to the SEL object with the specified name 
+.I name.
+If such a SEL object does not exist, NULL is returned.  
+.B xil_sel_get_by_name
+(\^) does not make a copy of the SEL object.
+.P
+.nh
+.IX xil_sel_get_name
+.IX Functions xil_sel_get_name
+.IX "SEL Functions" "xil_sel_get_name"
+.B xil_sel_get_name
+(\^) returns a copy of the specified SEL object's name.  A call to 
+.B free
+(3) should be used to free the space allocated by 
+.B xil_sel_get_name
+(\^). If the specified SEL object has no name, NULL is returned.
+.P
+.nh
+.IX xil_sel_set_name
+.IX Functions xil_sel_set_name
+.IX "SEL Functions" "xil_sel_set_name"
+.B xil_sel_set_name
+(\^) sets the name of the specified SEL object to the one provided.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create a structuring element named "rect3x3":
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilSel sel;
+unsigned int data[] = {
+.in +8
+1  1  1
+1  1  1
+1  1  1 
+.in
+};
+.sp
+sel = xil_sel_create(State, 3, 3, 0, 0, data);
+xil_sel_set_name(sel, "rect3x3");
+.fi
+.ft
+.RE
+.P 
+Use a structuring element named "rect3x3" to erode an image:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage src, dst;
+XilSel sel;
+.sp
+sel = xil_sel_get_by_name(State, "rect3x3");
+xil_erode(src, dst, sel);
+.fi
+.ft
+.RE
+.SH SEE ALSO
+.nh
+.BR xil_sel_create (3),
+.BR xil_sel_destroy (3),
+.BR xil_sel_get_name (3),
+.BR xil_sel_set_name (3).

@@ -1,0 +1,103 @@
+.\" @(#)xil_affine.3 1.3 96/09/12 SMI/VPG;
+.so man3/xil.macs
+.TH xil_affine 3 "10 September 1996" "" "XIL Library"
+.SH NAME
+xil_affine \- perform an affine transform on an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_affine (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "char *" interpolation ,
+.br
+.BI "float *" matrix );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_affine
+.IX Functions xil_affine
+.IX "Geometric Operations" "xil_affine"
+This function performs an affine transform on an image. 
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I interpolation 
+is a string that specifies the type of interpolation to be used.
+The supported interpolation types are 
+.I nearest
+(nearest neighbor),
+.I bilinear,
+.I bicubic,
+and 
+.I general. 
+.I general 
+interpolation type allows user to specify a separable function of the pixels in a rectangular region surrounding the src pixel when computing the destintation pixel.
+.I matrix 
+is a six-entry floating point array that defines an arbitrary affine transform on a source image.  This transform combines a scale, rotation, translation and shearing.  The order of the entries in the matrix is: a, b, c, d, tx, ty.  The affine transform equations are as follows:
+.nf
+.sp
+	xd = a*xs + c*ys + tx
+	yd = b*xs + d*ys + ty
+.ft 1
+.sp
+.fi
+where 
+.I xs
+and
+.I ys
+are coordinates in the source image, and
+.I xd
+and
+.I yd
+are coordinates in the destination image.
+.SS ROI Behavior
+.nh
+If an ROI (region of interest) is attached to the source image, it is used as a read mask and is transformed into the destination image's space, where it is intersected with the destination ROI (if there is one).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Transform an image using nearest neighbor interpolation and the following affine transform matrix: {2.0, 0.0, 0.0, 2.0, 10.0, 10.0}. This transform matrix scales an image by 2.0 
+in width and height) and translates it by 10 pixels in both the 
+.I x 
+and 
+.I y 
+directions.
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+float matrix[6] = {2.0, 0.0, 0.0, 2.0, 10.0, 10.0};
+.ta 3.5i
+.sp
+xil_affine(src, dst, "nearest", matrix);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The source and destination images to be transformed must
+have the same data type and number of bands.  This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_translate (3),
+.BR xil_rotate (3),
+.BR xil_scale (3),
+.BR xil_transpose (3),
+.BR xil_tablewarp (3),
+.BR xil_subsample_adaptive (3).
+

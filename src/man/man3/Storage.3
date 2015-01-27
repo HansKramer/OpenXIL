@@ -1,0 +1,118 @@
+.\" @(#)Storage.3 1.3 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH "Storage" 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+Storage \- Storage types and formats for XIL images
+.SH DESCRIPTION
+.IX Storage
+.IX Functions Storage
+.IX Storage overview
+.nh
+Storage is the term used to describe the actual data of an XIL image. Although it is possible to write applications that use XIL without accessing the image data directly, XIL allows the user to access the data when necessary. The method used for accessing storage has changed in XIL1.3, although the previous XIL storage API has been maintained for backwards compatability.
+.SS Storage Formats
+.nh
+In XIL1.3, it is possible to store an image in non-contiguous tiles. A tile
+represents all of the storage for its spatial region of the image.  If there
+are three bands in an image, each tile represents three bands of 
+storage, although each of the tiles may be stored as a different storage type.
+In XIL1.3, there are three possible types of storage (XilStorageType).
+.SS XIL Storage Types
+.nh
+XIL_PIXEL_SEQUENTIAL indicates each band is one data size away from the
+next band.  The pixel stride can be arbitrary, but all
+of the storage of all of the bands for a tile must be in a single memory buffer.  Each
+subsequent band can be accessed from the first band's data pointer, since each
+subsequent data pointer is guaranteed to increase monotonically.  Neither the
+scanline nor the pixel stride can change per-band.  This storage
+format is supported for non-BIT images.
+.P
+XIL_BAND_SEQUENTIAL indicates that all bands of data for a tile are stored in a single
+memory buffer.  The pixel stride must be 1.  Because each band follows the
+previous band, there is a predictable band stride. This format is supported for image types.
+.P
+XIL_GENERAL indicates that each band of the data storage can be in a
+different location and that there is not necessarily a correlation between
+the data pointers.  Thus, the pixel stride can be greater than 1, and the data
+pointers are not required to increase monotonically starting with the
+first data pointer.  The data for each band is accessed through a separate
+data pointer. Another important feature of this storage type is the
+capability for the scanline stride and pixel stride to be different for each 
+band. The band stride is undefined.
+.P
+XIL_BIT images may only be stored as XIL_BAND_SEQUENTIAL or XIL_GENERAL. All other
+XIL1.3 image types (XIL_BYTE, XIL_SHORT, and XIL_FLOAT) may be stored in any of the
+three supported formats.
+.P
+.SS Xil1.3 VS XIL1.2
+.nh
+Previous versions of XIL provided access to image storage solely via the xil_get_memory_storage
+call and the xil_set_memory_storage call. These calls are still supported, but
+when used with images whose storage is tiled, or is not XIL_PIXEL_SEQUENTIAL
+(except for XIL_BIT images which expects XIL_BAND_SEQUENTIAL storage), the
+data will first be copied into a contiguous buffer of the appropriate storage type
+before returning. This reformatting can be expensive.
+In addition, the new storage API may not be mixed with the previous
+.BR xil_get_memory_storage (\^)
+and
+.BR xil_set_memory_storage (\^)
+calls in the same program.
+.P
+.SS Using the new Storage API
+.nh
+There are two basic approaches for getting and setting storage through the storage API.
+The
+.BR xil_get_tile_storage (\^)
+and
+.BR xil_set_tile_storage (\^)
+calls allow access to each tile
+of an image individually and the data pointers for the tiles are references into 
+the actual image data. The
+.BR xil_get_storage_with_copy (\^)
+and
+.BR xil_set_storage_with_copy (\^)
+calls allow access to the whole image as a contiguous buffer, but the data is a copy of the
+XIL image, and changes made through the data pointers will not affect the internal image
+storage.
+.P
+In previous versions of XIL and as a default in this version, explicitly setting storage layout information does not guarantee that the image data format or
+location will not change after the data is imported back into XIL.  A flag has
+been added to the XilImage object to instruct XIL on what may be done with the 
+supplied storage when xil_import is called. The storage movement flag takes
+one of three values: XIL_ALLOW_MOVE, XIL_KEEP_STATIONARY, and XIL_REPLACE.
+.P
+.SS Storage Movement Flags
+.nh
+XIL_ALLOW_MOVE is the default and mimics the behavior of previous
+versions of XIL (that is, XIL is free to move the data to a different location
+or to reformat it). Upon a subsequent call to xil_export, there is no guarantee that storage
+is in the same place or format, and the user must reacquire storage
+information before processing. This flexibility allows XIL to provide the maximum acceleration.
+.P
+XIL_KEEP_STATIONARY instructs XIL to leave the storage in exactly the
+same location and in the same format even after xil_import is called. This setting
+would typically be used when the caller expects to export the image again
+after one of a very few operations, and wants to avoid the cost of any data
+copying or reformatting which might occur. By activating this flag, some storage
+devices may refuse to operate on the image and therefore the image will not
+be available for acceleration by the device's imaging routines. This may have
+a negative effect on the application's performance. In this case, the user can
+continue to use the previously acquired data pointers and data layout
+information for processing.
+.P
+XIL_REPLACE instructs XIL to return the storage to the same location and format
+on subsequent image exports.  This allows XIL to move the storage if an accelerator
+is available to speed processing operations, but ensures that the caller
+gets the data back in the same location and format.  XIL_REPLACE may also have
+drastic negative effects on application performance due to repeated copying of
+the data from one format to another, but the user can continue to use the
+previously acquired data pointers and data layout information for processing.
+.SH NOTES
+.nh
+In order to access XIL_FLOAT data or to use the XIL_GENERAL storage type, it is
+necessary to use only the new storage API.
+.SH SEE ALSO
+.nh
+.BR xil_storage_create (3),
+.BR xil_get_memory_storage (3),
+.BR xil_get_storage_with_copy (3),
+.BR xil_get_tile_storage (3)

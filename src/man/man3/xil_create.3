@@ -1,0 +1,156 @@
+.\" @(#)xil_create.3 1.3 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_create 3 "12 August 1993" "" "XIL Library"
+.SH NAME
+xil_create \- create an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage xil_create(XilSystemState " State,
+.if t .in +5n
+.br
+.BI "unsigned int " width,
+.br
+.BI "unsigned int " height,
+.br
+.BI "unsigned int " nbands,
+.br
+.BI "XilDataType " datatype);
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_create
+.IX Functions xil_create
+.IX "Image Functions" "xil_create"
+This routine creates an image with the specified dimensions and data type.
+.I width
+is the width (extent in 
+.I x
+) of the image.
+.I height
+is the height (extent in 
+.I y
+) of the image.
+.I nbands 
+is the number of bands in the image.
+.I datatype
+is the data type of the image, which can be one of the following enumeration
+constants of type 
+XilDataType:
+.TP 15
+XIL_BIT 
+1-bit 
+.TP 15
+XIL_BYTE 
+unsigned 8-bit 
+.TP 15
+XIL_SHORT
+signed 16-bit
+.TP 15
+XIL_FLOAT
+32-bit IEEE floating point
+.LP
+If the function is successful, an opaque handle to the image is returned.
+Access to the image's data is available through the storage interfaces
+described by
+.B xil_storage_create (3).
+.P
+The data associated with the image is not automatically zeroed.
+Use 
+.BR xil_set_value (3)
+to do this.
+.P
+Images contain no data until they are used in an operation, their storage is
+requested by the application or their storage is set by the application.  At
+creation time, XilImages are structures describing attributes of the image.
+.SS ROI Behavior
+.nh
+The default ROI is NULL.  If an ROI is NULL, operations are performed on the entire image.
+.SS XIL Images
+.IX "Image Functions" "image overview"
+.nh
+The primary objects in the XIL world are images.  Each dimension of an image -
+width, height, or number of bands - may be as great as 2^32 (4,294,967,296),
+except that the overall size of an image is limited by available resources and
+the addressing capabilities of the computer's architecture.
+.P
+.nh
+Four data precisions are supported: 1-bit, 8-bit unsigned, 16-bit signed and
+32-bit floating point per data element.  
+.P
+.nh
+The exposed attributes associated with images are 
+.I width, 
+.I height, 
+.I nbands 
+(number of bands -- number of distinct data elements per pixel), 
+.I datatype 
+(sample type -- precision of a single data element), color space, and image
+origin.  You can get
+.I width,
+.I height,
+.I nbands,
+and
+.I datatype
+with
+.BR xil_get_info (3)
+amd
+.BR xil_get_origin (3).
+Note that the origin at creation time is the upper left corner of the image (0.0, 0.0).
+Also note that an image's color space is NULL upon creation. 
+.P
+.nh
+The XIL library currently has no provision for direct operation on  images
+with bands of different data types or different dimensions.  This implies no
+direct support for 4:1:1 or 4:2:2 data.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 10
+.SH EXAMPLES
+.nh
+Create a 640x480 8-bit image with 3 bands, which can contain 8-bit unsigned data:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState state;
+XilImage       image;
+.ta 3.5i
+image = xil_create(state, 640, 480, 3, XIL_BYTE);
+
+if(image == NULL) {
+    fprintf(stderr, "Image creation failed.\\n");
+    return XIL_FAILURE;
+}
+.RE
+.fi
+.ft 1
+.sp
+.ne 20
+.SH SEE ALSO
+.BR xil_create_child (3),
+.BR xil_create_copy (3),
+.BR xil_create_from_device (3),
+.BR xil_create_from_type (3),
+.BR xil_create_from_window (3),
+.BR xil_create_temporary (3),
+.BR xil_create_temporary_from_type (3),
+.BR xil_destroy (3),
+.BR xil_set_roi (3),
+.BR xil_get_roi (3),
+.BR xil_get_info (3),
+.BR xil_get_state (3),
+.BR xil_set_value (3),
+.BR xil_get_origin (3),
+.BR xil_set_origin (3),
+.BR xil_set_colorspace (3).

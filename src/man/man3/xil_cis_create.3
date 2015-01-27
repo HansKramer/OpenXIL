@@ -1,0 +1,108 @@
+.\" @(#)xil_cis_create.3 1.3 97/05/12 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_create 3 "18 August 1993" "" "XIL Library"
+.SH NAME
+xil_cis_create \- create a new compressed image sequence
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilCis xil_cis_create ( XilSystemState " system_state , 
+.if t .in +5n
+.br
+.BI "char *" compressorname );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_cis_create
+.IX Functions xil_cis_create
+.IX "CIS Functions" "xil_cis_create" 
+.nh
+This function creates a new compressed image sequence (CIS).
+A CIS is a container that holds compressed images. On creation, it is
+associated with a particular type of compressor and will then hold only 
+frames of that type.
+.P
+.I system_state
+is a handle to the object returned by 
+.BR xil_open (3)
+when it is invoked. 
+.P
+.I compressorname
+is a string that provides the name of a compressor recognized by the 
+XIL library. XIL currently supports the following set of compression 
+types.
+.P
+.in +4
+"Jpeg"
+.br
+"JpegLL"
+.br
+"Cell"
+.br
+"CellB"
+.br
+"faxG3"
+.br
+"faxG4"
+.br
+"Mpeg1"
+.br
+"H261"
+.in
+.P
+Consult the man page of the same name for details about the individual
+compression types.
+.P
+If this function is successful, then a handle to an
+.I XilCis
+object is returned, which may be used in subsequent calls to xil_cis-routines.  When  the 
+.I XilCis 
+object is no longer needed, release the resources associated with the CIS by passing its handle to 
+.BR xil_cis_destroy (3).
+.SH ERRORS
+.nh
+If the
+.BR xil_cis_create(\^) 
+call fails, a value of NULL is returned.
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide." 
+.SH EXAMPLES
+.nh
+Open and close a JPEG CIS using the XIL library:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilCis cis;
+.ta 3.5i
+State = xil_open(\^);
+cis = xil_cis_create(State, \^"Jpeg\^");  
+
+-- calls to JPEG-specific compression routines --
+
+xil_cis_destroy(cis);
+xil_close(State);
+.RE
+.fi
+.ft 1
+.fi
+.SH SEE ALSO
+.BR xil_open (3),
+.BR xil_close (3),
+.BR xil_cis_destroy (3),
+.BR xil_cis_flush (3),
+.BR xil_cis_get_state (3),
+.BR xil_cis_put_bits (3),
+.BR xil_cis_reset (3),
+.BR xil_cis_seek (3),
+.BR xil_compress (3),
+.BR xil_decompress (3).

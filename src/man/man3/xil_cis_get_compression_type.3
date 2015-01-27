@@ -1,0 +1,56 @@
+.\" @(#)xil_cis_get_compression_type.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_compression_type 3 "17 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_compression_type, xil_cis_get_compressor \- return the generic
+or specific name of a codec.
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.sp .5v
+.fi
+.BI "char *xil_cis_get_compression_type (XilCis " cis );
+.P
+.BI "char *xil_cis_get_compressor (XilCis " cis );
+.if t .in +5n
+.in
+.ft R
+.SH DESCRIPTION
+.LP
+.IX xil_cis_get_compression_type
+.IX Functions xil_cis_get_compression_type
+.IX "CIS Functions" "xil_cis_get_compression_type" 
+.I xil_cis_get_compression_type 
+returns a character string giving the generic
+class name of a compressor or decompressor. For example, any Jpeg CIS would
+return the string "JPEG". All capital letters are used in these codec class
+names.
+.P
+.I xil_cis_get_compressor
+returns a character string giving the name of the specific compressor
+implementation. For example, the default XIL library Jpeg compressor
+would return the string "Jpeg", while the implementation using the 
+Visual Instruction Set (VIS) on UltraSparc systems would return the
+string "JpegVIS".
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.RS
+.ft B
+.nf 
+XilCis cis;
+char *compression_type;
+char *compressor
+.sp
+compression_type = xil_cis_get_compression_type(cis);
+.br
+compressor = xil_cis_get_compressor(cis);
+.fi
+.ft
+.RE
+.SH SEE ALSO
+.BR xil_compress (3),
+.BR xil_cis_get_compressor (3).  

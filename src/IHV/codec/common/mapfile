@@ -1,0 +1,156 @@
+##
+##  @(#)mapfile	1.10 00/01/24 
+##
+##
+##  Linker MapFile for xiliUtils_DctCommon.so.2
+##
+
+xiliUtils_DctCommon.so.2 {
+    global:
+        __0FGDct8x8Pi;
+        __0FJgetblocksPUcNCBPPsPPUciNFG;
+        __0FJputblocksPUcNCBPPUciNCF;
+        __0FKcopyblocksPUcNFBiNCH;
+        __0OeqRC6MHuffman_CodeTB;
+        __0OneRC6MHuffman_CodeTB;
+        __0dJQuantizerG__vtbl;
+        __0dLZigZagArrayGzigzag;
+        __0dPHuffman_EncoderG__vtbl;
+        __0dZJpeg_Huffman_Encoder_BaseG__vtbl;
+        __0fGHTableEisOKv;
+        __0fGHTableIAdd_CodeRC6MHuffman_Code;
+        __0fGHTableIAdd_CodeUiP6MHuffman_Code;
+        __0fGHTableIAdd_CodeUsTB;
+        __0fGHTableIGet_Codei;
+        __0fGHTableJNum_CodesvK;
+        __0fGHTableLNum_SymbolsvK;
+        __0fGHTableLSymbolTablei;
+        __0fGQTableFScalei;
+        __0fGQTableKInitializePAIi;
+        __0fGQTableKInitializei;
+        __0fJQuantizerEInitUiTBUcP6MSingleBuffer;
+        __0fJQuantizerFScaleiTB;
+        __0fJQuantizerFTableiK;
+        __0fJQuantizerGDeletev;
+        __0fJQuantizerJAdd_TableP6GQTablei;
+        __0fJQuantizerJAdd_TablePAIii;
+        __0fJQuantizerJAdd_TableR6GQTablei;
+        __0fJQuantizerKtableInUsei;
+        __0fJQuantizerKusingTablei;
+        __0fJQuantizerLtableLoadedi;
+        __0fJQuantizerOnumTablesInUsev;
+        __0fJQuantizerOtableOutputtedi;
+        __0fJQuantizerPresetTableUsagev;
+        __0fKIdctParserFresetv;
+        __0fKIdctParserHgetbitsi;
+        __0fKIdctParserKinitParserv;
+        __0fKJpegParserEisOKv;
+        __0fKJpegParserFresetv;
+        __0fKJpegParserKburnFramesi;
+        __0fKJpegParserKreadtoscanv;
+        __0fKJpegParserNgetOutputTypePUiNCBP6N__XilDataType;
+        __0fKJpegParserRfree_decode_tablePi;
+        __0fKJpegParserTcreate_decode_tableP6MHuffman_CodeiT;
+        __0fLIdctDecoderGdecodePi;
+        __0fLIdctDecoderRfree_decode_tablePi;
+        __0fLIdctDecoderTcreate_decode_tablePiP6FCodesi;
+        __0fMSingleBufferEinitPUciPFiPv_iPv;
+        __0fMSingleBufferHaddBytei;
+        __0fNJpegByteArrayEisOKv;
+        __0fNJpegByteArrayGappendUc;
+        __0fNJpegByteArrayGlengthv;
+        __0fNJpegByteArrayIretrievei;
+        __0fPHuffman_EncoderEInitUiUcP6MSingleBuffer;
+        __0fPHuffman_EncoderFResetv;
+        __0fPHuffman_EncoderFTableiK;
+        __0fPHuffman_EncoderGDeletev;
+        __0fPHuffman_EncoderIPut_CodeiNDB;
+        __0fPHuffman_EncoderJAdd_TableP6GHTablei;
+        __0fPHuffman_EncoderJAdd_TableR6GHTablei;
+        __0fPHuffman_EncoderKtableInUsei;
+        __0fPHuffman_EncoderKtableIndexiK;
+        __0fPHuffman_EncoderKusingTablei;
+        __0fPHuffman_EncoderLFlush_Codesv;
+        __0fPHuffman_EncoderLOutput_Bytei;
+        __0fPHuffman_EncoderLnonsignbitsi;
+        __0fPHuffman_EncoderLtableLoadedi;
+        __0fPHuffman_EncoderOnumTablesInUsev;
+        __0fPHuffman_EncoderOtableOutputtedi;
+        __0fPHuffman_EncoderPresetTableUsagev;
+        __0fWJpegHuffmanDecoderBaseKinitdecodev;
+        __0fWJpegHuffmanDecoderBaseMfinishdecodePPUcPUc;
+        __0fWJpegHuffmanDecoderBaseRfinishRstIntervalPPUcPUc;
+        __0fZJpeg_Huffman_Encoder_BaseEisOKv;
+        __0fZJpeg_Huffman_Encoder_BaseFResetv;
+        __0fZJpeg_Huffman_Encoder_BaseGOutputi;
+        __0fZJpeg_Huffman_Encoder_BaseNOutputChangesi;
+        __0fZJpeg_Huffman_Encoder_BaseYcreateBitSizeTableLookupPiUi;
+        __0oGHTablectUiTBi;
+        __0oGHTabledtv;
+        __0oGHTablevci;
+        __0oGQTableasRC6GQTable;
+        __0oGQTablectRC6GQTable;
+        __0oGQTablectUi;
+        __0oKColorValuectRC6KColorValue;
+        __0oKColorValuectv;
+        __0oKIdctParserctv;
+        __0oKJpegParserct6Jjpeg_mode;
+        __0oKJpegParserdtv;
+        __0oMHuffman_CodeasRC6MHuffman_Code;
+        __0oMIdctSplatterctv;
+        __0oMIdctSplatterdtv;
+        __0oNJpegByteArraycti;
+        __0oNJpegByteArraydtv;
+        __0oZJpeg_Huffman_Encoder_BasectUiTBUcP6MSingleBuffer;
+        __0oZJpeg_Huffman_Encoder_Basedtv;
+        __0FPxili_copy_rectsPvUiNECP6KXilStorageP6GXilRoiP6GXilBox;
+#
+# Ycc2RgbConverter functions
+#
+        __0fQYcc2RgbConverterEisOKv;
+        __0fQYcc2RgbConverterIcvtBlockPUcNCBUiNCETBNCE;
+        __0fQYcc2RgbConverterIcvtBlockPsNCBUiNCEPUcNCE;
+        __0fQYcc2RgbConverterIcvtCellBUcNDBUsPUcUiTH;
+        __0fQYcc2RgbConverterNcvtMacroBlockPUcNCBUiNCETBNCE;
+        __0fQYcc2RgbConverterNcvtMacroBlockPsNCBUiNCEPUcNCE;
+        __0oQYcc2RgbConvertercti;
+        __0oQYcc2RgbConverterdtv;
+#
+# CompressInfo functions
+#
+        __0fMCompressInfoEisOKv;
+        __0oMCompressInfoctP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0oMCompressInfodtv;
+#
+# DecompressInfo functions
+#
+        __0fODecompressInfoEisOKv;
+        __0fODecompressInfoJcopyRectsP6ODecompressInfo;
+        __0oODecompressInfoctP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0oODecompressInfoctP6ODecompressInfo;
+        __0oODecompressInfoctP6ODecompressInfoUiNCC6N__XilDataTypeNCCPv;
+        __0oODecompressInfodtv;
+#
+# BlockMan functions
+#
+        __0fIBlockManMprocessBlockPUcNCBUiNCETBNCE;
+        __0fIBlockManMprocessBlockPsNCBUiNCEPUcNCE;
+        __0fIBlockManQcopyPartialBlockPUcTBUiNDD;
+        __0fIBlockManRcopyBlockToRasterPUcTBUi;
+        __0fIBlockManRcopyBlockToRasterPsTBUi;
+        __0fIBlockManSclampBlockToRasterPsPUcUi;
+        __0fIBlockManSclampBlockToRasterPsTBUi;
+        __0fIBlockManXcopyBlockRasterToRasterPUcTBUiNDD;
+        __0fIBlockManXcopyBlockRasterToRasterPsTBUiNDD;
+        __0fIBlockManaupsample411BlockFromRasterPUcNCBUiNCETBNCE;
+        __0fIBlockManaupsample411BlockFromRasterPsNCBUiNCEPUcNCE;
+        __0fIBlockManaupsample411FrameFromRasterP6ODecompressInfoPUcUiTCTDTCTD;
+        __0fIBlockManaupsample411FrameFromRasterP6ODecompressInfoPsUiTCTDTCTD;
+        __0fIBlockManbupsample411Block8FromRasterPUcNCBUiNCETBNCE;
+        __0oIBlockManctv;
+        __0oIBlockMandtv;
+#
+        idct;
+    local:
+	*;
+};

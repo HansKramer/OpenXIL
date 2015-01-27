@@ -1,0 +1,53 @@
+.\" @(#)xil_imagetype_get_datatype.3 1.3 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_imagetype_get_datatype 3 "16 June 1993" "" "XIL Library"
+.SH "NAME"
+xil_imagetype_get_datatype \- get data type of an image type object
+.SH "SYNOPSIS"
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilDataType xil_imagetype_get_datatype (XilImageType " imagetype );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_imagetype_get_datatype
+.IX Functions xil_imagetype_get_datatype
+.IX "Image Type Functions" "xil_imagetype_get_datatype"
+.BR xil_imagetype_get_datatype (\^)
+gets the data type of an image type object.
+XilDataType is an enumerated type. Its possible values are XIL_BIT, XIL_BYTE,
+XIL_SHORT and XIL_FLOAT.
+.P
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the data type of an image type object:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImageType imagetype;
+XilDataType datatype;
+.ta 3.5i
+.sp
+datatype = xil_imagetype_get_datatype (imagetype);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_imagetype (3),
+.BR xil_imagetype_get_info (3),
+.BR xil_imagetype_get_width (3),
+.BR xil_imagetype_get_height (3),
+.BR xil_imagetype_get_nbands (3),
+.BR xil_imagetype_get_size (3).

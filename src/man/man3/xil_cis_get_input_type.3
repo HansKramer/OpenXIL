@@ -1,0 +1,73 @@
+.\" @(#)xil_cis_get_input_type.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_input_type 3 "07 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_input_type \- return the XilImageType that the CIS will accept for compression 
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilImageType xil_cis_get_input_type (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_get_input_type
+.IX Functions xil_cis_get_input_type
+.IX "CIS Functions" "xil_cis_get_input_type" 
+This function returns the preferred image type that the 
+.I cis
+(the specified compressed image sequence) will accept for compression.
+Unless a 
+.I cis 
+is documented as handling multiple input types, this
+is the only type that the 
+.I cis 
+will accept.  If 
+.I xsize, ysize, 
+or 
+.I nbands
+are 0, then
+.I cis 
+will currently accept images that vary in these dimensions.
+.LP
+Information about the image type that is not available when you first create
+a CIS may become available after your first call to the
+.BR xil_compress (3)
+function. In other words, the values of
+.I xsize 
+and
+.I ysize
+will never be zero after you call
+.BR xil_compress (3).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.RS
+.ft B
+.nf
+XilCis cis;
+XilImageType pref_type;
+XilDataType cis_datatype;
+unsigned int cis_xsize, cis_ysize, cis_nbands;
+.sp
+pref_type = xil_cis_get_input_type(cis);
+xil_imagetype_get_info(pref_type, &cis_xsize, &cis_ysize,
+                         &cis_nbands, &cis_datatype);
+.sp
+printf("Preferred CIS has width=%d height=%d nbands=%d datatype=%d\\n",
+          cis_xsize, cis_ysize, cis_nbands, cis_datatype);
+.fi
+.ft
+.RE
+.SH SEE ALSO
+.BR xil_compress (3),
+.BR xil_cis_create (3).

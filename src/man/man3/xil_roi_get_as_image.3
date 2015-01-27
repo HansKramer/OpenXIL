@@ -1,0 +1,77 @@
+.\" @(#)xil_roi_get_as_image.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_get_as_image 3 "04 March 1994" "" "XIL Library"
+.SH NAME
+xil_roi_get_as_image \- get an image version of an ROI
+.SH SYNOPSIS
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage xil_roi_get_as_image ( XilRoi " roi );
+.if t .in +5n
+.br
+.P
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_roi_get_as_image
+.IX Functions xil_roi_get_as_image
+.IX "ROI Functions" "xil_roi_get_as_image"
+.nh
+This function returns a handle to a new binary (XIL_BIT) image that is an
+image representation of the supplied ROI.  The image returned will be just
+large enough to contain all of the regions of interest; in other words,
+a bounding box image is generated.  The beginning x and y values for the 
+upper-leftmost ROI are encoded as -(x) and -(y)
+in the returned image's origin. For example, if the upper-left ROI pixel
+in the source image is at location (50,50), it is encoded to (-50, -50) in
+the returned image's origin.
+If a pixel
+in the image is contained within the ROI, it is set to 1; otherwise, it is
+set to 0.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the ROI associated with an image. Then create an image mask
+that corresponds to the ROI returned:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilImage image, image_mask;
+XilRoi roi;
+.ta 3.5i
+.sp
+roi = xil_get_roi (image);
+if (roi == NULL) {
+    /* The image had no ROI associated with it,
+       create one that encompasses the whole image */
+    roi = xil_roi_create (State);
+    xil_roi_add_rect (roi, 0, 0, xil_get_width(image), xil_get_height(image));
+}
+image_mask = xil_roi_get_as_image (roi);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_roi (3),
+.BR xil_set_roi (3),
+.BR xil_roi_add_image (3),
+.BR xil_roi_add_rect (3),
+.BR xil_roi_add_region (3),
+.BR xil_roi_create (3),
+.BR xil_roi_create_copy (3),
+.BR xil_roi_destroy (3),
+.BR xil_roi_get_as_region (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_translate (3),
+.BR xil_roi_unite (3).

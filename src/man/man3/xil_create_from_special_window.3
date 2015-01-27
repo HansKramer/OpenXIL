@@ -1,0 +1,112 @@
+.\" @(#)xil_create_from_special_window.3 1.8 97/05/30 SMI/VPG;
+.so man3/xil.macs
+.TH xil_create_from_special_window 3 "7 January 1998" "" "XIL Library"
+.SH NAME
+xil_create_from_special_window \- create device images from an enhanced capability window
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage"
+.br
+.BI "xil_create_from_special_window(XilSystemState " State ,
+.br
+.if t .in +5n
+.br
+.BI "Display *" display ,
+.br
+.BI "Window " window ,
+.br
+.BI "XilWindowcaps " wincaps );
+.br
+.ft R
+
+.SH DESCRIPTION
+.nh
+This function creates an XIL display image from a window with special
+display capabilities. In the current release, these capabilities include
+double-buffering and stereo, or a combination of both.
+These routines create images that are tied to particular devices.
+.P
+The type XilWindowCaps is an enumerated type that currently has two
+values:
+.nf
+
+     XIL_DOUBLE_BUFFER
+     XIL_STEREO
+
+.fi
+These values may be bitwise or'ed to affect multiple capabilities,
+such as double-buffered stereo.
+.P
+.BR xil_create_from_special_window
+(\^) creates an image associated with the specified X window in the same way that 
+.BR xil_create_from_window
+(\^) does, except that it attempts to establish the special capabilities.
+If the requested capabilities are not supported on the display device,
+the call will return NULL. It is then the developer's responsibilty
+to catch the failure and fall back to creating a normal display
+image, if appropriate for the application.
+.P
+.nh
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide." 
+.SH EXAMPLES
+.nh
+Create a double_buffered XIL display image, copy a stereo pair to it,
+and bring it to the front display.
+.sp
+.nf
+.ft 3
+    XilSystemState State;
+    XilImage stereo;
+    XilImage left, right;
+    Display* display;
+    Window window;
+
+    /* 
+     *  Create a double-buffered XIL display image from existing 
+     *  X display and window 
+     */
+    stereo = xil_create_from_window(State, display, window,
+                                    XIL_DOUBLE_BUFFER | XIL_STEREO);
+
+    if(stereo == NULL) {
+        /* Handle failure */
+    }
+
+    xil_set_active_buffer(stereo, XIL_BACK_LEFT_BUFFER);
+    xil_copy(left, stereo);
+    xil_set_active_buffer(stereo, XIL_BACK_RIGHT_BUFFER);
+    xil_copy(right, stereo);
+    xil_swap_buffers(stereo);
+.sp
+.fi
+.SH NOTES
+xil_create_from_special_window() can provide the same functionality as
+xil_create_double_buffered_window() if given the XilWindowCaps
+parameter of XIL_DOUBLE_BUFFER.
+.P
+On creation of multiple-buffered display images, there will be a 
+default active buffer.
+.nf
+
+     XIL_DOUBLE_BUFFER:               XIL_BACK_BUFFER
+     XIL_STEREO:                      XIL_LEFT_BUFFER
+     XIL_DOUBLE_BUFFER | XIL_STEREO:  XIL_BACK_LEFT_BUFFER
+
+.fi
+It is good practice, however, to explicitly set the active buffer
+before any read or write operation.
+.nh
+.SH SEE ALSO
+.BR xil_create_from_window (3),
+.BR xil_create_double_buffered_window (3),
+.BR xil_swap_buffers (3),
+.BR xil_get_active_buffer (3),
+.BR xil_set_active_buffer (3).
+

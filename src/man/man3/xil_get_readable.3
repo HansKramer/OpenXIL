@@ -1,0 +1,87 @@
+.\" @(#)xil_get_readable.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_readable 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_get_readable, xil_get_writable \- return TRUE if an image can be
+used as a source or destination
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "Xil_boolean  xil_get_readable (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "Xil_boolean  xil_get_writable (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_get_readable
+.IX Functions xil_get_readable
+.IX "Image Functions" "xil_get_device_readable"
+.BR xil_get_readable (\^)
+returns 
+.SM TRUE 
+if an 
+.I image 
+can be used as a source.  Some device images
+cannot be used as source images.
+.P
+.IX xil_get_writable
+.IX Functions xil_get_writable
+.IX "Image Functions" "xil_get_writable"
+.BR xil_get_writable (\^)
+returns 
+.SM TRUE 
+if an 
+.I image 
+can be used as a destination.  Some device
+images cannot be used as destination images.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Determine whether a particular image can be used as a source:
+.RS
+.ft B
+.nf
+.sp
+XilImage image, src;
+Xil_boolean isreadable;
+.sp
+isreadable = xil_get_readable(image);
+if(isreadable)
+   src = image;
+.fi
+.ft
+.RE
+.P
+Determine whether a particular image can be used as a destination:
+.RS
+.ft B
+.nf
+.sp
+XilImage image, dst;
+Xil_boolean iswritable;
+.sp
+iswritable = xil_get_writable(dst);
+if(iswritable)
+   dst = image;
+.fi
+.ft
+.RE
+.P
+.SH SEE ALSO
+.BR xil_create_from_device (3),
+.BR xil_create_from_window (3).

@@ -1,0 +1,243 @@
+.\" @(#)xil_error_get_string.3 1.3 97/05/30 SMI/VPG;
+.so man3/xil.macs
+.TH xil_error_get_string 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_error_get_string, xil_error_get_id, xil_error_get_category,
+xil_error_get_category_string, xil_error_get_location, xil_error_get_primary, xil_error_get_object, xil_object_get_error_string, xil_object_get_type \- get information about errors and the objects affected by errors
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "char *xil_error_get_string ( XilError " error );
+.if t .in +5n
+.br
+.P
+.sp .5v
+.BI "char *xil_error_get_id ( XilError " error );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilErrorCategory xil_error_get_category ( XilError " error );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "char *xil_error_get_category_string ( XilError " error );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "char *xil_error_get_location ( XilError " error );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "Xil_boolean xil_error_get_primary ( XilError " error );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilObject xil_error_get_object ( XilError " error );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_object_get_error_string ( XilObject " object, 
+.if t .in +5n
+.br
+.BI "char *" string, 
+.br
+.BI "int " string_size );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilObjectType xil_object_get_type ( XilObject " object );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+These functions can be used by an error handler (installed with 
+.BR xil_install_error_handler (3)
+to retrieve information about an error when it occurs.
+.P
+.IX xil_error_get_string
+.IX Functions xil_error_get_string
+.IX "Error Handling Functions" "xil_error_get_string"
+.nh
+.B xil_error_get_string
+(\^) returns an error string in the currently configured language.
+.P
+.IX xil_error_get_id
+.IX Functions xil_error_get_id
+.IX "Error Handling Functions" "xil_error_get_id"
+.nh
+.B xil_error_get_id
+(\^) returns a character string that uniquely identifies the error.
+.P
+.IX xil_error_get_category
+.IX Functions xil_error_get_category
+.IX "Error Handling Functions" "xil_error_get_category"
+.nh
+.B xil_error_get_category
+(\^) returns the general category of the error.  See 
+.B XilErrorDefines.h
+for the list of categories.
+.P
+.IX xil_error_get_category_string
+.IX Functions xil_error_get_category_string
+.IX "Error Handling Functions" "xil_error_get_category_string"
+.nh
+.B xil_error_get_category_string
+(\^) returns a character string that identifies the category of the error.
+.P
+.IX xil_error_get_location
+.IX Functions xil_error_get_location
+.IX "Error Handling Functions" "xil_error_get_location"
+.nh
+.B xil_error_get_location
+(\^) returns information that indicates where the error occurred in
+the XIL library. By reporting this information to
+support personnel, you can help pinpoint the source of the problem.
+.P
+.IX xil_error_get_primary
+.IX Functions xil_error_get_primary
+.IX "Error Handling Functions" "xil_error_get_primary"
+.nh
+.B xil_error_get_primary
+(\^) returns TRUE if the currently reported error is the primary cause
+of the error.  For instance, if memory runs out and an image cannot
+be created, then the primary error would be an XIL_ERROR_RESOURCE error
+at image creation.  Secondary errors might also be generated as the
+NULL image is used internally in the XIL library.
+.P
+.IX xil_error_get_object
+.IX Functions xil_error_get_object
+.IX "Error Handling Functions" "xil_error_get_object"
+.nh
+.B xil_error_get_object
+(\^) returns the XIL object that an error occurred on.  This object
+can then be used in the error handler to query for additional information about the object, either through 
+.B xil_object_get_error_string
+(\^) or through direct calls to the object.
+.P
+.IX xil_object_get_error_string
+.IX Functions xil_object_get_error_string
+.IX "Error Handling Functions" "xil_object_get_error_string"
+.nh
+.B xil_object_get_error_string
+(\^) creates a string with additional information about the object
+involved in the error.  This string may then be used in the error
+handler to provide additional information about the error.
+.P
+.IX xil_object_get_type
+.IX Functions xil_object_get_type
+.IX "Error Handling Functions" "xil_object_get_type"
+.nh
+.B xil_object_get_type
+(\^) returns  
+an enumeration constant that indicates the type 
+of an object.  This enumeration constant can be used in an error handler to take an 
+.I XilObject 
+and cast it to the appropriate type of 
+.I XilObject.  
+For example, after the object has been cast to 
+.I XilImage, 
+then additional information about the object is available.  The following
+excerpt from 
+.B XilDefines.h
+lists the possible 
+.I XilObjects:
+.P
+.RS
+.ft 3
+.nf
+typedef enum {
+	XIL_IMAGE,
+	XIL_IMAGE_TYPE,
+	XIL_LOOKUP,
+	XIL_CIS,
+	XIL_DITHER_MASK,
+	XIL_KERNEL,
+	XIL_SEL,
+	XIL_ROI,
+	XIL_ROI_LIST,
+	XIL_HISTOGRAM,
+	XIL_COLORSPACE
+} XilObjectType;
+.RE
+.ft 1
+.fi
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nf
+.sp
+Create an error handler that puts out information about the category,
+the error, the id, and any additional object information. Also output
+the width of the image if the error object is an image.
+.P
+.RS
+.ft 3
+Xil_boolean my_error_func(XilError error)
+{
+#define MAX 1024
+	XilObject obj;
+	char buffer[MAX];
+
+	printf("XIL Error category: %s\\n", xil_error_get_category_string(error));
+	printf("XIL Error string: %s\\n", xil_error_get_string(error));
+	printf("XIL Error id: %s\\n", xil_error_get_id(error));
+	obj = xil_error_get_object(error);
+	if (obj) {
+	    xil_object_get_error_string(obj,buffer,MAX);
+	    if (buffer[0] != 0)
+	        printf("XIL Object info: %s\\n", buffer);
+.sp
+.ne 20            
+	    if ( xil_object_get_type(obj) == XIL_IMAGE)
+	        printf("Image Width: %d\\n", xil_get_width( (XilImage)obj ));
+	}
+	return TRUE;
+	      
+		   
+}
+.RE
+.ft 1
+.SH NOTES
+.nh
+The character pointer returned from
+.B xil_error_get_string
+(\^) points to data internal to the error object and should not 
+be freed or modified.
+.SH SEE ALSO
+.BR xil_default_error_handler (3),
+.BR xil_install_error_handler (3).

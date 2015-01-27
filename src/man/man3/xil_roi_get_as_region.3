@@ -1,0 +1,72 @@
+.\" @(#)xil_roi_get_as_region.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_get_as_region 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_roi_get_as_region \- get an X region version of an ROI
+.SH SYNOPSIS
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "Region xil_roi_get_as_region ( XilRoi " roi );
+.if t .in +5n
+.br
+.P
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_roi_get_as_region
+.IX Functions xil_roi_get_as_region
+.IX "ROI Functions" "xil_roi_get_as_region"
+.nh
+This function returns a handle to an X region that corresponds to the supplied ROI.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the ROI associated with an image. Then create an X region
+that corresponds to the ROI returned:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilImage image;
+XilRoi roi;
+Region region;
+.ta 3.5i
+.sp
+roi = xil_get_roi (image);
+if (roi == NULL) {
+    /* The image had no ROI associated with it,
+       create one that encompasses the whole image */
+    roi = xil_roi_create (State);
+    xil_roi_add_rect (roi, 0, 0, xil_get_width(image), xil_get_height(image));
+}
+region = xil_roi_get_as_region (roi);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_roi (3),
+.BR xil_set_roi (3),
+.BR xil_roi_add_image (3),
+.BR xil_roi_add_rect (3),
+.BR xil_roi_add_region (3),
+.BR xil_roi_create (3),
+.BR xil_roi_create_copy (3),
+.BR xil_roi_destroy (3),
+.BR xil_roi_get_as_image (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_translate (3),
+.BR xil_roi_unite (3),
+.B XCreateRegion 
+(3),
+.B XPolygonRegion 
+(3).

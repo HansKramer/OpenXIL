@@ -1,0 +1,119 @@
+.\" @(#)xil_decompress.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_decompress 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_decompress \- decompress an image from a compressed image sequence
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_decompress ( XilCis " cis ,
+.if t .in +5n
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_decompress
+.IX Functions xil_decompress
+.IX "Video Compression Functions" "xil_decompress"
+This function decompresses the current read frame in a compressed image sequence (CIS)
+and puts its output into an image object.  It also increments the CIS's current read frame.
+.I cis 
+.nh
+is the input compressed image sequence. 
+.I dst 
+is the output 
+.I XilImage.  
+If the function is successful, an image from the CIS
+will be decompressed into the destination.
+.LP
+.nh
+The XIL library supports a number of compression formats, including CCITT G3/G4, JPEG, MPEG-1, H.261,
+Cell, and CellB.
+.SS ROI Behavior
+.nh
+If the destination image has had an ROI set on it (with 
+.BR xil_set_roi (3) )
+the ROI functions as a "write mask" for the destination image.
+Note that, in general, decompression to destination images with ROIs will not
+be accelerated by decompression molecules or by device-specific acceleration
+libraries.
+.SS Origin Behavior
+.nh
+Images stored in a CIS inherently have origins of 
+.BR (0.0, 0.0). 
+If a CIS image is decompressed into an image with a non-zero origin,
+the normal origin handling procedures will be invoked. See
+.BR xil_set_origin (3)
+for more detail.
+.SS XIL Decompressors
+.nh
+The XIL library provides the functions necessary to decompress an image 
+or sequence of images from a CIS. The compressed data may have been
+stored into the CIS either by using calls to 
+.BR xil_compress (3)
+or by inserting data into the CIS with 
+.BR xil_cis_put_bits (3)
+or 
+.BR xil_cis_put_bits_ptr (3).
+A standard XIL decompressor provides functions to:
+.P
+.in +4
+Decompress data from a single frame of a CIS to an XilImage.
+.P
+.in +4
+Provide a pointer to compressed data in a CIS. This can be
+used by applications to write the data out to a file, for example.
+.P
+.in +4
+Seek to a new position in a CIS.
+.P
+.in +4
+Determine the number of frames remaining in the CIS.
+.P
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide." 
+.SH EXAMPLES
+.nh
+Decompress the current read frame of a compressed image sequence:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilCis cis; 
+XilImage dst;
+XilImageType type;
+XilSystemState State;
+.ta 3.5i
+type = xil_cis_get_output_type(cis);
+dst = xil_create_from_type(State, type);
+while (xil_cis_has_frame(cis))
+   xil_decompress(cis, dst);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.fi
+.nh
+The data type and number of bands of the destination image must match the attributes
+of the images that are stored in the compressed image sequence.  Use 
+.BR xil_cis_get_output_type (3) 
+to get a CIS's image type. It is, however, permissible to decompress from
+a CIS into an image with larger or smaller dimensions than that of the CIS
+frame. In that case, the origins will be aligned and clipping calculations 
+performed to find the intersected region.
+.SH SEE ALSO
+.BR xil_compress (3),
+.BR xil_cis_has_frame (3), 
+.BR xil_cis_put_bits (3), 
+.BR xil_cis_put_bits_ptr (3), 
+.BR xil_cis_get_output_type (3). 

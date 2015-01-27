@@ -1,0 +1,146 @@
+.\" @(#)xil_compress.3 1.2 97/05/12 SMI/VPG;
+.so man3/xil.macs
+.TH xil_compress 3 "04 August 1993" "" "XIL Library"
+.SH NAME
+xil_compress \- compress an image and write it to a compressed image sequence
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_compress ( XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilCis " cis );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_compress
+.IX Functions xil_compress
+.IX "Video Compression Functions" "xil_compress"
+.nh
+This function compresses an image and writes the compressed data to a compressed image sequence (CIS).
+.P
+.I src 
+is the image (possibly a device image) containing the uncompressed data
+to be compressed.
+.P
+.I cis 
+is the compressed image sequence into which the compressed data will be
+written.  The compressor to be used is established when the CIS is created
+with the 
+.I xil_cis_create 
+(3) call.
+.P
+.nh
+This function appends the compressed image at the CIS's current 
+.I write_frame
+location, and then increments
+.I write_frame.
+Frame insertions at random points in the cis are not supported. Note that even after the 
+.B xil_compress
+(\^) operation occurs, the data for that frame is not guaranteed to be
+retrievable by an 
+.BR xil_cis_get_bits_ptr (3) 
+function, nor to be detectable by an 
+.BR xil_cis_has_data (3) 
+operation, until 
+.BR xil_cis_flush (3) 
+is called.
+.P
+Unless the CIS is reset, with a call to 
+.BR xil_cis_reset (3),
+all frames written to a CIS must have the same width, height, number of
+bands and datatype.
+.SS XIL Compressors
+.nh
+The XIL library provides the functions necessary to compress an image or sequence of images.  
+A standard XIL compressor provides functions to:
+.P
+.in +4
+Compress data and place it in a CIS 
+.BR ( xil_compress (3) ).
+.P
+.in +4
+Take user-supplied compressed data and copy it into a cis
+.BR ( xil_cis_put_bits (3) ).
+.P
+.in +4
+Take a pointer to user-supplied compressed data and treat it
+as compressed frames by reference, eliminating the need to copy 
+.BR ( xil_cis_put_bits_ptr (3) ).
+.P
+.in +4
+Determine how much data a CIS contains.
+.P
+.in +4
+Empty a CIS.
+.P
+The standard XIL library currently supports compression for the following 
+set of compression formats.
+.P
+.in +4
+.br
+Cell
+.br
+CellB
+.br
+Jpeg
+.br
+Jpeg Lossless
+.br
+CCITT G3 Fax
+.br
+CCITT G4 Fax
+.in
+.P
+In addition, support is provided for third parties to develop compression
+implementations for the Mpeg-1 and H.261 standards.
+.SS ROI Behavior
+.nh
+This function does not support source image ROIs.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Compress an image into a compressed image sequence:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src;
+XilCis cis;
+XilImageType type;
+XilSystemState State;
+.sp
+type = xil_cis_get_input_type(cis);
+src = xil_create_from_type(State, type);
+/* generate the src image... */
+xil_compress( src, cis );
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The 
+.I XilImageType 
+of the source image must match the input 
+.I XilImageType 
+of the CIS.  Use 
+.BR xil_cis_get_input_type (3) 
+to determine the required type.
+.SH SEE ALSO
+.BR xil_decompress (3),
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_cis_get_input_type (3),
+.BR xil_cis_create (3),
+.BR xil_cis_number_of_frames (3),
+.BR xil_cis_flush (3),
+.BR xil_cis_put_bits (3),
+.BR xil_cis_put_bits_ptr (3).

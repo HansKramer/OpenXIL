@@ -1,0 +1,2083 @@
+'\" t
+.\" @(#)XIL.3 1.2 97/01/30 SMI/VPG;
+.so man3/xil.macs
+.TH XIL 3 "13 April 1994" "" "XIL Library"
+.SH NAME
+XIL intro \- introduction to the XIL library 
+.SH DESCRIPTION
+.nh
+These XIL reference manual pages describe the syntax for using the functions contained in the XIL Imaging Library.  The library follows a standard "operator" imaging model.  References to images (image handles) are passed to operators, which act on the image data.  Each operator allows you to specify one or more source images and a single destination image, along with the parameters necessary to perform the operation.  General information on how the library handles certain concepts is provided as follows:
+.TP 50
+.I Topic
+.I Reference Manual Page
+.TP 50
+Images
+.BR xil_create (3)
+.TP 50
+Image Storage
+.BR Storage (3)
+.TP 50
+Regions of interest
+.BR xil_roi_create (3)
+.TP 50
+Color spaces
+.BR xil_set_colorspace (3)
+.TP 50
+Origins
+.BR xil_get_origin (3)
+.TP 50
+Kernels
+.BR xil_kernel_create (3)
+.TP 50
+Overview on compressors
+.BR xil_compress (3)
+.TP 50
+Specific information on XIL compressors
+Consult the man page for the specific compressor.
+.SH ERRORS
+.nh
+Error handling is asynchronous in the XIL library.  Because operations are
+deferred to optimize groups of operations, errors may not be reported
+after the function call that produces the error is made in the application
+program. Instead, the error is reported when the set of operations
+that contains the error is executed.
+.P
+.nh
+The XIL library uses the following categories of errors:
+.nf
+	User (or usage) errors
+	CIS data errors
+	Resource errors
+	Configuration errors
+	System  errors
+	Arithmetic errors
+	Internal errors
+	Other errors
+.fi
+.SS User Errors
+.nh
+Errors in this category are generated when a user passes invalid parameters
+to XIL functions or uses the library incorrectly in some other way.
+.SS CIS Data Errors
+.nh
+These errors occur when a bitstream does not conform to the specification
+of the specified compression type.
+.SS Resource Errors
+.nh
+The primary finite resource that the XIL library depends on is memory.
+If the XIL library runs out of memory, an error message to that effect
+will be generated. Then, depending on what the library was doing when 
+the request for more memory occurred, a number of secondary error messages
+may also be generated, indicating the failure of the library to create
+objects, perform operations, or complete various other tasks.
+Some of these errors may be System errors (see below).
+.SS Configuration Errors
+.nh
+Errors in this category can occur if the XIL library is improperly
+installed.
+.SS System Errors
+.nh
+System errors occur when the XIL library detects a problem with its ongoing
+operation.  These are often secondary errors caused by other failures in the
+system.
+.SS Internal Errors
+.nh
+XIL performs a number of internal checks on its operation.  A failure of
+one of these checks is called an internal error.  Internal errors should not
+occur.  If such errors do occur (in the absence of an out-of-memory error),
+contact customer support and give as much information
+as possible about the error and the situation that caused it.
+.SS Arithmetic Errors
+.nh
+These errors occur when XIL detects an arithmetic error in an operation (for
+example, dividing by zero).
+.SS For More Information
+.nh
+Appendix B of the 
+.I "XIL Programmer's Guide"
+provides a list of error messages by number.  It also lists which XIL
+functions may generate a given error message.
+.SH LIST OF FUNCTIONS
+.nh
+This section lists all the functions in the XIL Imaging Library.  If the function does not appear on a man page bearing its name (in other words,
+it is grouped with other functions on a man page bearing the name of one of those other functions), then the function whose page it appears 
+on is printed in parentheses
+to the right of it.
+.PP 
+.BR Cell (3)	
+.in 2i
+Cell compressor/decompressor for compressed image sequences (CISs)
+.sp
+.in 
+.BR CellB (3)	
+.in 2i
+XIL driver for CellB video compression/decompression
+.sp
+.in 
+.BR faxG3 (3)	
+.in 2i
+CCITT Group 3 compressor/decompressor for CISs
+.sp
+.in 
+faxG4(3) (
+.BR faxG3 (3)
+)	
+.in 2i
+CCITT Group 4 compressor/decompressor for CISs
+.sp
+.in 
+.BR H261 (3)	
+.in 2i
+H.261 decompressor for CISs
+.sp
+.in 
+.BR Jpeg (3)	
+.in 2i
+JPEG compressor/decompressor for CISs
+.sp
+.in 
+.BR JpegLL (3)	
+.in 2i
+JPEG Lossless compressor/decompressor for CISs
+.sp
+.in 
+.BR Mpeg1 (3)	
+.in 2i
+MPEG decompressor for CISs
+.sp
+.in 
+.BR PhotoCD (3)	
+.in 2i
+Reader for Kodak Photo CD(tm) format
+.sp
+.in 
+.BR Storage (3)
+.in 2i
+Storage types and formats for XIL images
+.sp
+.in
+.BR xil_absolute (3)	
+.in 2i
+finds the absolute value of pixels of an image
+.sp
+.in 
+.BR xil_add (3)	
+.in 2i
+adds two images
+.sp
+.in 
+xil_add_const(3) (
+.BR xil_add (3)
+)	
+.in 2i
+adds a constant to each band of an image
+.sp
+.in 
+.BR xil_affine (3)	
+.in 2i
+affine-transforms an image
+.sp
+.in 
+.BR xil_and (3)	
+.in 2i
+bitwise logical AND operation
+.sp
+.in 
+xil_and_const(3) (
+.BR xil_and (3)
+)	
+.in 2i
+bitwise logical AND operation with constants
+.sp
+.in 
+.BR xil_band_combine (3)	
+.in 2i
+interband linear combination operation
+.sp
+.in
+.BR xil_black_generation (3)
+.in 2i
+adjusts amount of black in a CMYK image
+.sp
+.in 
+.BR xil_blend (3)
+.in 2i
+blends two images according to an alpha image
+.sp
+.in 
+xil_call_next_error_handler(3) (
+.BR xil_install_error_handler (3)
+)	
+.in 2i
+allows error handler further down the chain to handle the error
+.sp
+.in 
+.BR xil_cast (3)	
+.in 2i
+casts an image from one data type into another
+.sp
+.in 
+.BR xil_choose_colormap (3)
+.in 2i
+chooses a reasonable colormap
+.sp
+.in 
+.BR xil_cis_attempt_recovery (3)
+.in 2i
+attempts recovery after an error occurs in a CIS
+.sp
+.in 
+.BR xil_cis_create (3)
+.in 2i
+creates a new CIS
+.sp
+.in 
+.BR xil_cis_destroy (3)
+.in 2i
+destroys a CIS
+.sp
+.in 
+.BR xil_cis_flush (3)
+.in 2i
+completes pending operations for a CIS
+.sp
+.in 
+.BR xil_cis_get_attribute (3)
+.in 2i
+gets a compressor attribute
+.sp
+.in 
+.BR xil_cis_get_autorecover (3)
+.in 2i
+indicates whether a decompressor will recover automatically from a recoverable
+datastream error
+.sp
+.in 
+.BR xil_cis_get_bits_ptr (3)
+.in 2i
+gets a pointer to compressed data
+.sp
+.in 
+.BR xil_cis_get_by_name (3)
+.in 2i
+returns a handle to the CIS object with the specified name
+.sp
+.in 
+.BR xil_cis_get_compression_type (3)
+.in 2i
+returns the name of the type of the compressor
+.sp
+.in 
+.BR xil_cis_get_compressor (3)
+.in 2i
+returns the name of a specific compressor
+.sp
+.in 
+.BR xil_cis_get_input_type (3)
+.in 2i
+returns the type of image that a CIS will accept for compression
+.sp
+.in 
+xil_cis_get_keep_frames(3) (
+.BR xil_cis_get_max_frames (3)
+)	
+.in 2i
+gets maximum number of previously decompressed frames in buffer 
+.sp
+.in 
+.BR xil_cis_get_max_frames (3)
+.in 2i
+gets maximum number of compressed frames in buffer 
+.sp
+.in 
+xil_cis_get_name(3) (
+.BR xil_cis_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified CIS object's name
+.sp
+.in 
+.BR xil_cis_get_output_type (3)	
+.in 2i
+returns the XilImageType produced by a compressor
+.sp
+.in 
+.BR xil_cis_get_random_access (3)
+.in 2i
+shows whether a compressor supports random accessing of a CIS
+.sp
+.in 
+xil_cis_get_read_frame(3) (
+.BR xil_cis_get_start_frame (3)
+)
+.in 2i
+returns index to the current frame
+.sp
+.in 
+.BR xil_cis_get_read_invalid (3)
+.in 2i
+determines whether a CIS is able to be decompressed
+.sp
+.in 
+.BR xil_cis_get_start_frame (3)
+.in 2i
+returns index to the first compressed image in the CIS
+.sp
+.in 
+xil_cis_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in 
+xil_cis_get_write_frame(3) (
+.BR xil_cis_get_start_frame (3)
+)
+.in 2i
+returns index to the last frame +1 of the CIS
+.sp
+.in 
+.BR xil_cis_get_write_invalid (3)
+.in 2i
+determines whether a CIS is able to continue to be compressed
+.sp
+.in 
+.BR xil_cis_has_data (3)
+.in 2i
+returns the number of bytes from the current frame to the end of the CIS
+.sp
+.in 
+xil_cis_has_frame(3) (
+.BR xil_cis_has_data (3)
+)
+.in 2i
+returns TRUE 
+if a complete frame exists at the read frame position
+.sp
+.in 
+xil_cis_number_of_frames(3) (
+.BR xil_cis_has_data (3)
+)
+.in 2i
+determines number of complete unread frames of compressed data in the CIS
+.sp
+.in 
+.BR xil_cis_put_bits (3)
+.in 2i
+puts compressed data into a CIS
+.sp
+.in 
+xil_cis_put_bits_ptr(3) (
+.BR xil_cis_put_bits (3)
+)
+.in 2i
+supplies a pointer to compressed data to a CIS
+.sp
+.in 
+.BR xil_cis_reset (3)
+.in 2i
+clears data in a CIS
+.sp
+.in 
+.BR xil_cis_seek (3)
+.in 2i
+finds a given frame of compressed data in a CIS
+.sp
+.in 
+xil_cis_set_attribute(3) (
+.BR xil_cis_get_attribute (3)
+)	
+.in 2i
+sets a compressor attribute
+.sp
+.in 
+xil_cis_set_autorecover(3) (
+.BR xil_cis_get_autorecover (3)
+)
+.in 2i
+sets permission to attempt recovery if autorecoverable bitstream errors occur
+.sp
+.in 
+xil_cis_set_keep_frames(3) (
+.BR xil_cis_get_max_frames (3)
+)
+.in 2i
+sets the number of frames prior to the current read frame to be kept in the buffer
+.sp
+.in 
+xil_cis_set_max_frames(3) (
+.BR xil_cis_get_max_frames (3)
+) 
+.in 2i
+sets the maximum number of frames or images in the buffer
+.sp
+.in 
+xil_cis_set_name(3) (
+.BR xil_cis_get_by_name (3)
+)
+.in 2i
+sets the name of the specified CIS object to the one provided
+.sp
+.in 
+.BR xil_cis_sync (3)
+.in 2i
+forces any outstanding call to
+.BR xil_compress (3)
+to complete when it would otherwise have been deferred
+.sp
+.in 
+xil_close(3) (
+.BR xil_open (3)
+)
+.in 2i
+ends an XIL session
+.sp
+.in 
+.BR xil_color_convert (3)
+.in 2i
+converts an image from one color space to another
+.sp
+.in 
+.BR xil_color_correct (3)
+.in 2i
+color corrects an XilImage given an XilColorspaceList of color spaces using KCMS (TM) color management
+.sp
+.in
+.BR xil_colorcube_create (3)
+.in 2i
+creates a lookup table that represents a colorcube
+.sp
+.in 
+.BR xil_colorspace_create (3)
+.in 2i
+create name of an XilColorspace object
+.sp
+.in
+xil_colorspace_destroy(3) (
+.BR xil_colorspace_create (3)
+)
+.in 2i
+destroy name of an XilColorspace object
+.sp
+.in
+.BR xil_colorspace_get_by_name (3)
+.in 2i
+gets a color space object by its name
+.sp
+.in 
+xil_colorspace_get_name(3) (
+.BR xil_colorspace_create (3)
+)
+.in 2i
+get name of an XilColorspace object
+.sp
+.in
+xil_colorspace_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+xil_colorspace_get_type(3) (
+.BR xil_colorspace_create (3)
+)
+.in 2i
+get type of an XilColorspace object
+.sp
+.in
+xil_colorspace_set_name(3) (
+.BR xil_colorspace_create (3)
+)
+.in 2i
+set the name of an XilColorspace object
+.sp
+.in
+.BR xil_colorspacelist_create (3) 
+.in 2i
+create an XilColorspaceList object
+.sp
+.in
+xil_colorspacelist_destroy(3) (
+.BR xil_colorspacelist_create (3)
+)
+.in 2i
+destroy an XilColorspaceList object
+.sp
+.in
+xil_colorspacelist_get_by_name(3) (
+.BR xil_colorspacelist_create (3)
+)
+.in 2i
+get by name an XilColorspaceList object
+.sp
+.in
+xil_colorspacelist_get_name(3) (
+.BR xil_colorspacelist_create (3)
+)
+.in 2i
+get name of an XilColorspaceList object
+.sp
+.in
+xil_colorspacelist_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+xil_colorspacelist_set_name(3) (
+.BR xil_colorspacelist_create (3)
+)
+.in 2i
+set name of an XilColorspaceList object
+.sp
+.in
+.BR xil_compress (3)
+.in 2i
+compresses an image into a CIS
+.sp
+.in 
+.BR xil_convolve (3)
+.in 2i
+convolves an image with a specified kernel
+.sp
+.in 
+.BR xil_copy (3)
+.in 2i
+copies an image
+.sp
+.in 
+.BR xil_copy_pattern (3)
+.in 2i
+replicates the source image into the destination image
+.sp
+.in 
+.BR xil_copy_with_planemask (3)
+.in 2i
+use a plane mask to copy a source
+image into a destination image
+.sp
+.in 
+.BR xil_create (3)
+.in 2i
+creates an image
+.sp
+.in 
+.BR xil_create_child (3)
+.in 2i
+creates a child image
+.sp
+.in 
+.BR xil_create_copy (3)
+.in 2i
+creates a new image with a copy of the source's data
+.sp
+.in 
+xil_create_double_buffered_window(3) (
+.BR xil_create_from_window (3)
+)
+.in 2i
+create device images
+.sp
+.in
+xil_create_from_device(3) (
+.BR xil_create_from_window (3)
+)
+.in 2i
+creates an image associated with the specified device
+.sp
+.in 
+.BR xil_create_from_type (3)
+.in 2i
+creates an image from an XilImageType object
+.sp
+.in 
+.BR xil_create_from_window (3)
+.in 2i
+creates an image associated with the specified X window
+.sp
+.in 
+.BR xil_create_temporary (3)
+.in 2i
+create a temporary image
+.sp
+.in
+xil_create_temporary_from_type(3) (
+.BR xil_create_temporary (3)
+)
+.in 2i
+create a temporary image
+.sp
+.in
+.BR xil_decompress (3)
+.in 2i
+decompresses a CIS
+.sp
+.in 
+xil_default_error_handler (3) (
+.BR xil_install_error_handler (3)
+)
+.in 2i
+prints error messages to the standard error output
+.sp
+.in 
+.BR xil_destroy (3)
+.in 2i
+destroys an image
+.sp
+.in 
+.BR xil_device_create (3)
+.in 2i
+creates a device object
+.sp
+.in 
+xil_device_destroy(3) (
+.BR xil_device_create (3)
+)
+.in 2i
+destroys a device object
+.sp
+.in 
+.BR xil_device_set_attribute (3)
+.in 2i
+stores device appropriate attributes
+in a device object
+.sp
+.in
+.BR xil_device_set_value (3)
+.in 2i
+stores device-initialization values in a device object
+.sp
+.in 
+xil_dilate(3) (
+.BR xil_erode (3)
+)
+.in 2i
+dilates an image
+.sp
+.in 
+.BR xil_dithermask_create (3)
+.in 2i
+creates a dither mask
+.sp
+.in 
+xil_dithermask_create_copy(3) (
+.BR xil_dithermask_create (3)
+)
+.in 2i
+creates and returns a copy of the specified dither mask
+.sp
+.in 
+xil_dithermask_destroy(3) (
+.BR xil_dithermask_create (3)
+)
+.in 2i
+destroys the specified dither mask
+.sp
+.in 
+.BR xil_dithermask_get_by_name (3)
+.in 2i
+returns a handle to the dither mask with the specified name
+.sp
+.in 
+.BR xil_dithermask_get_height (3)
+.in 2i
+gets the height of the specified dither mask
+.sp
+.in 
+xil_dithermask_get_name(3) (
+.BR xil_dithermask_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified dither mask's name
+.sp
+.in 
+xil_dithermask_get_nbands(3) (
+.BR xil_dithermask_get_height (3)
+)
+.in 2i
+gets the number of bands in the specified dither mask
+.sp
+.in 
+xil_dithermask_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+.BR xil_dithermask_get_values (3)
+.in 2i
+returns a copy of the internal values in a dithermask
+.sp
+.in
+xil_dithermask_get_width(3) (
+.BR xil_dithermask_get_height (3)
+)
+.in 2i
+gets the width of the specified dither mask
+.sp
+.in 
+xil_dithermask_set_name(3) (
+.BR xil_dithermask_get_by_name (3)
+)
+.in 2i
+sets the name of the specified dither mask to the one provided
+.sp
+.in 
+.BR xil_divide (3)
+.in 2i
+divides one image by another
+.sp
+.in 
+xil_divide_by_const(3) (
+.BR xil_divide (3)
+)
+.in 2i
+divides a constant into each band of an image
+.sp
+.in 
+xil_divide_into_const(3) (
+.BR xil_divide (3)
+)
+.in 2i
+divides each band of an image into constants
+.sp
+.in 
+.BR xil_edge_detection (3)
+.in 2i
+detects edges within an image
+.sp
+.in 
+.BR xil_erode (3)
+.in 2i
+erodes an image
+.sp
+.in 
+.BR xil_edge_detection (3)
+.in 2i
+detects edges within an image
+.sp
+.in 
+.BR xil_error_diffusion (3)
+.in 2i
+converts an image into a single-band image with a lookup table by error-diffusion dithering
+.sp
+.in 
+xil_error_get_category(3) (
+.BR xil_error_get_string (3)
+)
+.in 2i
+returns the general category of the error
+.sp
+.in 
+xil_error_get_category_string(3) (
+.BR xil_error_get_string (3)
+)
+.in 2i
+returns a character string that identifies the error category
+.sp
+.in 
+xil_error_get_id(3) (
+.BR xil_error_get_string (3)
+)
+.in 2i
+returns a character string that uniquely identifies the error
+.sp
+.in 
+xil_error_get_location(3) (
+.BR xil_error_get_string (3)
+)
+.in 2i
+returns an encrypted error location code
+.sp
+.in 
+xil_error_get_object(3) (
+.BR xil_error_get_string (3)
+)
+.in 2i
+returns the XIL object that an error occurred on
+.sp
+.in 
+xil_error_get_primary(3) (
+.BR xil_error_get_string (3)
+)
+.in 2i
+returns TRUE if the currently reported error is the primary cause of the error
+.sp
+.in 
+.BR xil_error_get_string (3)
+.in 2i
+returns an error string in the currently configured language
+.sp
+.in 
+.BR xil_export (3)
+.in 2i
+exports an image from XIL to application space
+.sp
+.in 
+.BR xil_extrema (3)
+.in 2i
+finds minimum and maximum values of an image
+.sp
+.in 
+.BR xil_fill (3)
+.in 2i
+performs boundary fill from a specified start point in an image
+.sp
+.in 
+.BR xil_get_active_buffer (3)
+.in 2i
+get or set the active buffer on a double-buffered device image
+.sp
+.in
+.BR xil_get_attribute (3)
+.in 2i
+gets the values of client attributes of images
+.sp
+.in 
+.BR xil_get_by_name (3)
+.in 2i
+returns a handle to the image with the specified name
+.sp
+.in 
+.BR xil_get_child_offsets (3)
+.in 2i
+gets the values of the offsets into a parent image
+.sp
+.in 
+.BR xil_get_datatype (3)
+.in 2i
+gets an image's data type
+.sp
+.in 
+.BR xil_get_device_attribute (3)
+.in 2i
+gets the values of attributes of device images
+.sp
+.in 
+xil_get_exported(3) (
+.BR xil_export (3)
+)
+.in 2i
+gets the export status of an image
+.sp
+.in 
+xil_get_height(3) (
+.BR xil_get_width (3)
+)
+.in 2i
+gets the height of an image
+.sp
+.in 
+.BR xil_get_imagetype (3)
+.in 2i
+gets the type of an image
+.sp
+.in 
+.BR xil_get_info (3)
+.in 2i
+gets information about the parameters of an image
+.sp
+.in 
+.BR xil_get_memory_storage (3)
+.in 2i
+gets an image's memory storage
+.sp
+.in 
+xil_get_name (3) (
+.BR xil_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified image's name
+.sp
+.in 
+xil_get_nbands(3) (
+.BR xil_get_width (3)
+)
+.in 2i
+gets the number of bands in an image
+.sp
+.in 
+.BR xil_get_origin (3)
+.in 2i
+gets the coordinates of the origin of an image
+.sp
+.in 
+xil_get_origin_x(3) (
+.BR xil_get_origin (3)
+)
+.in 2i
+gets the x coordinate of the origin of an image
+.sp
+.in 
+xil_get_origin_y(3) (
+.BR xil_get_origin (3)
+)
+.in 2i
+gets the y coordinate of the origin of an image
+.sp
+.in 
+.BR xil_get_parent (3)
+.in 2i
+gets a parent image
+.sp
+.in 
+xil_get_pixel(3) (
+.BR xil_set_pixel (3)
+)
+.in 2i
+gets the value of a single pixel in an image
+.sp
+.in 
+.BR xil_get_readable (3)
+.in 2i
+returns TRUE if an image can be used as a source
+.sp
+.in 
+.BR xil_get_roi (3)
+.in 2i
+gets the region of interest (ROI) attached to an image
+.sp
+.in 
+xil_get_size(3) (
+.BR xil_get_width (3)
+)
+.in 2i
+gets the size of an image
+.sp
+.in 
+.BR xil_get_state (3)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+.BR xil_get_storage_movement (3)
+.in 2i
+get and set the storage movement flag on an image
+.sp
+.in
+.BR xil_get_storage_with_copy (3)
+.in 2i
+get and set the image's storage through a copy to or from contiguous memory
+.sp
+.in
+xil_get_synchronize(3) (
+.BR xil_sync (3)
+)
+.in 2i
+returns status of synchronization of an image
+.sp
+.in 
+.BR xil_get_tile_storage (3)
+.in 2i
+get and set the storage associated with an image on a per tile basis
+.sp
+.in
+.BR xil_get_tilesize (3)
+.in 2i
+get and set the tile size of an image
+.sp
+.in
+.BR xil_get_width (3)
+.in 2i
+gets the width of an image
+.sp
+.in 
+xil_get_writable(3) (
+.BR xil_get_readable (3)
+)
+.in 2i
+returns TRUE if an image can be used as a destination
+.sp
+.in 
+.BR xil_histogram (3)
+.in 2i
+generates histogram data from an image
+.sp
+.in 
+.BR xil_histogram_create (3)
+.in 2i
+creates a histogram object
+.sp
+.in 
+xil_histogram_create_copy(3) (
+.BR xil_histogram_create (3)
+)
+.in 2i
+create and return a copy of histogram
+.sp
+.in
+xil_histogram_destroy(3) (
+.BR xil_histogram_create (3)
+)
+.in 2i
+destroys a histogram object
+.sp
+.in 
+.BR xil_histogram_get_by_name (3)
+.in 2i
+returns a handle to the histogram object with the specified name
+.sp
+.in 
+xil_histogram_get_info(3) (
+.BR xil_histogram_get_nbands (3)
+)
+.in 2i
+gets values of histogram attributes
+.sp
+.in 
+xil_histogram_get_limits(3) (
+.BR xil_histogram_get_nbands (3)
+)
+.in 2i
+gets values of arrays that represent values of the first and last bin in 
+each band
+.sp
+.in 
+xil_histogram_get_name(3) (
+.BR xil_histogram_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified histogram object's name
+.sp
+.in 
+.BR xil_histogram_get_nbands (3)
+.in 2i
+gets the number of bands represented by the histogram
+.sp
+.in 
+xil_histogram_get_nbins(3) (
+.BR xil_histogram_get_nbands (3)
+)
+.in 2i
+gets the array of values representing the number of histogram bins for each 
+band
+.sp
+.in 
+xil_histogram_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+xil_histogram_get_values(3) (
+.BR xil_histogram_get_nbands (3)
+)
+.in 2i
+gets the array of values for the data attribute
+.sp
+.in 
+xil_histogram_set_name(3) (
+.BR xil_histogram_get_by_name (3)
+)
+.in 2i
+sets the name of the specified histogram object to the one provided
+.sp
+.in 
+.BR xil_imagetype_get_by_name (3)
+.in 2i
+returns a handle to the image type object with the specified name
+.sp
+.in 
+.BR xil_imagetype_get_datatype (3)
+.in 2i
+gets an image type object's data type
+.sp
+.in 
+xil_imagetype_get_height(3) (
+.BR xil_imagetype_get_width (3)
+)
+.in 2i
+gets the height of an image type object
+.sp
+.in 
+.BR xil_imagetype_get_info (3)
+.in 2i
+gets information about the parameters of an image type object
+.sp
+.in 
+xil_imagetype_get_name(3) (
+.BR xil_imagetype_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified image type object's name
+.sp
+.in 
+xil_imagetype_get_nbands(3) (
+.BR xil_imagetype_get_width (3)
+)
+.in 2i
+gets the number of bands of an image type object
+.sp
+.in 
+xil_imagetype_get_size(3) (
+.BR xil_imagetype_get_width (3)
+)
+.in 2i
+gets the size of an image type object
+.sp
+.in 
+xil_imagetype_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+.BR xil_imagetype_get_width (3)
+.in 2i
+gets the width of an image type object
+.sp
+.in 
+xil_imagetype_set_name(3) (
+.BR xil_imagetype_get_by_name (3)
+)
+.in 2i
+sets the name of the specified image type object to the one provided
+.sp
+.in 
+xil_import(3) (
+.BR xil_export (3)
+)
+.in 2i
+imports an image from application space to XIL space
+.sp
+.in 
+.BR xil_install_error_handler (3)
+.in 2i
+installs a customized error handler
+.sp
+.in 
+.BR xil_interpolation_table_create (3)
+.in 2i
+creates an interpolation table object
+.sp
+.in 
+xil_interpolation_table_create_copy(3) (
+.BR xil_interpolation_table_create (3)
+)
+.in 2i
+creates copy of an interpolation table object
+.sp
+.in
+xil_interpolation_table_destroy(3) (
+.BR xil_interpolation_table_create (3)
+)
+.in 2i
+destroys an interpolation table object
+.sp
+.in 
+.BR xil_interpolation_table_get_data (3)
+.in 2i
+gets the data of an interpolation table object
+.sp
+.in 
+.BR xil_interpolation_table_get_kernel_size (3)
+.in 2i
+gets the
+kernel size of the subsample kernels in an interpolation table object
+.sp
+.in 
+.BR xil_interpolation_table_get_subsamples (3)
+.in 2i
+gets the number of
+subsamples in an interpolation table object
+.sp
+.in 
+.BR xil_interpolation_table_get_values (3)
+.in 2i
+get the values stored in an XilInterpolationTable object
+.sp
+.in
+.BR xil_kernel_create (3)
+.in 2i
+creates a kernel
+.sp
+.in 
+xil_kernel_create_copy(3) (
+.BR xil_kernel_create (3)
+)
+.in 2i
+creates and returns a copy of the specified kernel
+.sp
+.in 
+xil_kernel_create_separable(3) (
+.BR xil_kernel_create (3)
+)
+.in 2i
+create separable kernels
+.sp
+.in
+xil_kernel_destroy(3) (
+.BR xil_kernel_create (3)
+)
+.in 2i
+destroys the specified kernel
+.sp
+.in 
+.BR xil_kernel_get_by_name (3)
+.in 2i
+returns a handle to the kernel object with the specified name
+.sp
+.in 
+.BR xil_kernel_get_height (3)
+.in 2i
+gets the height of a kernel
+.sp
+.in 
+xil_kernel_get_key_x(3) (
+.BR xil_kernel_get_height (3)
+)
+.in 2i
+gets the x coordinate of the key value of a kernel
+.sp
+.in 
+xil_kernel_get_key_y(3) (
+.BR xil_kernel_get_height (3)
+)
+.in 2i
+gets the y coordinate of the key value of a kernel
+.sp
+.in 
+xil_kernel_get_name(3) (
+.BR xil_kernel_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified kernel object's name
+.sp
+.in 
+xil_kernel_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+.BR xil_kernel_get_values (3)
+.in 2i
+get the values stored internally in and XilKernel object
+.sp
+.in
+xil_kernel_get_width(3) (
+.BR xil_kernel_get_height (3)
+)
+.in 2i
+gets the width of a kernel
+.sp
+.in 
+xil_kernel_set_name(3) (
+.BR xil_kernel_get_by_name (3)
+)
+.in 2i
+sets the name of the specified kernel object to the one provided
+.sp
+.in 
+.BR xil_lookup (3)
+.in 2i
+passes an image through a lookup table
+.sp
+.in 
+.BR xil_lookup_convert (3)
+.in 2i
+calculates a lookup table that converts between source and destination lookup tables
+.sp
+.in 
+.BR xil_lookup_create (3)
+.in 2i
+creates a single lookup table
+.sp
+.in 
+.BR xil_lookup_create_combined (3)
+.in 2i
+creates a combined lookup table
+.sp
+.in 
+xil_lookup_create_copy(3) (
+.BR xil_lookup_create (3)
+)
+.in 2i
+creates and returns a copy of the specified lookup table
+.sp
+.in 
+xil_lookup_destroy(3) (
+.BR xil_lookup_create (3)
+)
+.in 2i
+destroys a lookup table
+.sp
+.in 
+.BR xil_lookup_get_band_lookup (3)
+.in 2i
+gets a single
+lookup table out of a combined lookup
+.sp
+.in 
+.BR xil_lookup_get_by_name (3)
+.in 2i
+returns a handle to the lookup table with the specified name
+.sp
+.in 
+xil_lookup_get_colorcube (3) (
+.BR xil_colorcube_create (3)
+)
+.in 2i
+returns TRUE if a lookup table is formatted as a colorcube
+.sp
+.in 
+xil_lookup_get_colorcube_info(3) (
+.BR xil_colorcube_create (3)
+)
+.in 2i
+returns formatting information about a lookup table used as a colorcube
+.sp
+.in 
+.BR xil_lookup_get_input_datatype (3)
+.in 2i
+gets the data type of the input to a lookup table
+.sp
+.in 
+xil_lookup_get_input_nbands(3) (
+.BR xil_lookup_get_output_nbands (3)
+)
+.in 2i
+gets the number of bands in the input from a lookup table
+.sp
+.in 
+xil_lookup_get_name(3) (
+.BR xil_lookup_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified lookup table's name
+.sp
+.in 
+xil_lookup_get_num_entries(3) (
+.BR xil_lookup_get_input_datatype (3)
+)
+.in 2i
+gets the number of entries in a lookup table
+.sp
+.in 
+xil_lookup_get_offset(3) (
+.BR xil_lookup_get_input_datatype (3)
+)
+.in 2i
+gets the offset value of a lookup table
+.sp
+.in 
+xil_lookup_get_output_datatype(3) (
+.BR xil_lookup_get_input_datatype (3)
+)
+.in 2i
+gets the data type of the output from a lookup table
+.sp
+.in 
+xil_lookup_get_output_nbands(3) (
+.BR xil_lookup_get_input_datatype (3)
+)
+.in 2i
+gets the number of bands in the output from a lookup table
+.sp
+.in 
+xil_lookup_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+xil_lookup_get_values(3) (
+.BR xil_lookup_set_values (3)
+)
+.in 2i
+gets the values in a lookup table
+.sp
+.in 
+.BR xil_lookup_get_version (3)
+.in 2i
+gets the unique version number of a lookup table
+.sp
+.in 
+xil_lookup_set_name(3) (
+.BR xil_lookup_get_by_name (3)
+)
+.in 2i
+sets the name of the specified lookup table to the one provided
+.sp
+.in 
+xil_lookup_set_offset(3) (
+.BR xil_lookup_get_input_datatype (3)
+)
+.in 2i
+sets the offset value of a lookup table
+.sp
+.in 
+.BR xil_lookup_set_values (3)
+.in 2i
+sets the values in a lookup table
+.sp
+.in 
+.BR xil_max (3)
+.in 2i
+finds the larger of pixels in two images
+.sp
+.in 
+.BR xil_min (3)
+.in 2i
+finds the lesser of pixels in two images
+.sp
+.in 
+.BR xil_multiply (3)
+.in 2i
+multiplies two images
+.sp
+.in 
+xil_multiply_const(3) (
+.BR xil_multiply (3)
+)
+.in 2i
+multiplies each band of an image by a floating point constant
+.sp
+.in 
+.BR xil_nearest_color (3)
+.in 2i
+converts an image into a single-band image by mapping pixels to the nearest
+entries in a lookup table
+.sp
+.in 
+.BR xil_not (3)
+.in 2i
+bitwise logical NOT operation
+.sp
+.in 
+xil_object_get_error_string(3) (
+.BR xil_error_get_string (3)
+)
+.in 2i
+creates a string with additional information about the object involved in the error
+.sp
+.in 
+xil_object_get_type(3) (
+.BR xil_error_get_string (3)
+)
+.in 2i
+returns the XilObjectType of an object
+.sp
+.in 
+.BR xil_open (3)
+.in 2i
+opens the XIL library for use
+.sp
+.in 
+.BR xil_or (3)
+.in 2i
+bitwise logical OR operation
+.sp
+.in 
+xil_or_const(3) (
+.BR xil_or (3)
+)
+.in 2i
+bitwise logical OR operation with constants
+.sp
+.in 
+.BR xil_ordered_dither (3)
+.in 2i
+uses ordered dithering to convert an image into a single-band image with
+a lookup table
+.sp
+.in 
+.BR xil_paint (3)
+.in 2i
+blends portions of an image with a single color using a 2-D brush
+.sp
+.in 
+xil_remove_error_handler(3) (
+.BR xil_install_error_handler (3)
+)
+.in 2i
+removes an error function from the error handler chain
+.sp
+.in 
+.BR xil_rescale (3)
+.in 2i
+rescales an image
+.sp
+.in 
+.BR xil_roi_add_image (3)
+.in 2i
+adds a binary image to an ROI
+.sp
+.in 
+.BR xil_roi_add_rect (3)
+.in 2i
+adds a rectangle to an ROI
+.sp
+.in 
+.BR xil_roi_add_region (3)
+.in 2i
+adds an X region to an ROI
+.sp
+.in 
+.BR xil_roi_create (3)
+.in 2i
+creates an ROI
+.sp
+.in 
+xil_roi_create_copy(3) (
+.BR xil_roi_create (3)
+)
+.in 2i
+creates and returns a copy of an ROI
+.sp
+.in 
+xil_roi_destroy(3) (
+.BR xil_roi_create (3)
+)
+.in 2i
+destroys an ROI
+.sp
+.in 
+.BR xil_roi_get_as_image (3)
+.in 2i
+gets an image version of an ROI
+.sp
+.in 
+.BR xil_roi_get_as_region (3)
+.in 2i
+returns a handle to an X region
+.sp
+.in 
+.BR xil_roi_get_by_name (3)
+.in 2i
+returns a handle to the ROI with the specified name
+.sp
+.in 
+xil_roi_get_name(3) (
+.BR xil_roi_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified ROI's name
+.sp
+.in 
+xil_roi_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+.BR xil_roi_intersect (3) 
+.in 2i
+finds the intersection of two ROIs
+.sp
+.in 
+xil_roi_set_name(3) (
+.BR xil_roi_get_by_name (3)
+)
+.in 2i
+sets the name of the specified ROI to the one provided
+.sp
+.in 
+.BR xil_roi_subtract_rect (3)
+.in 2i
+subtracts a rectangle from an ROI
+.sp
+.in 
+.BR xil_roi_translate (3)
+.in 2i
+translates an ROI
+.sp
+.in 
+.BR xil_roi_unite (3)
+.in 2i
+finds the union of two ROIs
+.sp
+.in 
+.BR xil_rotate (3)
+.in 2i
+rotates an image
+.sp
+.in 
+.BR xil_scale (3)
+.in 2i
+scales an image
+.sp
+.in 
+.BR xil_sel_create (3)
+.in 2i
+creates a structuring element (SEL)
+.sp
+.in 
+xil_sel_create_copy(3) (
+.BR xil_sel_create (3)
+)
+.in 2i
+creates and returns a copy of a SEL
+.sp
+.in 
+xil_sel_destroy(3) (
+.BR xil_sel_create (3)
+)
+.in 2i
+destroys a SEL
+.sp
+.in 
+.BR xil_sel_get_by_name (3)
+.in 2i
+returns a handle to the SEL with the specified name
+.sp
+.in 
+.BR xil_sel_get_height (3)
+.in 2i
+gets the height of a SEL
+.sp
+.in 
+xil_sel_get_key_x(3) (
+.BR xil_sel_get_height (3)
+)
+.in 2i
+gets the x coordinate of the key value of a SEL
+.sp
+.in 
+xil_sel_get_key_y(3) (
+.BR xil_sel_get_height (3)
+)
+.in 2i
+gets the y coordinate of the key value of a SEL
+.sp
+.in 
+xil_sel_get_name(3) (
+.BR xil_sel_get_by_name (3)
+)
+.in 2i
+returns a copy of the specified SEL's name
+.sp
+.in 
+xil_sel_get_state(3) (
+.BR xil_get_state (3)
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+.BR xil_sel_get_values (3)
+.in 2i
+get the values stored internally for a structuring element object
+.sp
+.in
+xil_sel_get_width(3) (
+.BR xil_sel_get_height (3)
+)
+.in 2i
+gets the width of a SEL
+.sp
+.in 
+xil_sel_set_name(3) (
+.BR xil_sel_get_by_name (3)
+)
+.in 2i
+sets the name of the specified SEL to the one provided
+.sp
+.in 
+xil_set_active_buffer(3) (
+.BR xil_get_active_buffer (3)
+)
+.in 2i
+set the active buffer on a double-buffered device image
+.sp
+.in
+xil_set_attribute(3) (
+.BR xil_get_attribute (3)
+)
+.in 2i
+sets the values of client attributes of images
+.sp
+.in 
+.BR xil_set_colorspace (3)
+.in 2i
+sets an image's color space
+.sp
+.in 
+.BR xil_set_data_supply_routine (3)
+.in 2i
+set the routine that will be used to fill in the storage for an image
+.sp
+.in
+xil_set_device_attribute(3) (
+.BR xil_get_device_attribute (3)
+)
+.in 2i
+sets the values of attributes of device images
+.sp
+.in 
+xil_set_memory_storage(3) (
+.BR xil_get_memory_storage (3)
+)
+.in 2i
+sets an exported image's memory storage
+.sp
+.in 
+xil_set_name(3) (
+.BR xil_get_by_name (3)
+)
+.in 2i
+sets the name of the specified image to the one provided
+.sp
+.in 
+xil_set_origin(3) (
+.BR xil_get_origin (3)
+)
+.in 2i
+sets the coordinates of the origin of an image
+.sp
+.in 
+.BR xil_set_pixel (3)
+.in 2i
+sets the value of a single pixel in an image
+.sp
+.in 
+xil_set_roi(3) (
+.BR xil_get_roi (3)
+)
+.in 2i
+sets an image's ROI
+.sp
+.in 
+xil_set_storage_movement(3) (
+.BR xil_get_storage_movement (3)
+)
+.in 2i
+set the storage movement flag on an image
+.sp
+.in
+xil_set_storage_with_copy(3) (
+.BR xil_get_storage with copy (3)
+)
+.in 2i
+set the image's storage through a copy to or from contiguous memory
+.sp
+.in
+xil_set_synchronize(3) (
+.BR xil_sync (3)
+)
+.in 2i
+sets synchronization of an image
+.sp
+.in 
+xil_set_tile_storage(3) (
+.BR xil_get_title_storage (3)
+)
+.in 2i
+set the storage associated with an image on a per tile basis
+.sp
+.in
+xil_set_tilesize(3) (
+.BR xil_get_tilesize (3)
+)
+.in 2i
+set the tile size of an image
+.sp
+.in
+.BR xil_set_value (3)
+.in 2i
+sets pixels of an image to constant values
+.sp
+.in 
+.BR xil_soft_fill (3)
+.in 2i
+performs a  soft fill from a specified starting point in an image
+.sp
+.in 
+.BR xil_squeeze_range (3)
+.in 2i
+produces a lookup table that will map an image into contiguous entries
+.sp
+.in 
+.BR xil_state_get_default_tilesize (3)
+.in 2i
+get the default tilesize for all images created with a particular XilSystemState
+.sp
+.in
+.BR xil_state_get_default_tiling_mode (3)
+.in 2i
+get the default tiling mode for all images created with a particular XilSystemState
+.sp
+.in
+.BR xil_state_get_interpolation_tables (3)
+.in 2i
+gets interpolation tables from the XilSystemState object
+.sp
+.in 
+.BR xil_state_get_show_action (3)
+.in 2i
+gets the current value of the SHOW_ACTION attribute of a system-state object
+.sp
+.in 
+xil_state_get_synchronize(3) (
+.BR xil_sync (3)
+)
+.in 2i
+returns synchronization status of an XIL State
+.sp
+.in 
+xil_state_set_default_tilesize(3) (
+.BR xil_state_get_default_tilesize (3)
+)
+.in 2i
+set the default tilesize for all images created with a particular XilSystemState
+.sp
+.in
+xil_state_set_default_tiling_mode(3) (
+.BR xil_state_get_default_tiling_mode (3)
+)
+.in 2i
+set the default tiling mode for all images created with a particular XilSystemState
+.sp
+.in
+xil_state_set_interpolation_tables(3) (
+.BR xil_state_get_interpolation_tables (3)
+)
+.in 2i
+sets interpolation tables on the XilSystemState object
+.sp
+.in 
+xil_state_set_show_action(3) (
+.BR xil_state_get_show_action (3)
+)
+.in 2i
+sets the current value of the SHOW_ACTION attribute of a system-state object
+.sp
+.in 
+xil_state_set_synchronize(3) (
+.BR xil_sync (3)
+)
+.in 2i
+sets synchronization status for an XIL State
+.sp
+.in 
+.BR xil_storage_create (3)
+.in 2i
+create XilStorage object
+.sp
+.in
+xil_storage_destroy(3) (
+.BR xil_storage_create (3)
+)
+.in 2i
+destroy XilStorage object
+.sp
+.in
+.BR xil_storage_get_band_stride (3)
+.in 2i
+get the values set on an XilStorage object
+.sp
+.in
+.BR xil_storage_get_by_name(3)
+.in 2i
+get a handle to a storage object  by specifying a name
+.sp
+.in
+.BR xil_storage_get_coordinates (3)
+.in 2i
+get the position of a storage tile within an image
+.sp
+.in
+xil_storage_get_data(3) (
+.BR xil_storage_get_band_stride (3)
+)
+.in 2i
+get the values set on an XilStorage object
+.sp
+.in
+.BR xil_storage_get_image (3)
+.in 2i
+get the image associated with a storage object
+.sp
+.in
+xil_storage_get_name(3) (
+.BR xil_storage_get_by_name(3)
+)
+.in 2i
+get a storage object name
+.sp
+.in
+xil_storage_get_offset(3) (
+.BR xil_storage_get_band_stride (3)
+)
+.in 2i
+get the values set on an XilStorage object
+.sp
+.in
+xil_storage_get_pixel_stride(3) (
+.BR xil_storage_get_band_stride (3)
+)
+.in 2i
+get the values set on an XilStorage object
+.sp
+.in
+xil_storage_get_scanline_stride(3) (
+.BR xil_storage_get_band_stride (3)
+)
+.in 2i
+get the values set on an XilStorage object
+.sp
+.in
+xil_storage_get_state(3) (
+.BR xil_get_state (3) 
+)
+.in 2i
+get the XilSystemState associated with an XIL object
+.sp
+.in
+.BR xil_storage_is_type (3)
+.in 2i
+returns the XilStorageType of the data in the XilStorage object
+.sp
+.in
+.BR xil_storage_set_band_stride (3)
+.in 2i
+set values on an XilStorage object
+.sp
+.in
+xil_storage_set_coordinates(3) (
+.BR xil_storage_get_coordinates (3)
+)
+.in 2i
+set the position of a storage tile within an image
+.sp
+.in
+xil_storage_set_data(3) (
+.BR xil_storage_set_band_stride (3)
+)
+.in 2i
+set values on an XilStorage object
+.sp
+.in
+xil_storage_set_data_release(3) (
+.BR xil_storage_set_band_stride (3)
+)
+.in 2i
+set values on an XilStorage object
+.sp
+.in
+xil_storage_set_name(3) (
+.BR xil_storage_get_by_name(3)
+)
+.in 2i
+set a storage object name
+.sp
+.in
+xil_storage_set_offset(3) (
+.BR xil_storage_set_band_stride (3)
+)
+.in 2i
+set values on an XilStorage object
+.sp
+.in
+xil_storage_set_pixel_stride(3) (
+.BR xil_storage_set_band_stride (3)
+)
+.in 2i
+set values on an XilStorage object
+.sp
+.in
+xil_storage_set_scanline_stride(3) (
+.BR xil_storage_set_band_stride (3)
+)
+.in 2i
+set values on an XilStorage object
+.sp
+.in
+.BR xil_subsample_adaptive (3)
+.in 2i
+adaptively subsamples an image 
+.sp
+.in 
+.BR xil_subsample_binary_to_gray (3)
+.in 2i
+subsamples a binary image and produces a grayscale image
+.sp
+.in 
+.BR xil_subtract (3)
+.in 2i
+subtracts one image from another
+.sp
+.in 
+xil_subtract_const(3) (
+.BR xil_subtract (3)
+)
+.in 2i
+subtracts a constant from each band of an image
+.sp
+.in 
+xil_subtract_from_const(3) (
+.BR xil_subtract (3)
+)
+.in 2i
+subtracts each band of an image from a constant
+.sp
+.in 
+.BR xil_swap_buffers (3)
+.in 2i
+move the contents of the back buffer to the front buffer for
+a double-buffered device image
+.sp
+.in
+.BR xil_sync (3)
+.in 2i
+forces computation of the value of an image when it would have otherwise been deferred
+.sp
+.in 
+.BR xil_tablewarp (3)
+.in 2i
+warps an image in both the horizontal and vertical directions
+.sp
+.in 
+xil_tablewarp_horizontal(3) (
+.BR xil_tablewarp (3)
+)
+.in 2i
+warps an image in the horizontal direction
+.sp
+.in 
+xil_tablewarp_vertical(3) (
+.BR xil_tablewarp (3)
+)
+.in 2i
+warps an image in the vertical direction
+.sp
+.in 
+.BR xil_threshold (3)
+.in 2i
+sets value of image pixel bands within a specified range
+.sp
+.in 
+.BR xil_toss (3)
+.in 2i
+throws away the contents of an image without destroying it
+.sp
+.in 
+.BR xil_translate (3)
+.in 2i
+translates an image
+.sp
+.in 
+.BR xil_transpose (3)
+.in 2i
+rotates or transposes an image
+.sp
+.in 
+.BR xil_xor (3)
+.in 2i
+bitwise logical XOR operation
+.sp
+.in 
+xil_xor_const(3) (
+.BR xil_xor (3)
+)
+.in 2i
+bitwise logical XOR operation with constants

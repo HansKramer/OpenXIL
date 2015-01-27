@@ -1,0 +1,557 @@
+.\" @(#)Cell.3 1.3 96/09/17 SMI/VPG;
+.so man3/xil.macs
+.TH "Cell" 3 "14 April 1993" "" "XIL Library"
+.SH NAME
+Cell \- Cell compressor/decompressor for compressed image sequences
+.SH DESCRIPTION
+.IX Cell
+.IX Functions Cell
+.IX Cell overview
+.nh
+The Cell image compression technology, which was developed by Sun, has
+been optimized for rapid decompression and display on simple hardware.
+Cell compression is able to achieve reasonable display quality on indexed color frame buffers. The initial focus of the Cell technology is
+for Sun-to-Sun communications, where the benefits of fast decode
+performance outweigh the benefits of standards. 
+.P
+.nh
+The Cell encoding process transforms individual video frames into a
+bytestream that can be displayed with the Cell decompressor. In the
+first step of the encoding process, the synthetic (or filtered) video
+images are analyzed to produce an appropriate colormap to represent the
+frames to be encoded. This step allows the specification of the colormap
+size, in order to leave colors unused. This enhances cooperation with
+the window manager and other applications. Cell also provides a dynamic
+colormap strategy in which a new colormap is generated after each frame
+is compressed. This map can be used in subsequent frames.
+.SS Choosing a Colormap
+.nh
+The compressor chooses the colormap to be used for encoding the current 
+image in one of three ways.  If Adaptive Colormap Selection (ACS) is 
+enabled, and a new colormap has not been associated with the compressor 
+since the last call to
+.BR xil_compress (3),
+the adapted colormap is used.  When ACS is disabled, the compressor always uses the colormap given by the 
+.SM COMPRESSOR_COLORMAP 
+attribute, if it has been set.  If the compressor does not have a colormap, either via the 
+.SM COMPRESSOR_COLORMAP 
+attribute or ACS, the compressor calls
+.BR xil_choose_colormap (3)
+to generate an optimal colormap for the image.  To reset ACS, give the compressor a new colormap via the 
+.SM COMPRESSOR_COLORMAP 
+attribute.
+.SS Image Types
+.nh
+The Cell compressor and decompressor, respectively, accept and produce
+3-band images in RGB color space.  The width and height of the images
+must be divisible by 4.
+.SS Creating a Cell CIS
+.nh
+To compress a compressed image sequence (CIS) with the XIL Cell compressor, specify "Cell" for the 
+.I compressorname
+argument in
+.BR xil_cis_create (3).
+.SS Getting and Setting Cell Attributes
+.nh
+Use 
+.BR xil_cis_get_attribute (3)
+and 
+.BR xil_cis_set_attribute (3)
+to get and set Cell CIS attributes.  These attributes are described in the
+following sections.  Refer to the example section for additional information.
+.SS Cell Compression Attributes
+.nh
+The following paragraphs describe the Cell CIS attributes available with the 
+XIL library. All structures and enumerations are defined via 
+.B xil.h.  
+Note that some attributes are "set-only" and others are "get-only."  This is noted under the 
+.I Access 
+heading for each attribute.  
+.PP
+Note that if you are setting an attribute and 
+that attribute is a structure, you must pass the address of that structure.  If
+you are getting an attribute, you must always pass its address.
+.IX "Cell" "compression attributes"
+.sp
+.ne 10
+.I ENCODING_TYPE
+.P
+.TP 15
+Description
+Specifies encoding algorithm
+.TP 15
+Access     
+get and set
+.TP 15 
+Type       
+typedef enum {
+.nf
+              BTC, DITHER
+} XilCellEncodingType;
+.fi
+.TP 15
+Values
+.I DITHER:
+.nh 
+Use the dither encoding technique, which chooses two colors and a mask that produces the least amount of error when dithered across the 4x4 region.  By selecting dither encoding, Adaptive Colormap Selection (ACS) is disabled.  The current value of the COLORMAP_ADAPTION attribute is ignored.
+.sp 
+.I BTC:
+.nh
+Use Block Truncation Coding to selection the two colors and the mask.  This is much faster than dither encoding and produces good results.
+.TP 15
+Default
+.I BTC
+.nf
+.sp
+.fi
+.P
+.I TEMPORAL_FILTERING
+.TP 15
+Description
+.nh
+Turns on or off a form of temporal filtering that helps with compression interframe encoding.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Xil_boolean
+.sp
+.ne 10
+.TP 15
+Values
+.I TRUE:
+.nh
+Filtering turned on
+.sp
+.I FALSE:
+.nh
+Filtering turned off
+.TP 15
+Default
+TRUE
+.nf
+.sp
+.fi
+.P
+.I COMPRESSOR_COLORMAP
+.P
+.TP 15
+Description
+Associates a colormap with the compressor for encoding images.
+.TP 15
+Access
+set-only
+.TP 15 
+Type
+XilLookup
+.TP 15
+Default
+.I NULL
+.nf
+.sp
+.fi
+.P
+.I COLORMAP_ADAPTION
+.P
+.TP 15
+Description
+.nh
+Enables or disables Adaptive Colormap Selection (ACS).  ACS selects a
+colormap for the next frame so that there is minimal visual change in 
+the colors displayed in current frame. Thus, ACS continually adapts the colormap so that 
+color changes between frames are minimized, even when there is a scene
+change. 
+.sp
+.nh
+ACS detects when an adapted colormap has too much error, such as after a
+scene change, and encodes new colormaps until the colormaps closely match the optimal colormap for the image.  So, when ACS is enabled, every frame may have a new colormap associated with it.
+.TP 15
+Access
+get and set
+.TP 15 
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE/FALSE
+.TP 15
+Default
+.I TRUE
+.TP 15
+Notes 
+.nh
+ACS is disabled when using dither encoding.
+.nf
+.sp
+.fi
+.P
+.I KEYFRAME_INTERVAL
+.P
+.TP 15
+Description
+.nh
+Specifies the interval for encoding key frames in the bytestream.  A key frame has a bytestream information header, a repeated colormap, and uses no interframe escape codes.  If KEYFRAME_INTERVAL is set to 0, then no key frames are encoded in the resulting Cell bytestream, and bit-rate control is disabled.
+.TP 15
+Access
+get and set
+.TP 15 
+Type
+int
+.TP 15
+Default
+.I 6
+.nf
+.ne 10
+.sp
+.fi
+.P
+.I BITS_PER_SECOND
+.TP 15
+Description
+.nh
+The bit rate of the resulting Cell bytestream.  The rate is guaranteed over a single frame group.  If BITS_PER_SECOND is set to 0, then bit rate control is disabled; this is the default.  If BITS_PER_SECOND is set to a rate lower than the compressor can produce, then an error is generated, and bit rate control is disabled.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+int
+.TP 15
+Default
+.I 0
+.nf
+.sp
+.fi
+.P
+.I COMPRESSOR_MAX_CMAP_SIZE
+.P
+.TP 15
+Description
+.nh
+Sets the maximum colormap size that will be encoded in the Cell bytestream.  If
+.SM COLORMAP_ADAPTION
+is enabled, this attribute limits the size of the colormaps produced by the compressor.  If 
+.SM COLORMAP_ADAPTION 
+is disabled, this attribute limits the size of the colormaps with the
+.SM COMPRESSOR_COLORMAP
+attribute.  If the compressor is given a colormap that is larger than 
+.SM COMPRESSOR_MAX_CMAP_SIZE
+, it will be truncated to this length.
+.sp
+.ne 10
+.nh
+The value of this attribute is passed in the Cell bytestream for retrieval with the 
+.SM DECOMPRESSOR_MAX_CMAP_SIZE
+attribute as an aid to X colormap management.
+.sp
+.ne 10
+.nh
+This attribute can only be set before the first 
+.BR xil_compress (3)
+call.  After
+.BR xil_compress (3)
+has been called or
+.SM COMPRESSOR_MAX_CMAP_SIZE
+has been set, it cannot be changed for the life of the XilCis.
+.TP 15
+Access
+get and set
+.TP 15 
+Type
+int
+.TP 15
+Default
+.I 256
+.nf
+.sp
+.fi
+.sp
+.P
+.I COMPRESSOR_FRAME_RATE
+.P
+.TP 15
+Description
+.nh
+Set the frame rate, in microseconds per frame, at which the images were
+captured.  This value is passed in the Cell bytestream for retrieval with the
+.SM DECOMPRESSOR_FRAME_RATE 
+attribute.  It is permissible to change this attribute in between calls to
+.BR xil_compress (3).
+.TP 15
+Access
+set-only
+.TP 15 
+Type
+Xil_unsigned32
+.TP 15
+Default
+.I 33333 (30 frames/second)
+.nf
+.sp
+.fi
+.sp
+.P
+.I COMPRESSOR_USER_DATA
+.P
+.TP 15
+Description
+.nh
+Set the user data to be encoded with the next frame.  This attribute clears
+itself after every call to
+.BR xil_compress (3),
+so it only affects the very next call to
+.B xil_compress 
+(\^).  A copy of the data is made when setting this attribute, so no assumptions are made about the validity of the data pointer after 
+the attribute is set. The given data is encoded into the Cell bytestream,
+making the data available to a decompressor via the 
+.SM DECOMPRESSOR_USER_DATA
+attribute.  The attribute accepts a pointer to XilCellUserData, which is a
+structure containing a pointer to the data and the length of the data.
+The length of the data is limited to 8K (8192 bytes) per frame.
+It is permissible to change this attribute in between calls to
+.BR xil_compress (3).
+.TP 15
+Access
+set-only
+.TP 15 
+Type
+typedef struct {
+.nf
+                Xil_unsigned8*   data; 
+                Xil_unsigned32   length;  
+} XilCellUserData;
+.fi
+.TP 15
+Default
+Not set
+.sp
+.ne 10
+.SS Cell Decompression Attributes
+.IX "Cell" "decompression attributes"
+.I DECOMPRESSOR_COLORMAP
+.P
+.TP 15
+Description
+.nh
+In the case of set, give the Cell decompressor a look-up table with which to perform accelerated 8-bit display of the decompressed image when using
+.BR xil_nearest_color (3).  
+All colormap indices are assumed to be read-only by the decompressor (see
+.SM RDWR_INDICES
+).
+In the case of get, it returns the look-up table associated with the Cell decompressor.  This table could possibly have been modified by a call to
+.BR xil_decompress (3).
+If this attribute has not been set, then it returns 
+.SM NULL.
+.TP 15
+Access     
+get and set
+.TP 15 
+Type       
+XilLookup
+.TP 15
+Default
+.I Not set
+.nf
+.sp
+.fi
+.P
+.I RDWR_INDICES
+.P
+.TP 15
+Description
+.nh
+Set the list of colormap indices in the
+.SM DECOMPRESSOR_COLORMAP 
+look-up table that the Cell decompressor can change for optimum display of decompressed images. The
+.SM DECOMPRESSOR_MAX_CMAP_SIZE 
+attribute can be used to determine the number of colormap entries needed for
+optimum display.  Setting the list is not cumulative; the list from any
+previously set attribute call is discarded.  Any indices outside the range of the 
+.SM DECOMPRESSOR_COLORMAP 
+look-up table are discarded.  Entries in the lookup are only changed on a call
+to
+.BR xil_decompress (3).
+.sp
+.nh
+If you set this attribute, the Cell decompressor assumes that after each call to 
+.BR xil_decompress (3),
+you will check to see if the XilLookup has been changed via 
+.BR xil_lookup_get_version (3), 
+and if so, that you will install the changed colormap before calling 
+.BR xil_nearest_color (3)
+with the XilLookup.  Refer to the 
+.I "XIL Programmer's Guide."
+for more details.
+.TP 15
+Access     
+set-only
+.sp
+.ne 10
+.TP 15 
+Type
+typedef struct {
+.nf
+                Xil_unsigned32*  pixels; 
+                Xil_unsigned16   ncolors;  
+} XilIndexList;
+.fi
+.TP 15
+Default
+.I Not set
+.nf
+.sp
+.fi
+.ne 20
+.P
+.I DECOMPRESSOR_MAX_CMAP_SIZE
+.P
+.TP 15
+Description
+.nh
+Get the maximum size of a colormap for this Cell bytestream.  This assists in X colormap management when decompressing the bytestream.  Refer to the
+example in the 
+.I "XIL Programmer's Guide."
+for more information.
+.TP 15
+Access
+get-only
+.TP 15 
+Type
+int
+.TP 15
+Default
+.I 256
+.nf
+.sp
+.fi
+.sp
+.P
+.I DECOMPRESSOR_FRAME_RATE
+.P
+.TP 15
+Description
+.nh
+Get the frame rate, in microseconds per frame, at which the images were
+captured.  This value is stored in the Cell bytestream via the
+.SM COMPRESSOR_FRAME_RATE 
+attribute, and is useful only when the compressed image sequence represents a movie.  This attribute may have different values at various points in the Cell bytestream if the 
+.SM COMPRESSOR_FRAME_RATE
+attribute was changed during the creation of the compressed image sequence.
+If the Cell bytestream does not contain a frame rate, the default
+value (33333) is returned.
+.TP 15
+Access
+get-only
+.TP 15 
+Type
+Xil_unsigned32
+.TP 15
+Default
+.I 33333 (30 frames/second)
+.nf
+.sp
+.ne 10
+.fi
+.sp
+.P
+.I DECOMPRESSOR_USER_DATA
+.P
+.TP 15
+Description
+.nh
+Get the user data that may be encoded with the most-recently decompressed
+frame.  This attribute clears itself after every call to
+.BR xil_decompress (3),
+so the returned data is only valid until the next call to
+.B xil_decompress 
+(\^).  The data decoded from the Cell bytestream was encoded via the 
+.SM COMPRESSOR_USER_DATA
+attribute.  A
+.I pointer
+to XilCellUserData is returned.
+.TP 15
+Access
+get-only
+.TP 15 
+Type
+XilCellUserData*
+.TP 15
+Default
+Not set
+.sp
+.ne 20
+.SH EXAMPLES
+.nh
+The following example opens and closes a Cell CIS using the XIL library:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilCis cis;
+.ta 3.5i
+State = xil_open(\^);
+cis = xil_cis_create(State, \^"Cell\^");  
+
+-- calls to Cell-specific compression routines --
+
+xil_cis_destroy(cis);
+xil_close(State);
+.RE
+.fi
+.ft 1
+.fi
+.sp
+.ne 15
+.PP
+The following example sets a Cell CIS attribute called
+.I TEMPORAL_FILTERING 
+to TRUE.  Note that because this attribute is not a structure, it is not
+necessary to pass the address of 
+.I TEMPORAL_FILTERING
+when setting it.
+.RS
+.ft B
+.nf
+.sp
+XilCis cis;
+.sp
+xil_cis_set_attribute(cis,"TEMPORAL_FILTERING", (void *) TRUE);
+.sp
+.fi
+.ft
+.RE
+.P
+The following example returns the value of a Cell CIS attribute called
+.I TEMPORAL_FILTERING.  
+Note that when getting an attribute it is always
+necessary to pass the address.
+.RS
+.ft B
+.nf
+.sp
+Xil_boolean encode_type;
+XilCis cis;
+.sp
+xil_cis_get_attribute(cis, "TEMPORAL_FILTERING", (void **) &encode_type);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+The 
+.B xil_cis_set_attribute
+(\^) and
+.B xil_cis_get_attribute
+(\^) calls are used to modify the default behavior of a specific compressor.  Generic attributes of compressors are set by individual function calls.
+.SH SEE ALSO
+.BR xil_cis_create (3),
+.BR xil_cis_get_attribute (3),
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_compress (3),
+.BR xil_decompress (3),
+.BR xil_choose_colormap (3),
+.BR xil_lookup_get_version (3),
+.BR xil_nearest_color (3).

@@ -1,0 +1,80 @@
+.\" @(#)xil_destroy.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_destroy 3 "16 August 1993" "" "XIL Library"
+.SH NAME
+xil_destroy \- destroy an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_destroy(XilImage " image);
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_destroy
+.IX Functions xil_destroy
+.IX "Image Functions" "xil_destroy"
+This routine destroys an image, freeing the resources associated with 
+the image structure.
+It also deallocates the memory used to store image data if that memory was
+allocated by XIL.
+If the image has child images allocated with it, they are also destroyed.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Destroy an image:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage image;
+.ta 3.5i
+.sp
+xil_destroy (image);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The user is responsible for freeing memory that has been assigned to an
+image via an
+.BR xil_set_memory_storage (3)
+call.
+.P
+.nh
+Referencing an image after it has been destroyed (including any children
+that have been automatically destroyed) is an error that may cause 
+problems potentially severe enough to cause a core dump. 
+.P
+If you create an XIL display image on an X display, you
+.I must
+destroy that image 
+.I before
+calling 
+.BR XCloseDisplay (\^).
+Calling 
+.BR XCloseDisplay (\^)
+before calling
+.BR xil_destroy (\^)
+will make 
+.BR xil_destroy (\^)
+work improperly.
+.SH SEE ALSO
+.BR xil_create (3),
+.BR xil_create_child (3),
+.BR xil_create_from_type (3),
+.BR xil_create_copy (3),
+.BR xil_create_from_window (3),
+.BR xil_create_from_device (3),
+.BR xil_create_temporary (3),
+.BR xil_create_temporary_from_type (3),
+.BR xil_set_memory_storage (3).

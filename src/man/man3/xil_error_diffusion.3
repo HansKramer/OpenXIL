@@ -1,0 +1,81 @@
+.\" @(#)xil_error_diffusion.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_error_diffusion 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_error_diffusion \- use error-diffusion dithering to convert an image into a single-band image with a colormap
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_error_diffusion ( XilImage " src , 
+.if t .in +5n
+.br
+.BI "XilImage " dst , 
+.br
+.BI "XilLookup " cmap ,
+.br 
+.BI "XilKernel " distribution );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_error_diffusion
+.IX Functions xil_error_diffusion
+.IX "Presentation Functions" "xil_error_diffusion"
+This routine performs error-diffusion dithering of a   
+.I src
+(source) image with a distribution matrix.  It produces a single-band 
+.I dst
+(destination) image. 
+.I cmap
+is a lookup table with the number of output bands equal to the 
+number of bands in the source image.
+.I distribution
+is a kernel with values between 0.0 and 1.0.  This distribution matrix
+specifies the amount of error to distribute to the neighbors of the current pixel. 
+.P
+.nh
+This function assumes that the entire error is distributed to the right 
+and below the current pixel.  That is, the  values in the
+distribution kernel sum to 1.0. The only entries that can be non-zero are
+those to the right of and on the same row as the key entry, and those 
+entries below the row of the key entry.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Error-diffusion dither a 3-band image into a single-band image:
+.P
+.RS
+.ft 3
+.nf
+XilImage src;			/* 3-band source image */
+XilImage dst;			/* 1-band destination image */
+XilLookup colormap;		/* colormap */
+XilKernel distribution;		/* error distribution matrix */
+float data[]={	0.0,           0.0,           0.0,
+		0.0,           0.0,           7.0/16.0,
+		3.0/16.0,   5.0/16.0,   1.0/16.0};
+.sp
+distribution = xil_kernel_create(State, 3, 3, 1, 1, data);
+.sp
+xil_error_diffusion(src, dst, colormap, distribution);
+.fi
+.ft
+.RE
+.SH NOTES
+For a discussion of error diffusion in the XIL library, consult the
+.I "XIL Programmer's Guide."
+.SH SEE ALSO
+.BR xil_kernel_create (3),
+.BR xil_kernel_get_by_name (3),
+.BR xil_lookup_create (3),
+.BR xil_lookup_get_by_name (3),
+.BR xil_kernel_get_height (3),
+.BR xil_kernel_get_width (3),
+.BR xil_kernel_get_values (3).

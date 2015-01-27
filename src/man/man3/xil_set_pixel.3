@@ -1,0 +1,105 @@
+.\" @(#)xil_set_pixel.3 1.2 97/05/27 SMI/VPG;
+.so man3/xil.macs
+.TH xil_set_pixel 3 "03 March 1994" "" "XIL Library"
+.SH NAME
+xil_set_pixel, xil_get_pixel \- set or get the value of a particular pixel in an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_set_pixel ( XilImage " image ,
+.if t .in +5n
+.br
+.BI "unsigned int " x ,
+.br
+.BI "unsigned int " y ,
+.br
+.BI "float *" pixel_values );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_get_pixel ( XilImage " image ,
+.if t .in +5n
+.br
+.BI "unsigned int " x ,
+.br
+.BI "unsigned int " y ,
+.br
+.BI "float *" pixel_values );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_set_pixel
+.IX Functions xil_set_pixel
+.IX "Image Processing Operations" "xil_set_pixel"
+.B xil_set_pixel
+(\^) sets the value of a particular pixel in an 
+.I image.
+.I x
+and
+.I y
+indicate the position of the pixel to be set or read, and
+.I pixel_values
+is an array of floats specifying the value to set for each
+band of the image.  Note that the user must allocate and free the space for
+this array.  Pixel coordinates are located with respect to the upper left corner of the image (0,0) whether it is a parent or a child image.
+.P
+.nh
+For 
+.SM XIL_BIT 
+images, values below 0.5 cause the pixel to be set to 0, and
+values 0.5 and above cause the pixel to be set to 1.  For 
+.SM XIL_BYTE 
+images, values below 0.5 cause the pixel to be set to 0, values of 254.5 
+and above cause the pixel to be set to 255, and all values in between 
+are rounded to the nearest integer.  For 
+.SM XIL_SHORT 
+images, values below -32768.5 cause the pixel to be set to -32768, values 
+of 32766.5 and above cause the pixel to be set to 32767, and all values 
+in between are rounded to the nearest signed integer.
+.P
+.IX xil_get_pixel
+.IX Functions xil_get_pixel
+.IX "Image Processing Operations" "xil_get_pixel"
+.B xil_get_pixel
+(\^) gets the value of a particular pixel in an image, and
+writes a vector of the pixel band values into the user-supplied
+buffer
+.I pixel_values.
+The pixel values are cast from whatever data type they may be
+into floats.
+.SH ROI Behavior
+The image ROI is ignored for these operations.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the vector of data values out of a 5-banded XIL_BYTE image
+for the pixel located at (100,42), and add 1.0 to each value:
+.LP
+.nf
+.sp
+.ft 3
+XilImage image;
+unsigned int i;
+float* pixel_values;
+.ta 3.5i
+.sp
+pixel_values = (float *) malloc (5 * sizeof(float));	/* allocate pixel values buffer */
+xil_get_pixel (image, 100, 42, pixel_values);	/* get current values of the pixel */
+for (i = 0; i < 5; i++)			/* increment values by 1 */
+    pixel_values[i] = pixel_values[i] + 1.0;
+xil_set_pixel (image, 100, 42, pixel_values);	/* replace values in the pixel */
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_set_value (3)

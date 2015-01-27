@@ -1,0 +1,72 @@
+.\" @(#)xil_blend.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_blend 3 "10 June 1993" "" "XIL Library"
+.SH NAME
+xil_blend \- blend two images according to an alpha image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_blend ( XilImage " src1 ,
+.if t .in +5n
+.br
+.BI "XilImage " src2 ,
+.br
+.BI "XilImage " dst ,
+.br
+.BI "XilImage " alpha );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_blend
+.IX Functions xil_blend
+.IX "Image Processing Operations" "xil_blend"
+This function blends two images according to an alpha image. For each pixel in the sources, the corresponding pixel in the alpha image provides a value that determines a linear combination of the source pixel values. The destination value is determined by this equation:
+.nf
+	dst = (1.0 - normalize(alpha)) * src1 + normalize(alpha) * src2
+.fi
+.P
+.nh
+.I src1 
+and 
+.I src2
+are the source image handles.
+.I dst
+is the destination image handle.
+.I alpha
+is the alpha image handle.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Blend 
+.I src1 
+and 
+.I src2 
+according to 
+.I alpha 
+and put the result in 
+.I dst:
+.sp
+.nf
+.RS
+.ft 3
+XilImage src1, src2, dst, alpha;
+.sp
+.ta 3.5i
+xil_blend(src1, src2, dst, alpha);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The source images and destination images must be the same type and have the
+same number of bands.  The alpha image must be a single-band image and can be any of the supported data types. In-place operations are supported.
+

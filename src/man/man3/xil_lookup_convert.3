@@ -1,0 +1,78 @@
+.\" @(#)xil_lookup_convert.3 1.2 97/05/27 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup_convert 3 "29 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup_convert \- calculate a conversion lookup table between a source and destination lookup table
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilLookup xil_lookup_convert ( XilLookup " lut1 , 
+.if t .in +5n
+.br
+.BI "XilLookup " lut2 );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_lookup_convert
+.IX Functions xil_lookup_convert
+.IX "Presentation Functions" "xil_lookup_convert"
+This function calculates a lookup table that converts between the two lookup tables
+.I lut1
+and 
+.I lut2. 
+The resulting 
+lookup table's input data type will be the input data type of
+.I lut1, 
+and its output data type will be the input data type of
+.I lut2.  
+The 
+lookup table's offset and number of entries are the same as those for
+.I lut1. 
+Index N of the resulting 
+lookup table contains the index of the nearest color in
+.I lut2 
+to the color at index N in
+.I lut1. 
+Nearest color is determined by Euclidean distance.  Source and destination
+lookup tables must have the same input data types, output data types, 
+and number of bands.
+.P
+.nh
+This function can be useful when you have an image with a lookup table
+(and colormap) that contains a relatively small number of values over
+a wide range.  You would first compress the values in the lookup table
+into a smaller range by using
+.BR xil_squeeze_range (3).
+Then, to create a colormap that matched your newly compressed lookup table,
+you would use 
+.BR xil_lookup_convert  (\^).
+.SH RETURN VALUES
+.TP 10
+Returns NULL; Function fails.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Calculate a lookup table to convert between two lookup tables:
+.RS
+.ft B
+.nf
+.sp
+XilLookup lut1, lut2, lut3;
+.sp
+lut3 = xil_lookup_convert(lut1, lut2);
+.fi
+.ft
+.RE
+.SH NOTES
+This function cannot be used on combined lookup tables.
+.SH SEE ALSO
+.BR xil_lookup_create (3),
+.BR xil_squeeze_range (3).

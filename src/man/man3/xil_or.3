@@ -1,0 +1,107 @@
+.\" @(#)xil_or.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_or 3 "03 August 1993" "" "XIL Library"
+.SH NAME
+xil_or, xil_or_const \- bitwise logical OR operations
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_or (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "XilImage " src2 , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_or_const (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "unsigned int *" constants , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_or
+.IX Functions xil_or
+.IX "Arithmetic and Logical Operations" "xil_or"
+.B xil_or
+(\^) performs a bitwise logical OR operation on each pixel of the
+.I src2
+(source) image with the corresponding pixel in the
+.I src1
+image and stores the result in the
+.I dst
+(destination) image.
+.P
+.IX xil_or_const
+.IX Functions xil_or_const
+.IX "Arithmetic and Logical Operations" "xil_or_const"
+.B xil_or_const
+(\^) performs a bitwise logical OR operation on each pixel of the
+.I src1
+(source) image with the
+.I constants
+values and stores the results in the
+.I dst
+(destination) image.  For a n-band image, n unsigned integers must be provided, one per band.
+The values in band 0 ar ORed with the value in
+.I constants[0],
+and so on.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Bitwise logical OR 
+.I image2 
+with 
+.I image1 
+and store the result in 
+.I dst:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, image2, dst;
+.sp
+xil_or(image1, image2, dst);
+.fi
+.ft
+.RE
+.LP
+Bitwise logical OR a 4-band 
+.I image1 
+with 4 different constants and store the result in 
+.I dst:
+.RS
+.ft B
+.nf
+.sp
+XilImage image, dst;
+unsigned int constants[4];
+.sp
+constants[0] = 1;
+constants[1] = 1;
+constants[2] = 1;
+constants[3] = 0;
+xil_or_const(image, constants, dst);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the same number of bands.  In-place operations are supported.

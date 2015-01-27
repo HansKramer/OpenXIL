@@ -1,0 +1,129 @@
+.\" @(#)xil_cis_get_attribute.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_attribute 3 "18 August 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_attribute, xil_cis_set_attribute \- get and set a compressor attribute 
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "int xil_cis_get_attribute (XilCis " cis,
+.if t .in +5n
+.br
+.BI "char *" attribute ,
+.br
+.BI "void **" value );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "int xil_cis_set_attribute (XilCis " cis,
+.if t .in +5n
+.br
+.BI "char *" attribute,
+.br
+.BI "void *" data );
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_cis_set_attribute
+.IX Functions xil_cis_set_attribute
+.IX "CIS Functions" "xil_cis_set_attribute" 
+.P
+.IX xil_cis_get_attribute
+.IX Functions xil_cis_get_attribute
+.IX "CIS Functions" "xil_cis_get_attribute"
+.nh
+.B xil_cis_get_attribute
+(\^) returns the value of the
+.I attribute
+of the 
+.I cis
+(the specified compressed image sequence).
+.P  
+.nh
+.B xil_cis_set_attribute
+(\^) sets
+.I attribute
+of 
+.I cis 
+to
+.I data,
+a generic pointer to the attribute value.
+.P
+.nh
+Available attributes are described on the specific man pages for the
+compressors and decompressors available with the XIL library. See
+.BR xil_cis_create(3) 
+for the list of XIL supported codecs.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+This example sets a JPEG CIS attribute called
+.I ENCODE_INTERLEAVED 
+to TRUE.
+.RS
+.ft B
+.nf
+.sp
+XilCis cis;
+.sp
+xil_cis_set_attribute(cis,"ENCODE_INTERLEAVED", (void *) TRUE);
+.sp
+.fi
+.ft
+.RE
+.P
+This example returns the value of a JPEG CIS attribute called
+.I ENCODE_INTERLEAVED.
+.RS
+.ft B
+.nf
+.sp
+Xil_boolean encode_type;
+XilCis cis;
+.sp
+xil_cis_get_attribute(cis, "ENCODE_INTERLEAVED", (void **) &encode_type);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+The 
+.B xil_cis_set_attribute
+(\^) and
+.B xil_cis_get_attribute
+(\^) calls are used to modify the default behavior of a specific compressor.  Generic attributes of compressors are set by individual function calls.
+.sp
+.ne 10
+.SH SEE ALSO
+.BR xil_compress (3),
+.BR xil_cis_create (3),
+.BR xil_choose_colormap (3),
+.BR xil_decompress (3),
+.BR xil_open (3),
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_cis_get_compression_type (3),
+.BR xil_cis_get_compressor (3),
+.BR xil_cis_get_input_type (3),
+.BR xil_cis_get_max_frames (3),
+.BR xil_cis_get_output_type (3),
+.BR xil_cis_get_start_frame (3),
+.BR xil_cis_has_data (3),
+.BR xil_cis_put_bits (3),
+.BR xil_cis_reset (3),
+.BR Jpeg (3),
+.BR JpegLL (3),
+.BR Cell (3),
+.BR CellB (3),
+.BR faxG3 (3),
+.BR fax G4 (3),
+.BR Mpeg1 (3),
+.BR H261 (3).

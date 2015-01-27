@@ -1,0 +1,64 @@
+.\" @(#)xil_kernel_get_values.3 1.3 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_kernel_get_values 3 "10 February 1997" "" "XIL Library"
+.SH NAME
+xil_kernel_get_values - get the values stored internally in and XilKernel object.
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_kernel_get_values(XilKernel " kernel,
+.if t .in +5n
+.br
+.BI "float* " data);
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.B xil_kernel_get_values
+(\^) returns the values stored in \f2kernel\fP. The user must allocate the array of float data to hold the values of the kernel. The size of the \f2data\fP array will be the width of kernel * height of kernel. The width and height can be retrieved by calling 
+.B xil_kernel_get_width
+(3) and 
+.B xil_kernel_get_height
+(3).
+.SH ERRORS
+For a complete list of XIL error messages by number, consult Appendix B of the \f2XIL Programmer's Guide\fP.
+.SH EXAMPLES
+Get the values of a kernel object:
+.RS
+.ft B
+.nf
+.sp
+XilKernel kernel;
+float* data;
+unsigned int width;
+unsigned int height;
+
+width = xil_kernel_get_width(kernel);
+height = xil_kernel_get_height(kernel);
+
+data = malloc(width*height*sizeof(float));
+if(data == NULL) 
+
+/* cleanup and exit */
+
+}
+xil_kernel_get_values(kernel, data);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+If the 
+.B XilKernel 
+object represents a separable kernel, the horizontal and vertical kernels will be combined and returned as a two dimensional kernel.
+.SH "SEE ALSO"
+.BR xil_kernel_create (3),
+.BR xil_kernel_get_width (3),
+.BR xil_kernel_get_height (3),
+.BR xil_kernel_get_key_x (3),
+.BR xil_kernel_get_key_y (3).

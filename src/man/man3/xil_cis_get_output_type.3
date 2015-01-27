@@ -1,0 +1,49 @@
+.\" @(#)xil_cis_get_output_type.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_output_type 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_output_type \- return the XilImageType produced by a compressor 
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilImageType xil_cis_get_output_type (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_get_output_type
+.IX Functions xil_cis_get_output_type
+.IX "CIS Functions" "xil_cis_get_output_type" 
+This function returns the image type that the 
+.I cis
+(the specified compressed image sequence) will produce upon decompression.
+.SH ERROR
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.RS
+.ft B
+.nf 
+XilCis cis;
+XilImageType type;
+int width;
+.sp
+type = xil_cis_get_output_type(cis);
+width = xil_imagetype_get_width(type);
+.fi
+.ft
+.RE
+.SH SEE ALSO
+.BR xil_decompress (3),
+.BR xil_imagetype_get_info (3),
+.BR xil_get_imagetype (3),
+.BR xil_cis_get_input_type (3).

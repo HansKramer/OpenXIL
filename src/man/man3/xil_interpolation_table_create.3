@@ -1,0 +1,123 @@
+.\" @(#)xil_interpolation_table_create.3 1.3 97/02/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_interpolation_table_create 3 "18 March 1994" "" "XIL Library"
+.SH NAME
+xil_interpolation_table_create, xil_interpolation_table_create_copy, xil_interpolation_table_destroy \- create, create and return copy, or destroy an interpolation table object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilInterpolationTable  xil_interpolation_table_create ( XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "unsigned int "  kernel_size ,
+.br
+.BI "unsigned int "  subsamples ,
+.br
+.BI "float *" data );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5
+.BI "XilInterpolationTable xil_interpolation_table_create_copy(XilInterpolationTable " table);
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_interpolation_table_destroy ( XilInterpolationTable " table );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_interpolation_table_create
+.IX Functions xil_interpolation_table_create
+.IX "Interpolation Table Functions" "xil_interpolation_table_create"
+These routines create and destroy interpolation table objects.  An 
+XilInterpolationTable object is an array of 1xn kernels which represents 
+the interpolation filter in either the horizontal or vertical direction.
+The datatype of the table is XIL_FLOAT.
+.P
+.nh
+The parameter
+.I State
+is the XIL system state, 
+.I kernel_size
+is the size of the kernel, 
+.I subsamples
+is the number of subsamples between pixels, and 
+.I data
+is the data of the interpolation table. There is no limit or restriction
+on the kernel size or the number of subsamples.
+.P
+Each subsample requires a separate set of kernel data.
+Thus, 
+.I n
+subsamples require
+.I n * kernel_size
+data elements. For example, a horizontal interpolation table
+with a kernel size of 7 elements and a pixel subsampling of 3
+requires 21 data elements; the first subsample uses the first 7 
+data elements,
+the second subsample uses the next 7 data elements, and the third subsample
+uses the last 7 data elements.
+If both the horizontal and vertical interpolation tables are NULL,
+nearest neighbor interpolation is performed.
+.P
+.IX xil_interpolation table_create_copy
+.IX Functions xil_interpolation table_create_copy
+.IX "Interpolation Table Functions"  "xil_interpolation table_create_copy"
+.B xil_interpolation table_create_copy 
+(\^) creates and returns a copy of the specified interpolation table. The name of a copy is initially empty (NULL).
+.P
+.IX xil_interpolation_table_destroy
+.IX Functions xil_interpolation_table_destroy
+.IX "Interpolation Table Functions"  "xil_interpolation_table_destroy"
+.B xil_interpolation_table_destroy 
+(\^) destroys the specified interpolation table object.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create a horizontal
+interpolation table with seven kernel elements and two subsamples
+between pixels:
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilInterpolationTable horiz_table;
+float *data;
+.sp
+horiz_table = xil_interpolation_table_create (State, 7, 2, data);
+.RE
+.fi
+.ft 1
+.SH NOTES
+The key element in a kernel is the center element; for even-sized kernels,
+the key elements is the first of the two center elements. Thus, for
+an 8-element kernel, the key value is the fourth element, which has the array
+index 3. The key element's array index 
+can be computed as an integer calculation:
+.sp
+int array_index = (kernel_size - 1) / 2
+.sp
+To preserve the source image's intensity in the destination, 
+an individual kernel's values should sum to one.
+.SH SEE ALSO
+.BR xil_interpolation_table_get_subsamples (3),
+.BR xil_interpolation_table_get_kernel_size (3),
+.BR xil_interpolation_table_get_data (3),
+.BR xil_state_get_interpolation_tables (3).
+

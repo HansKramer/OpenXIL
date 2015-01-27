@@ -1,0 +1,114 @@
+.\" @(#)xil_colorspacelist_create.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_colorspacelist_create 3 "6 May 1997" "" "XIL Library"
+.SH NAME
+xil_colorspacelist_create, xil_colorspacelist_destroy, xil_colorspacelist_get_name, xil_colorspacelist_set_name, xil_colorspacelist_get_by_name \- create, destroy, get name, set name, get by name an XilColorspaceList object
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilColorspaceList* xil_colorspacelist_create(XilSystemState* " system_state ,
+.if t .in +5n
+.br
+.BI "XilColorspaceType " colorspace_array ,
+.br
+.BI "unsigned int " num_colorspaces );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_colorspacelist_destroy(XilColorspaceList* " colorspacelist );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_colorspacelist_set_name(XilColorspaceList " colorspacelist ,
+.if t .in +5n
+.br
+.BI "char* " name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_colorspacelist_get_name(XilColorspaceList* " colorspacelist );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "XilColorspaceList* xil_colorspacelist_get_by_name(XilSystemState* " state ,
+.if t .in +5n
+.br
+.BI "char* " name );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_colorspacelist_create
+.IX Functions xil_colorspacelist_create
+.IX xil_colorspacelist_destroy
+.IX Functions xil_colorspacelist_destroy
+.IX xil_colorspacelist_set_name
+.IX Functions xil_colorspacelist_set_name
+.IX xil_colorspacelist_get_name
+.IX Functions xil_colorspacelist_get_name
+.IX xil_colorspacelist_get_by_name
+.IX Functions xil_colorspacelist_get_by_name
+These functions create, destroy, set and get a name, and get a color-space list given 
+a name, for an XilColorspaceList object.
+.P
+.B xil_colorspacelist_create() 
+creates an XilColorspaceList object as specified by the list in 
+.I colorspace_array. 
+.I num_colorspaces 
+should be less than or equal to the number of color spaces in the list. 
+.P
+.B xil_colorspacelist_destroy() 
+destroys the specified 
+.I colorspacelist.
+.P
+.B xil_colorspacelist_set_name() 
+sets the name of 
+.I colorspacelist 
+with name.
+.P
+.B xil_colorspacelist_get_name() 
+gets any associated name of 
+.I colorspacelist. 
+If no name is set on 
+.I colorspacelist, 
+it returns NULL.
+.P
+.B xil_colorspacelist_get_by_name() 
+returns an XilColorspaceList object associated with name. If there is no associated XilColorspaceList object, it returns NULL.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+This example sets a name on an existing color-space list.
+.sp
+.nf
+.ft 3
+
+    /*
+     * Set a name on a color-space list 
+     */
+    xil_colorspacelist_set_name(colorspacelist, "myname");	
+.sp
+.ft 1
+.fi
+.SH "SEE ALSO"
+.BR xil_color_correct (3).

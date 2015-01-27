@@ -1,0 +1,159 @@
+#!/bin/sh
+#
+# make-release - build xil, xilch "frozen-devel" tree
+# if $1 specified, create a clone
+
+umask 022
+
+progname=`basename $0`
+
+PROJECT=XIL
+PROJECT_home=/home/xil
+PROJECT_mail=maureen,rhern,ihern,jsun
+PROJECT_target=install
+PROJECT_root=
+
+arch=sparc
+export arch
+
+. /depot/Modules/init/sh 
+module add lang openwin teamware gnu
+module add xgl/3.0
+
+WORKDIR=$PROJECT_home/devel
+WORKSPACE=/net/candy-apples.east/d0/xil/WS
+BUILD_DIR=$PROJECT_home/tools/devel/bin
+PATH=$PATH:$BUILD_DIR; export PATH
+SUBTREES="."
+
+XILROOT=$PROJECT_home/frozen-devel
+XILHOME=$XILROOT/$arch
+XILLOCAL=$XILHOME/local
+export XILROOT XILHOME XILLOCAL;
+
+MSGFILE=/tmp/$PROJECT.msg.$$
+COMMENTFILE=/tmp/$PROJECT.comment.$$
+TMPLOG=/tmp/$PROJECT.log.$$
+
+
+
+# If no arguments are supplied, build the tree
+# otherwise, create the clone first
+CLONEDIR=$XILROOT
+if [ $# -eq 0 ]
+then
+    echo "Building $CLONEDIR"
+else
+    if [ -d $CLONEDIR ]
+    then
+	echo "$CLONEDIR already exists.  No action taken."
+	exit 1
+    fi
+    # Clone the tree
+    echo "Building clone"
+    $BUILD_DIR/clone -v -u all $CLONEDIR $WORKSPACE
+    
+fi
+
+# Send all output to $TMPLOG
+exec >$TMPLOG 2>&1
+
+echo "	*** $PROJECT build start	*** "
+echo "`date` on `hostname`"
+echo
+
+
+echo
+echo "Starting make in $CLONEDIR"
+echo
+
+
+MAKELOG=/tmp/$PROJECT.make.$$
+FAILURES=""
+for i in $SUBTREES
+do
+    cd $CLONEDIR
+    make $PROJECT_target >$MAKELOG 2>&1
+    if [ $? != 0 ]
+    then
+     	FAILURES="$i $FAILURES"
+        tail -30 $MAKELOG >>$MSGFILE
+            { echo; echo; echo; echo; } >>$MSGFILE
+    fi
+    cat $MAKELOG
+    rm -f $MAKELOG
+done
+
+echo
+echo "Creating checkpoint file..."
+echo
+cd $CLONEDIR
+echo | checkpt create -w $CLONEDIR -k checkpoint.out .
+echo
+
+if [ "$FAILURES" ]
+then
+    echo "$PROJECT build failures: $FAILURES"
+else
+    echo "Build succeeded."
+fi
+
+echo
+echo Build completed at `date`
+echo
+echo
+
+# Now send output to $COMMENTFILE
+exec >>$COMMENTFILE 2>&1
+
+
+
+cd $WORKSPACE
+# Now check recent checkins
+echo
+echo  "	*** Recent putbacks	*** "
+$BUILD_DIR/recent $WORKSPACE
+
+
+exec >/dev/null 2>&1
+
+# add getcheck/recent output to the log
+cat $COMMENTFILE >>$TMPLOG
+echo >>$TMPLOG
+
+MSGSTR="RELEASE"
+# OK- now mail the abbreviated log to interested parties
+if [ "$FAILURES" ]
+then
+    { echo "$MSGSTR build failed."; echo; cat $MSGFILE $COMMENTFILE; } \
+    | /usr/ucb/Mail -s "$PROJECT $MSGSTR ($arch) build failed." $PROJECT_mail
+    echo "*** Build failed ****" >>$TMPLOG
+else
+    { echo "$MSGSTR build successful"; echo; cat $MSGFILE $COMMENTFILE; } \
+    | /usr/ucb/Mail -s "$PROJECT $MSGSTR ($arch) build log" $PROJECT_mail
+    echo "*** Build successful ****" >>$TMPLOG
+fi        
+
+rm -f $MSGFILE $COMMENTFILE
+# rename the log
+mv $TMPLOG $CLONEDIR/build.log
+
+# OK, now that everything is done, build and
+# run Xilch if the following conditions are met:
+#
+#	1) the build was successful
+
+if [ ! "$FAILURES" ]
+then
+    $BUILD_DIR/build.xilch release
+    # If xilch build successful, run the tests
+    if [ $? -eq 0 ]
+    then
+     XILREFHOME=$PROJECT_home/ref/devel/$arch
+     XILCHROOT=$PROJECT_home/xilch/frozen-devel
+     XILCHHOME=$XILCHROOT/$arch
+     LD_LIBRARY_PATH=$XILHOME/lib:$LD_LIBRARY_PATH
+     export XILHOME XILROOT XILCHHOME XILREFHOME LD_LIBRARY_PATH
+     $BUILD_DIR/xilch_run $XILCHHOME $XILHOME $XILREFHOME 
+    fi
+fi

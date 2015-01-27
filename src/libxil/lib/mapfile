@@ -1,0 +1,1154 @@
+##
+##  @(#)mapfile	1.229 00/02/02 
+##
+##
+##  Linker MapFile for libxil.so.1
+##
+
+SUNW_XIL_API_1.2 {
+    global:
+        xil_absolute;
+        xil_add;
+        xil_add_const;
+        xil_affine;
+        xil_and;
+        xil_and_const;
+        xil_band_combine;
+        xil_black_generation;
+        xil_blend;
+        xil_call_next_error_handler;
+        xil_cast;
+        xil_choose_colormap;
+        xil_cis_attempt_recovery;
+        xil_cis_create;
+        xil_cis_destroy;
+        xil_cis_flush;
+        xil_cis_get_attribute;
+        xil_cis_get_autorecover;
+        xil_cis_get_bits_ptr;
+        xil_cis_get_by_name;
+        xil_cis_get_compression_type;
+        xil_cis_get_compressor;
+        xil_cis_get_input_type;
+        xil_cis_get_keep_frames;
+        xil_cis_get_max_frames;
+        xil_cis_get_name;
+        xil_cis_get_output_type;
+        xil_cis_get_random_access;
+        xil_cis_get_read_frame;
+        xil_cis_get_read_invalid;
+        xil_cis_get_start_frame;
+        xil_cis_get_write_frame;
+        xil_cis_get_write_invalid;
+        xil_cis_has_data;
+        xil_cis_has_frame;
+        xil_cis_number_of_frames;
+        xil_cis_put_bits;
+        xil_cis_put_bits_ptr;
+        xil_cis_reset;
+        xil_cis_seek;
+        xil_cis_set_attribute;
+        xil_cis_set_autorecover;
+        xil_cis_set_keep_frames;
+        xil_cis_set_max_frames;
+        xil_cis_set_name;
+        xil_cis_sync;
+        xil_close;
+        xil_color_convert;
+        xil_colorcube_create;
+        xil_colorspace_get_by_name;
+        xil_compress;
+        xil_convolve;
+        xil_copy;
+        xil_copy_pattern;
+        xil_copy_with_planemask;
+        xil_create;
+        xil_create_child;
+        xil_create_copy;
+        xil_create_from_device;
+        xil_create_from_type;
+        xil_create_from_window;
+        xil_decompress;
+        xil_default_error_handler;
+        xil_destroy;
+        xil_device_create;
+        xil_device_destroy;
+        xil_device_set_value;
+        xil_dilate;
+        xil_dithermask_create;
+        xil_dithermask_create_copy;
+        xil_dithermask_destroy;
+        xil_dithermask_get_by_name;
+        xil_dithermask_get_height;
+        xil_dithermask_get_name;
+        xil_dithermask_get_nbands;
+        xil_dithermask_get_width;
+        xil_dithermask_set_name;
+        xil_divide;
+        xil_divide_by_const;
+        xil_divide_into_const;
+        xil_edge_detection;
+        xil_erode;
+        xil_error_diffusion;
+        xil_error_get_category;
+        xil_error_get_category_string;
+        xil_error_get_id;
+        xil_error_get_location;
+        xil_error_get_object;
+        xil_error_get_primary;
+        xil_error_get_string;
+        xil_export;
+        xil_extrema;
+        xil_fill;
+        xil_get_attribute;
+        xil_get_by_name;
+        xil_get_child_offsets;
+        xil_get_datatype;
+        xil_get_device_attribute;
+        xil_get_exported;
+        xil_get_height;
+        xil_get_imagetype;
+        xil_get_info;
+        xil_get_memory_storage;
+        xil_get_name;
+        xil_get_nbands;
+        xil_get_origin;
+        xil_get_origin_x;
+        xil_get_origin_y;
+        xil_get_parent;
+        xil_get_pixel;
+        xil_get_readable;
+        xil_get_roi;
+        xil_get_size;
+        xil_get_synchronize;
+        xil_get_width;
+        xil_get_writeable;
+        xil_histogram;
+        xil_histogram_create;
+        xil_histogram_destroy;
+        xil_histogram_get_by_name;
+        xil_histogram_get_info;
+        xil_histogram_get_limits;
+        xil_histogram_get_name;
+        xil_histogram_get_nbands;
+        xil_histogram_get_nbins;
+        xil_histogram_get_values;
+        xil_histogram_set_name;
+        xil_imagetype_get_by_name;
+        xil_imagetype_get_datatype;
+        xil_imagetype_get_height;
+        xil_imagetype_get_info;
+        xil_imagetype_get_name;
+        xil_imagetype_get_nbands;
+        xil_imagetype_get_size;
+        xil_imagetype_get_width;
+        xil_imagetype_set_name;
+        xil_import;
+        xil_install_error_handler;
+        xil_interpolation_table_create;
+        xil_interpolation_table_destroy;
+        xil_interpolation_table_get_data;
+        xil_interpolation_table_get_kernel_size;
+        xil_interpolation_table_get_subsamples;
+        xil_kernel_create;
+        xil_kernel_create_copy;
+        xil_kernel_destroy;
+        xil_kernel_get_by_name;
+        xil_kernel_get_height;
+        xil_kernel_get_key_x;
+        xil_kernel_get_key_y;
+        xil_kernel_get_name;
+        xil_kernel_get_width;
+        xil_kernel_set_name;
+        xil_lookup;
+        xil_lookup_convert;
+        xil_lookup_create;
+        xil_lookup_create_combined;
+        xil_lookup_create_copy;
+        xil_lookup_destroy;
+        xil_lookup_get_band_lookup;
+        xil_lookup_get_by_name;
+        xil_lookup_get_colorcube;
+        xil_lookup_get_colorcube_info;
+        xil_lookup_get_input_datatype;
+        xil_lookup_get_input_nbands;
+        xil_lookup_get_name;
+        xil_lookup_get_num_entries;
+        xil_lookup_get_offset;
+        xil_lookup_get_output_datatype;
+        xil_lookup_get_output_nbands;
+        xil_lookup_get_values;
+        xil_lookup_get_version;
+        xil_lookup_set_name;
+        xil_lookup_set_offset;
+        xil_lookup_set_values;
+        xil_max;
+        xil_min;
+        xil_multiply;
+        xil_multiply_const;
+        xil_nearest_color;
+        xil_not;
+        xil_object_get_error_string;
+        xil_object_get_type;
+        xil_open;
+        xil_or;
+        xil_or_const;
+        xil_ordered_dither;
+        xil_paint;
+        xil_remove_error_handler;
+        xil_rescale;
+        xil_roi_add_image;
+        xil_roi_add_rect;
+        xil_roi_add_region;
+        xil_roi_create;
+        xil_roi_create_copy;
+        xil_roi_destroy;
+        xil_roi_get_as_image;
+        xil_roi_get_as_region;
+        xil_roi_get_by_name;
+        xil_roi_get_name;
+        xil_roi_intersect;
+        xil_roi_scale;
+        xil_roi_set_name;
+        xil_roi_subtract_rect;
+        xil_roi_translate;
+        xil_roi_transpose;
+        xil_roi_unite;
+        xil_rotate;
+        xil_scale;
+        xil_sel_create;
+        xil_sel_create_copy;
+        xil_sel_destroy;
+        xil_sel_get_by_name;
+        xil_sel_get_height;
+        xil_sel_get_key_x;
+        xil_sel_get_key_y;
+        xil_sel_get_name;
+        xil_sel_get_width;
+        xil_sel_set_name;
+        xil_set_attribute;
+        xil_set_colorspace;
+        xil_set_device_attribute;
+        xil_set_memory_storage;
+        xil_set_name;
+        xil_set_origin;
+        xil_set_pixel;
+        xil_set_roi;
+        xil_set_synchronize;
+        xil_set_value;
+        xil_soft_fill;
+        xil_squeeze_range;
+        xil_state_get_interpolation_tables;
+        xil_state_get_show_action;
+        xil_state_get_synchronize;
+        xil_state_set_interpolation_tables;
+        xil_state_set_show_action;
+        xil_state_set_synchronize;
+        xil_subsample_adaptive;
+        xil_subsample_binary_to_gray;
+        xil_subtract;
+        xil_subtract_const;
+        xil_subtract_from_const;
+        xil_sync;
+        xil_tablewarp;
+        xil_tablewarp_horizontal;
+        xil_tablewarp_vertical;
+        xil_threshold;
+        xil_toss;
+        xil_translate;
+        xil_transpose;
+        xil_xor;
+        xil_xor_const;
+
+    local:
+        *;
+};
+
+SUNW_XIL_API_1.3 {
+    global:
+        ##
+        ##  XIL 1.3 API
+        ##
+
+        ##  XilSystemState Methods
+        xil_state_set_default_tilesize;
+        xil_state_get_default_tilesize;
+        xil_state_set_provide_warnings;
+        xil_state_get_provide_warnings;
+        xil_state_get_default_tiling_mode;
+        xil_state_set_default_tiling_mode;
+
+        ##  XIL Operations
+        xil_color_correct;
+
+        ##  XilInterpolationTable Methods
+        xil_interpolation_table_create_copy;
+        xil_interpolation_table_get_values;
+
+        ##  XilHistogram Methods        
+        xil_histogram_create_copy;
+
+        ##  XilKernel Methods
+        xil_kernel_create_separable;
+        xil_kernel_get_values;
+
+        ##  XilSel Methods
+        xil_sel_get_values;
+
+        ##  XilDitherMask Methods
+        xil_dithermask_get_values;
+
+        ##  XilImage Methods
+	xil_create_double_buffered_window;
+        xil_create_from_special_window;
+	xil_create_temporary;
+	xil_create_temporary_from_type;
+        xil_set_active_buffer;
+        xil_get_active_buffer;
+        xil_swap_buffers;
+	xil_get_writable;
+        xil_get_tilesize;
+        xil_set_tilesize;
+        xil_set_tile_storage;
+        xil_get_tile_storage;
+        xil_set_storage_with_copy;
+        xil_get_storage_with_copy;
+        xil_set_storage_movement;
+        xil_get_storage_movement;
+
+        ##  new XilStorage object
+        xil_set_data_supply_routine;
+        xil_storage_create;
+        xil_storage_destroy;
+        xil_storage_is_type;
+        xil_storage_get_scanline_stride;
+        xil_storage_get_pixel_stride;
+        xil_storage_get_band_stride;
+        xil_storage_get_offset;
+        xil_storage_get_data;
+        xil_storage_get_coordinates;
+        xil_storage_set_scanline_stride;
+        xil_storage_set_pixel_stride;
+        xil_storage_set_band_stride;
+        xil_storage_set_offset;
+        xil_storage_set_data;
+        xil_storage_set_data_release;
+        xil_storage_set_coordinates;
+
+        ##  XilError Methods
+        xil_error_is_warning;
+
+        ##  XilDevice Methods
+        xil_device_set_attribute;
+        
+	##  XilColorspace and XilColorspaceList Methods
+	xil_colorspace_create;
+	xil_colorspace_destroy;
+	xil_colorspace_get_type;
+	xil_colorspacelist_create;
+	xil_colorspacelist_destroy;
+
+        ##  Object naming
+        xil_storage_set_name;
+        xil_storage_get_name;
+        xil_colorspace_set_name;
+        xil_colorspace_get_name;
+        xil_colorspacelist_set_name;
+        xil_colorspacelist_get_name;
+
+	##  Object aquisition by name
+        xil_storage_get_by_name;
+        xil_colorspacelist_get_by_name;
+
+        ##  Get system state
+	xil_get_state;
+	xil_imagetype_get_state;
+	xil_lookup_get_state;
+	xil_cis_get_state;
+	xil_dithermask_get_state;
+	xil_kernel_get_state;
+	xil_sel_get_state;
+	xil_roi_get_state;
+	xil_histogram_get_state;
+        xil_storage_get_state;
+        xil_colorspace_get_state;
+        xil_colorspacelist_get_state;
+
+    local:
+        *;
+} SUNW_XIL_API_1.2;
+
+SUNW_XIL_GPI_2.0 {
+        ##---------------------------
+        ##
+        ##  XIL 1.3 GPI (version 2.0)
+        ##
+        ##---------------------------
+        
+        ##
+        ##  XilOp Class
+        ##
+        __0fFXilOpLgetDstImageUiK;
+        __0fFXilOpLgetSrcImageUiK;
+        __0fFXilOpJgetDstCisUiK;
+        __0fFXilOpJgetSrcCisUiK;
+        __0fFXilOpJgetOpListv;
+        __0fFXilOpLgetOpNumbervK;
+        __0fFXilOpVsplitOnTileBoundariesP6KXilBoxList;
+        __0fFXilOpNreportResultsPPv;
+	__0fFXilOpLbackwardMapP6GXilBoxdTCTBPdTFUi;
+
+        ##  getPreprocessData
+        __0fFXilOpRgetPreprocessDataP6LXilDeviceIOUi;
+        __0fFXilOpRgetPreprocessDataP6UXilDeviceCompressionUi;
+        __0fFXilOpRgetPreprocessDataP6XXilDeviceManagerComputeUi;
+
+        ##  getParam() methods
+        __0fFXilOpIgetParamUiPP6JXilObject;
+        __0fFXilOpIgetParamUiPPv;
+        __0fFXilOpIgetParamUiPi;
+        __0fFXilOpIgetParamUiPUi;
+        __0fFXilOpIgetParamUiPd;
+        __0fFXilOpIgetParamUiPf;
+
+        ##  setParam() methods
+	__0fFXilOpIsetParamUiL;
+	__0fFXilOpIsetParamUiP6WXilNonDeferrableObject6QXilDestroyMethod;
+	__0fFXilOpIsetParamUiPv6QXilDestroyMethod;
+	__0fFXilOpIsetParamUiTB;
+	__0fFXilOpIsetParamUid;
+	__0fFXilOpIsetParamUif;
+	__0fFXilOpIsetParamUii;
+
+        ##  Push IO device methods
+	__0fFXilOpKisNewFramev;
+
+        ##  constructor/destructor
+        __0oFXilOpcti;
+        __0oFXilOpdtv;
+
+        ##
+        ##  XilDeferrableObject Class
+        ##
+        __0fTXilDeferrableObjectOgetXilDeviceIOv;
+        __0fTXilDeferrableObjectLsetTileSizeUiTB;
+
+        ##
+        ##  XilImage Class
+        ##
+        __0fIXilImageNexportStoragei;
+        __0fIXilImageGimporti;
+        __0fIXilImageSgetStorageMovementv;
+        __0fIXilImageSsetStorageMovement6SXilStorageMovement;
+        __0fIXilImageTgetExportedTileSizePUiTB;
+        __0fIXilImageTsetExportedTileSizeUiTB;
+        __0fIXilImageWsetExportedTileStorageP6KXilStorage;
+        __0fIXilImageKgetStorageP6KXilStorageP6FXilOpP6GXilBoxPc6QXilStorageAccess6OXilStorageTypePv;
+        __0fIXilImagePgetTiledStorageP6FXilOpP6GXilBoxPc6QXilStorageAccessPv;
+	__0fIXilImageLcreateChildUiNFB;
+	__0fIXilImageLgetDeviceIOv;
+
+        ##
+        ##  XilBox Class
+        ##
+        __0fGXilBoxGgetTagv;
+        __0fGXilBoxJgetAsRectPiTBPUiTD;
+        __0fGXilBoxMgetAsCornersPiNDB;
+
+        ##
+        ##  XilBoxList Class
+        ##
+        __0fKXilBoxListHgetNextPP6GXilBox;
+        __0fKXilBoxListHgetNextPP6GXilBoxNCB;
+        __0fKXilBoxListHgetNextPP6GXilBoxNDB;
+        __0fKXilBoxListHgetNextPP6GXilBoxTB;
+        __0fKXilBoxListMgetNextArrayPP6GXilBox;
+        __0fKXilBoxListLgetNumBoxesPUiTB;
+        __0fKXilBoxListMmarkAsFailedv;
+
+        ##
+        ##  XilTile Class
+        ##
+        __0fHXilTileVgetStorageDescriptionv;
+        __0fHXilTileGgetBoxv;
+
+        ##
+        ##  XilTileList Class
+        ##
+        __0fLXilTileListFresetv;
+        __0fLXilTileListHgetNextv;
+        __0fLXilTileListHgetTileUi;
+        __0fLXilTileListLgetNumTilesv;
+
+        ##
+        ##  XilImageFormat Class
+        ##
+        __0fOXilImageFormatLgetDataTypev;
+        __0fOXilImageFormatLgetNumBandsv;
+        __0fOXilImageFormatHgetInfoPUiNCBP6N__XilDataType;
+	__0fOXilImageFormatNgetColorspacev;
+        __0fOXilImageFormatNrefColorspacev;
+	__0fOXilImageFormatNsetColorspaceP6NXilColorspace;
+        __0fOXilImageFormatIgetWidthv;
+        __0fOXilImageFormatJgetHeightv;
+	__0fOXilImageFormatHgetSizePUiTB;
+        
+        ##
+        ##  XilObject Class
+        ##
+        __0fJXilObjectHisValidv;
+        __0fJXilObjectOgetSystemStatev;
+	__0fJXilObjectHgetNamev;
+        __0fJXilObjectHgetTypev;
+        __0fJXilObjectKgetVersionP6KXilVersion;
+        __0fJXilObjectIisSameAsP6KXilVersion;
+        __0fJXilObjectHdestroyv;
+        __0oKXilVersionctv;
+                
+        ##
+        ##  XilStorage Class
+        ##
+        __0fKXilStorageHreleasev;
+        __0fKXilStorageGisType6OXilStorageType;
+        __0fKXilStorageIgetImagev;
+        __0fKXilStorageIsetImageP6IXilImage;
+        __0fKXilStorageJgetOffsetUi;
+        __0fKXilStorageJgetOffsetv;
+        __0fKXilStorageJsetOffsetUiTB;
+        __0fKXilStorageKgetDataPtrUi;
+        __0fKXilStorageKgetDataPtrv;
+        __0fKXilStorageKsetDataPtrPvUi;
+        __0fKXilStorageRgetDataReleasePtrPPFPvTB_vPPv;
+        __0fKXilStorageRgetDataReleasePtrUiPPFPvTB_vPPv;
+        __0fKXilStorageSsetDataReleaseFuncPFPvTB_vPv;
+        __0fKXilStorageNgetBandStridev;
+        __0fKXilStorageNsetBandStrideUi;
+        __0fKXilStorageOgetPixelStrideUi;
+        __0fKXilStorageOgetPixelStridev;
+        __0fKXilStorageOsetPixelStrideUiTB;
+	__0fKXilStorageRgetScanlineStridev;
+        __0fKXilStorageRgetScanlineStrideUi;
+        __0fKXilStorageRsetScanlineStrideUiTB;
+        __0fKXilStorageOgetStorageInfoPUiNDBPPv;
+        __0fKXilStorageOgetStorageInfoUiPUiNCCPPv;
+        __0fKXilStorageVgetDeviceSpecificInfov;
+        __0fKXilStorageVsetDeviceSpecificInfoPv;
+        __0fKXilStorageOgetCoordinatesPUiTB;
+        __0fKXilStorageOsetCoordinatesUiTB;
+
+        ##  constructors/destructors
+        __0oKXilStoragectP6IXilImage;
+        __0oKXilStoragectP6IXilImageUiNDCPv;
+        __0oKXilStoragedtv;
+
+        ##
+        ##  XilLookup Object
+        ##
+        __0fJXilLookupNgetLookupTypev;
+	__0fJXilLookupQgetInputDataTypev;
+	__0fJXilLookupOgetInputNBandsv;
+        __0fJXilLookupRgetOutputDataTypev;
+	__0fJXilLookupPgetOutputNBandsv;
+	__0fJXilLookupLisColorcubev;
+
+        ##
+        ##  XilLookupSingle Object
+        ##
+        __0fPXilLookupSingleNgetNumEntriesv;
+	__0fPXilLookupSingleHgetDatav;
+	__0fPXilLookupSingleJgetOffsetv;
+	__0fPXilLookupSingleJgetValuesiUiPv;
+        __0fPXilLookupSingleJsetValuesiUiPCv;
+        __0fPXilLookupSingleJsetOffseti;
+
+        ##
+        ##  XilLookupColorcube Object
+        ##
+        __0fSXilLookupColorcubeNgetDimensionsv;
+        __0fSXilLookupColorcubeOgetMultipliersv;
+        __0fSXilLookupColorcubeNgetDimsMinus1v;
+        __0fSXilLookupColorcubeRgetAdjustedOffsetv;
+
+        ##
+        ##  XilLookupCombined Object
+        ##
+	__0fRXilLookupCombinedOgetEntriesListv;
+	__0fRXilLookupCombinedOgetOffsetsListv;
+	__0fRXilLookupCombinedLgetDataListv;
+	__0fRXilLookupCombinedNgetBandLookupUi;
+
+        ##
+        ##  XilHistogram Object
+        ##
+        __0fMXilHistogramKcreateCopyv;
+        __0fMXilHistogramHgetDatav;
+        __0fMXilHistogramLgetNumBandsv;
+        __0fMXilHistogramOgetNumElementsv;
+        __0fMXilHistogramKgetNumBinsPUi;
+        __0fMXilHistogramKgetNumBinsv;
+        __0fMXilHistogramMgetLowValuesPf;
+        __0fMXilHistogramMgetLowValuesv;
+        __0fMXilHistogramNgetHighValuesPf;
+        __0fMXilHistogramNgetHighValuesv;
+
+
+	##
+	## XilKernel object
+	##
+	__0fJXilKernelHgetKeyXv;
+	__0fJXilKernelHgetDatav;
+	__0fJXilKernelHgetKeyYv;
+	__0fJXilKernelIgetWidthv;
+	__0fJXilKernelJgetHeightv;
+	__0fJXilKernelKcreateCopyv;
+	__0fJXilKernelGinvertv;
+        __0fJXilKernelLisSeparablev;
+        __0fJXilKernelQgetSeparableDataPPCfTB;
+        
+	##
+	## XilSel object
+	##
+	__0fGXilSelHgetKeyXv;
+	__0fGXilSelHgetKeyYv;
+	__0fGXilSelIgetWidthv;
+	__0fGXilSelJgetHeightv;
+	__0fGXilSelKcreateCopyv;
+	__0fGXilSelHgetDatav;
+
+	##
+	## XilDitherMask object
+	##
+	__0fNXilDitherMaskHgetDatav;
+	__0fNXilDitherMaskIgetWidthv;
+	__0fNXilDitherMaskJgetHeightv;
+	__0fNXilDitherMaskLgetNumBandsv;
+	__0fNXilDitherMaskKcreateCopyv;
+
+        ##
+        ## XilDevice Object
+        ##
+        __0fJXilDeviceNgetAttributesPUi;
+        __0fJXilDeviceNgetDeviceNamev;
+
+        ##
+        ## XilColorspace Object
+        ##
+        __0fNXilColorspaceJgetOpcodev;
+        __0fNXilColorspaceJgetNBandsv;
+        __0fNXilColorspaceRgetColorspaceDatav;
+        __0fNXilColorspaceRgetColorspaceTypev;
+
+        ##
+        ## XilColorspaceList Object
+        ##
+        __0fRXilColorspaceListNgetColorspaceUi;
+        __0fRXilColorspaceListRgetNumColorspacesv;
+        __0fRXilColorspaceListNgetCachedDatav;
+        __0fRXilColorspaceListNsetCachedDataPvPFPv_v;
+
+	## 
+	## XilInterpolationTable object
+	##
+	__0fVXilInterpolationTableHgetDatav;
+	__0fVXilInterpolationTableKcreateCopyv;
+	__0fVXilInterpolationTableNgetKernelSizev;
+	__0fVXilInterpolationTableQgetNumSubsamplesv;
+        
+        ##
+        ##  XilRectList Class
+        ##
+        __0fLXilRectListGreinitP6GXilBox;
+        __0fLXilRectListHgetNextPiTBPUiTD;
+        __0fLXilRectListFresetv;
+
+        ##  constructor/destructor
+        __0oLXilRectListctP6GXilRoiP6GXilBox;
+        __0oLXilRectListctP6GXilRoiPsiTD;
+	__0oLXilRectListctP6GXilRoiiTCUiTE;
+        __0oLXilRectListctP6LXilRectListiNDC;
+        __0oLXilRectListctP6LXilRectListP6GXilBox;
+        __0oLXilRectListdtv;
+        
+        ##
+        ##  XilConvexRegionList Class
+        ##
+	__0oTXilConvexRegionListctP6GXilRoiP6GXilBox;
+	__0oTXilConvexRegionListctP6GXilRoiPsiTD;
+	__0oTXilConvexRegionListctP6GXilRoiiTCUiTE;
+	__0oTXilConvexRegionListctP6TXilConvexRegionListP6GXilBox;
+	__0oTXilConvexRegionListctP6TXilConvexRegionListiNDC;
+	__0oTXilConvexRegionListdtv;
+	__0fTXilConvexRegionListGreinitP6GXilBox;
+        __0fTXilConvexRegionListHgetNextPPCdTBPUi;
+
+	##
+	## XilScanlineList class
+	##
+        __0oPXilScanlineListctP6GXilBoxPCdTCUi;
+	__0oPXilScanlineListdtv;
+	__0fPXilScanlineListHgetNextPUiNCB;
+	__0fPXilScanlineListPgetNumScanlinesv;
+        __0fPXilScanlineListMgetScanlinesPUi;
+
+        ##
+        ##  XilFunctionInfo Class
+        ##
+        __0fPXilFunctionInfoGcreatevT;
+        __0fPXilFunctionInfoHdestroyv;
+        __0fPXilFunctionInfoKdescribeOp6MXilDirectionUiPCc;
+        __0fPXilFunctionInfoKdescribeOp6MXilDirectioni;
+
+        ##  Compute
+        __0fPXilFunctionInfoVsetPreprocessFunctionPMXXilDeviceManagerComputeFP6FXilOpUiP6GXilRoiPPvPUi_6L__XilStatus;
+        __0fPXilFunctionInfoLsetFunctionPMXXilDeviceManagerComputeFP6FXilOpUiP6GXilRoiP6KXilBoxList_6L__XilStatusPCc;
+        __0fPXilFunctionInfoWsetPostprocessFunctionPMXXilDeviceManagerComputeFP6FXilOpPv_6L__XilStatus;
+
+        ##  I/O
+        __0fPXilFunctionInfoVsetPreprocessFunctionPMLXilDeviceIOFP6FXilOpUiP6GXilRoiPPvPUi_6L__XilStatus;
+        __0fPXilFunctionInfoLsetFunctionPMLXilDeviceIOFP6FXilOpUiP6GXilRoiP6KXilBoxList_6L__XilStatusPCc;
+        __0fPXilFunctionInfoWsetPostprocessFunctionPMLXilDeviceIOFP6FXilOpPv_6L__XilStatus;
+
+        ##  Codec
+        __0fPXilFunctionInfoVsetPreprocessFunctionPMUXilDeviceCompressionFP6FXilOpUiP6GXilRoiPPvPUi_6L__XilStatus;
+        __0fPXilFunctionInfoLsetFunctionPMUXilDeviceCompressionFP6FXilOpUiP6GXilRoiP6KXilBoxList_6L__XilStatusPCc;
+        __0fPXilFunctionInfoWsetPostprocessFunctionPMUXilDeviceCompressionFP6FXilOpPv_6L__XilStatus;
+
+        ##
+        ##  XilDeviceManager Class
+        ##
+        __0fQXilDeviceManagerLaddFunctionP6PXilFunctionInfo;
+
+        ##
+        ##  XilDeviceManagerCompute Class
+        ##
+        ##  constructor/destructor
+        __0oXXilDeviceManagerComputectv;
+        __0oXXilDeviceManagerComputedtv;
+
+        ##
+        ##  XilDeviceManagerStorage Class
+        ##
+        __0fXXilDeviceManagerStoragePdescribeMembersv;
+
+        ##  constructor/destructor
+        __0oXXilDeviceManagerStoragectv;
+        __0oXXilDeviceManagerStoragedtv;
+
+        ##
+        ##  XilDeviceStorage Class
+        ##
+        __0oQXilDeviceStoragectP6IXilImage;
+        __0fQXilDeviceStorageKsetStorageP6KXilStorageTBiNCD;
+        __0fQXilDeviceStorageSmodifyForEmulationP6KXilStoragePCcPvUiTE;
+        __0fQXilDeviceStorageVtransferToDescriptionP6KXilStoragePCcTBTCPvUiTGPi;
+        __0fQXilDeviceStorageVgetBoxStorageLocationP6GXilBoxPiTCPUiTETC;
+        __0fQXilDeviceStorageIdontNeedP6KXilStorageUiNFC;
+        __0fQXilDeviceStorageIwillNeedP6KXilStorageUiNFC;
+
+	##
+	##  XilDeviceManagerCompression class
+	##
+        __0fbXilDeviceManagerCompressionEisOKv;
+        __0obXilDeviceManagerCompressionctPcTB;
+        __0obXilDeviceManagerCompressiondtv;
+        __0fbXilDeviceManagerCompressionNgetCompressorv;
+        __0fbXilDeviceManagerCompressionSgetCompressionTypev;
+        __0fbXilDeviceManagerCompressionMregisterAttrPcPMUXilDeviceCompressionFPv_vPMUXilDeviceCompressionFv_Pv;
+
+	##
+	##  XilDeviceCompression class
+	##
+        __0fUXilDeviceCompressionEseekiTB;
+        __0fUXilDeviceCompressionFflushv;
+        __0fUXilDeviceCompressionFresetv;
+        __0fUXilDeviceCompressionGgetCisv;
+        __0fUXilDeviceCompressionHhasDatav;
+        __0fUXilDeviceCompressionHputBitsiTBPv;
+        __0fUXilDeviceCompressionIhasFramev;
+        __0fUXilDeviceCompressionKgetBitsPtrPiTB;
+        __0fUXilDeviceCompressionKinMoleculev;
+        __0fUXilDeviceCompressionKputBitsPtriTBPvPFPv_v;
+        __0fUXilDeviceCompressionLadjustStarti;
+        __0fUXilDeviceCompressionMcisFitsInDstP6GXilRoi;
+        __0fUXilDeviceCompressionMgetAttributePCcPPv;
+        __0fUXilDeviceCompressionMgetInputTypev;
+        __0fUXilDeviceCompressionMgetReadFramev;
+        __0fUXilDeviceCompressionMsetAttributePCcPv;
+        __0fUXilDeviceCompressionMsetInputTypeP6OXilImageFormat;
+        __0fUXilDeviceCompressionNgenerateError6QXilErrorCategoryPciNDDTC;
+        __0fUXilDeviceCompressionNgenerateError6QXilErrorCategoryPciTDTC;
+        __0fUXilDeviceCompressionNgetCompressorv;
+        __0fUXilDeviceCompressionNgetOutputTypev;
+        __0fUXilDeviceCompressionNgetStartFramev;
+        __0fUXilDeviceCompressionNgetWriteFramev;
+        __0fUXilDeviceCompressionNsetInMoleculei;
+        __0fUXilDeviceCompressionOgetSystemStatev;
+        __0fUXilDeviceCompressionOnumberOfFramesv;
+        __0fUXilDeviceCompressionPattemptRecoveryUiTBRiTD;
+        __0fUXilDeviceCompressionPgetRandomAccessv;
+        __0fUXilDeviceCompressionPsetRandomAccessi;
+        __0fUXilDeviceCompressionQdecompressHeaderv;
+        __0fUXilDeviceCompressionQderiveOutputTypev;
+        __0fUXilDeviceCompressionQgetDeviceManagerv;
+        __0fUXilDeviceCompressionSgetCompressionTypev;
+        __0fUXilDeviceCompressionTgetCisBufferManagerv;
+        __0fUXilDeviceCompressionVfindNextFrameBoundaryv;
+        __0fUXilDeviceCompressionWdeviceCompressionValidv;
+        __0fUXilDeviceCompressionegetOutputTypeHoldTheDerivationv;
+        __0oUXilDeviceCompressionctP6bXilDeviceManagerCompressionP6GXilCisiTD;
+        __0oUXilDeviceCompressiondtv;
+
+	##
+	##  XilDeviceManagerIO class
+	##
+        __0fSXilDeviceManagerIOTconstructFromDeviceP6OXilSystemStateP6JXilDevice;
+        __0fSXilDeviceManagerIOWconstructDisplayDeviceP6OXilSystemStateP6J_XDisplayUl;
+        __0fSXilDeviceManagerIOkconstructDoubleBufferedDisplayDeviceP6OXilSystemStateP6J_XDisplayUl;
+         __0fSXilDeviceManagerIOdconstructSpecialDisplayDeviceP6OXilSystemStateP6J_XDisplayUl6NXilWindowCaps;
+	__0oSXilDeviceManagerIOctv;
+	__0oSXilDeviceManagerIOdtv;
+
+	##
+	##  XilDeviceIO class
+	##
+        __0oLXilDeviceIOctP6SXilDeviceManagerIO;
+        __0oLXilDeviceIOdtv;
+        __0fLXilDeviceIOHgetTypev;
+        __0fLXilDeviceIOQgetDeviceManagerv;
+        __0fLXilDeviceIOMstartCaptureP6GXilBox;
+        __0fLXilDeviceIOLstopCapturev;
+        __0fLXilDeviceIOHcaptureP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0fLXilDeviceIOHdisplayP6FXilOpUiP6GXilRoiP6KXilBoxList;
+        __0fLXilDeviceIOIgetPixelUiTBPfNCB;
+        __0fLXilDeviceIOIsetPixelUiTBPfNCB;
+        __0fLXilDeviceIOPgetActiveBufferv;
+        __0fLXilDeviceIOPsetActiveBuffer6LXilBufferId;
+        __0fLXilDeviceIOLswapBuffersv;
+        __0fLXilDeviceIOJdataReadyUiNDB;
+        __0fLXilDeviceIOWreinitControllingImageP6OXilImageFormat;
+        __0fLXilDeviceIORgetCaptureStorageP6KXilStorageUiNDCPc6OXilStorageTypePv;
+        __0fLXilDeviceIOShasSubPixelCapturev;
+        __0fLXilDeviceIOShasSubPixelDisplayv;
+
+        ##
+        ##  XilMutex Class
+        ##
+        __0fIXilMutexElockv;
+        __0fIXilMutexGunlockv;
+        __0oIXilMutexctv;
+        __0oIXilMutexdtv;
+
+        ##
+        ##  XilCondVar Class
+        ##
+        __0fKXilCondVarEwaitP6IXilMutex;
+        __0fKXilCondVarEwaitv;
+        __0fKXilCondVarGsignalv;
+        __0fKXilCondVarJbroadcastv;
+        __0oKXilCondVarctP6IXilMutex;
+        __0oKXilCondVarctv;
+        __0oKXilCondVardtv;
+
+        ##
+        ##  XilGlobalState Class
+        ##
+        __0fOXilGlobalStateOlookupOpNumberPCc;
+        __0fOXilGlobalStateRgetXilGlobalStatevT;
+        __0fOXilGlobalStateSdescribeOpFunctionPCcTBPv;
+
+        ##
+        ##  XilSystemState Class
+        ##
+        __0fOXilSystemStateTcreateXilColorspacePc6TXilColorspaceOpCodeUi;
+	__0fOXilSystemStateTcreateXilColorspaceP6J_XDisplayiP6GVisual;
+        __0fOXilSystemStateXcreateXilColorspaceListPP6NXilColorspaceUi;
+        __0fOXilSystemStateTcreateXilDitherMaskUiNCBPf;
+        __0fOXilSystemStateOcreateXilImageUiNCB6N__XilDataType;
+        __0fOXilSystemStateOcreateXilImageP6OXilImageFormat;
+        __0fOXilSystemStateUcreateXilImageFormatUiNCB6N__XilDataType;
+        __0fOXilSystemStateOcreateXilImageP6J_XDisplayUl6NXilWindowCaps;
+        __0fOXilSystemStateOcreateXilImageP6J_XDisplayUlPCc;
+        __0fOXilSystemStatebcreateXilInterpolationTableUiTBPf;
+        __0fOXilSystemStateScreateXilHistogramUiPUiPfTD;
+	__0fOXilSystemStatePcreateXilKernelUiTBiTDPf;
+        __0fOXilSystemStateVcreateXilLookupSingle6N__XilDataTypeTBUiTDsPv;
+        __0fOXilSystemStateXcreateXilLookupCombinedPP6PXilLookupSingleUi;
+        __0fOXilSystemStateYcreateXilLookupColorcube6N__XilDataTypeTBUisPiPUi;
+        __0fOXilSystemStateMcreateXilRoiv;
+        __0fOXilSystemStateMcreateXilSelUiTBiTDPUi;
+        __0fOXilSystemStateTcreateXilStorageAPIP6IXilImage;
+        __0fOXilSystemStateLnotifyError6QXilErrorCategoryPCciUiTCP6JXilObjectPv;
+        __0fOXilSystemStateNnotifyWarning6QXilErrorCategoryPCciUiTCP6JXilObjectPv;
+        __0fOXilSystemStatePgetObjectByNamePCc6NXilObjectType;
+	__0fOXilSystemStateWgetInterpolationTablesPP6VXilInterpolationTableTB;
+
+        ##
+        ##  XilCis Class
+        ##
+	__0fGXilCisEseekiTB;
+	__0fGXilCisHhasDatav;
+	__0fGXilCisHputBitsiTBPv;
+	__0fGXilCisIhasFramev;
+	__0fGXilCisKgetBitsPtrPiTB;
+	__0fGXilCisKputBitsPtriTBPvPFPv_v;
+	__0fGXilCisMgetAttributePCcPPv;
+	__0fGXilCisMgetMaxFramesv;
+	__0fGXilCisMgetReadFramev;
+	__0fGXilCisMsetAttributePCcPv;
+	__0fGXilCisMsetMaxFramesi;
+	__0fGXilCisMsetReadFramei;
+	__0fGXilCisNgetCompressorv;
+	__0fGXilCisNgetKeepFramesv;
+	__0fGXilCisNgetStartFramev;
+	__0fGXilCisNgetWriteFramev;
+	__0fGXilCisNsetKeepFramesi;
+	__0fGXilCisNsetStartFramei;
+	__0fGXilCisNsetWriteFramei;
+	__0fGXilCisOgetAutorecoverv;
+	__0fGXilCisOgetReadInvalidv;
+	__0fGXilCisOnumberOfFramesv;
+	__0fGXilCisOsetAutorecoveri;
+	__0fGXilCisPattemptRecoveryUiTB;
+	__0fGXilCisPgetRandomAccessv;
+	__0fGXilCisPgetWriteInvalidv;
+	__0fGXilCisSgetCompressionTypev;
+        __0fGXilCisMgetInputTypev;
+	__0fGXilCisUgetDeviceCompressionv;
+        __0fGXilCisNgetOutputTypev;
+	__0fGXilCisXflushPriorDecompressOpsi;
+	__0fGXilCisbgetDeviceManagerCompressionv;
+
+        ##
+        ##  XilCisBufferManager Class
+        ##
+        __0fTXilCisBufferManagerEseekiTB;
+        __0fTXilCisBufferManagerFresetv;
+        __0fTXilCisBufferManagerHhasDatav;
+        __0fTXilCisBufferManagerHputBitsiTBPv;
+        __0fTXilCisBufferManagerIhasFramev;
+        __0fTXilCisBufferManagerInextSeekiTB;
+        __0fTXilCisBufferManagerIprevSeekiTB;
+        __0fTXilCisBufferManagerJbyteErrorPUc;
+        __0fTXilCisBufferManagerJnextFramePPUci;
+        __0fTXilCisBufferManagerKgetBitsPtrPiTB;
+        __0fTXilCisBufferManagerKgetRBufferv;
+        __0fTXilCisBufferManagerKnextBufferv;
+        __0fTXilCisBufferManagerKputBitsPtriTBPvPFPv_v;
+        __0fTXilCisBufferManagerKungetBytesPUci;
+        __0fTXilCisBufferManagerLadjustStartiTB;
+        __0fTXilCisBufferManagerLgetNextBytev;
+        __0fTXilCisBufferManagerLgetRFrameIdv;
+        __0fTXilCisBufferManagerLgetSFrameIdv;
+        __0fTXilCisBufferManagerLgetWFrameIdvK;
+        __0fTXilCisBufferManagerMgetFrameSizevK;
+        __0fTXilCisBufferManagerMgetNextBytesPi;
+        __0fTXilCisBufferManagerMgetNumFramesvK;
+        __0fTXilCisBufferManagerMsetFrameSizei;
+        __0fTXilCisBufferManagerNgetRFrameTypev;
+        __0fTXilCisBufferManagerOaddToLastFramePUci;
+        __0fTXilCisBufferManagerOnumberOfFramesv;
+        __0fTXilCisBufferManagerPcompressedFramei;
+        __0fTXilCisBufferManagerPdoneBufferSpaceiTB;
+        __0fTXilCisBufferManagerPnextBufferSpacev;
+        __0fTXilCisBufferManagerQgetRFrameUserPtrv;
+        __0fTXilCisBufferManagerQsetRFrameUserPtrPv;
+        __0fTXilCisBufferManagerRdecompressedFramePUciPvTC;
+        __0fTXilCisBufferManagerRerrorRecoveryDonePUciTC;
+        __0fTXilCisBufferManagerSgetNumBytesToFrameiPi;
+        __0fTXilCisBufferManagerTgetNextDecompressIdvK;
+        __0fTXilCisBufferManagerTseekBackToFrameTypei;
+        __0fTXilCisBufferManagerVgetNumFramesPerBuffervK;
+        __0fTXilCisBufferManagerVmoveEndStartOneBufferv;
+        __0fTXilCisBufferManagerVsetNumFramesPerBufferi;
+        __0fTXilCisBufferManagerWfoundNextFrameBoundaryPUc;
+        __0fTXilCisBufferManagerWnextKnownFrameBoundaryPUcPPUcPi;
+        __0fTXilCisBufferManagerXgetXilDeviceCompressionv;
+        __0fTXilCisBufferManagerXsetSeekToStartFrameFlagi;
+        __0fTXilCisBufferManagerXsetXilDeviceCompressionP6UXilDeviceCompression;
+        __0fTXilCisBufferManagerYfoundFrameDuringRecoveryPUc;
+
+
+        ##
+        ## XilCisBuffer Class
+        ##
+        __0fMXilCisBufferHaddBytei;
+        __0fMXilCisBufferIaddBytesPUcUi;
+        __0fMXilCisBufferIaddShorti;
+        __0fMXilCisBufferJaddShortsPsUi;
+        __0fMXilCisBufferLgetNumBytesvK;
+        __0fMXilCisBufferMframeAtRfptrvK;
+        __0fMXilCisBufferMgetNumFramesvK;
+        __0fMXilCisBufferNgetBufferSizevK;
+        __0fMXilCisBufferNnumAvailBytesvK;
+        __0fMXilCisBufferPframeAfterRfptriTBK;
+        __0fMXilCisBufferPgetStartFrameIdvK;
+        __0fMXilCisBufferPupdateLastFramev;
+        __0fMXilCisBufferQremoveStartFramev;
+        __0fMXilCisBufferSgetNumBytesToFrameiPi;
+        __0fMXilCisBufferTgetNumBytesInRFramevK;
+        __0fMXilCisBufferTgetNumBytesInWFramevK;
+    local:
+        *;
+};
+
+SUNW_XIL_OPS_PRIVATE {
+    global:
+      	##############################################################
+	##
+	## The following entries are for use by the ops directory
+	## and are *NOT* considered part of the GPI. We are looking
+	## into being able to have these entries in separate mapfile
+        ##
+	##############################################################
+
+        ##
+        ##  XilOpCache -- used only by ops dir
+        ##
+        __0fLXiliOpCacheDset6N__XilDataTypeTBi;
+        __0fLXiliOpCacheDset6N__XilDataTypei;
+        __0fLXiliOpCacheGlookup6N__XilDataType;
+        __0fLXiliOpCacheGlookup6N__XilDataTypeTB;
+
+        ##  constructor/destructor
+        __0oLXiliOpCachectUi;
+        __0oLXiliOpCachedtv;
+
+        ##
+        ##  XiliRectInt class
+        ##
+        __0fLXiliRectIntDgetPiNDB;
+        __0oLXiliRectIntctP6GXilBox;
+        __0oLXiliRectIntdlPvUiT;
+        __0dLXiliRectIntG__vtbl;
+        __0oLXiliRectIntnwUiT;
+        __0fLXiliRectIntEclipP6IXiliRect;
+        __0fLXiliRectIntDsetiNDB;
+        __0fLXiliRectIntDsetP6IXiliRect;
+        __0fLXiliRectIntHisEmptyv;
+        __0fLXiliRectIntJtranslatedTB;
+
+        ##
+        ##  XiliRectDbl class
+        ##
+        __0fLXiliRectDblEclipP6IXiliRect;
+        __0oLXiliRectDbldlPvUiT;
+        __0dLXiliRectDblG__vtbl;
+        __0fLXiliRectDblDgetPdNDB;
+        __0fLXiliRectDblDsetdNDB;
+        __0fLXiliRectDblDsetiNDB;
+        __0fLXiliRectDblJtranslatedTB;
+        __0fLXiliRectDblDsetP6IXiliRect;
+
+        ##
+        ##  XilBox class
+        ##
+        __0fGXilBoxEclipP6GXilBox;
+        __0fGXilBoxEclipiNDB;
+        __0fGXilBoxEclipiTBUiTD;
+
+        ##
+        ##  XiliConvexRegion class
+        ##
+        __0fQXiliConvexRegionDsetdNDB;
+        __0fQXiliConvexRegionEclipdNDB;
+        __0fQXiliConvexRegionJintersectP6QXiliConvexRegionTB;
+        
+        ##
+        ##  XiliBoxListEntry class
+        ##
+        __0oQXiliBoxListEntrydtv;
+        __0oQXiliBoxListEntryctv;
+        __0oQXiliBoxListEntrynwUiT;
+        
+	##
+	##  XilNonDeferrableObject class
+	##
+        __0fWXilNonDeferrableObjectMaquireDefRefP6FXilOp;
+        
+	##
+	##  XilRoi class
+	##
+        __0oGXilRoictP6OXilSystemState;
+        __0oGXilRoidtv;
+        __0fGXilRoiRgetIntBoundingBoxPiTBPUiTD;
+	__0fGXilRoiJintersectP6GXilRoiTB;
+	__0fGXilRoiJtranspose6N__XilFlipTypefTC;
+	__0fGXilRoiRintersect_inplaceP6GXilRoi;
+	__0fGXilRoiWunite_disjoint_inplaceP6GXilRoi;
+        __0fGXilRoiNunite_inplaceP6GXilRoi;
+	__0fGXilRoiJtranslatedTB;
+        __0fGXilRoiRtranslate_inplacedTB;
+        __0fGXilRoiRtranslate_inplaceiTB;
+	__0fGXilRoiHaddRectiTBUiTD;
+        __0fGXilRoiHaddRectdNDB;
+	__0fGXilRoiLgetRectListv;
+	__0fGXilRoiPaddConvexRegionP6QXiliConvexRegion;
+        __0oLXiliRoiRectasR6LXiliRoiRect;
+        __0oGXilRoiasR6GXilRoi;
+        __0fGXilRoiPgetConvexRegionv;
+        __0fGXilRoiTgetConvexRegionListv;
+        __0fGXilRoiOgetBoundingBoxv;
+        __0fGXilRoiKnumRegionsv;
+        __0fGXilRoiInumRectsv;
+        __0fOXiliRoiBitmaskHisValidvK;
+        __0fTXiliRoiConvexRegionHisValidvK;
+        __0fLXiliRoiRectHisValidvK;
+
+	##
+	##  XilImage class
+	##
+        __0fIXilImageJsetOriginfTB;
+        __0fIXilImageOsetStorageInfoP6IXilImage;
+        __0fIXilImageGsetRoiP6GXilRoi;
+        __0fIXilImagePgetChildOffsetsPUiNCB;
+	__0fIXilImageJgetParentv;
+        __0fIXilImageLgetTileSizePUiTB;
+        
+	##
+	## XilOp Class
+	##
+	__0fFXilOpRgetIntersectedRoiv;
+        __0fFXilOpWgenerateIntersectedRoiv;
+        __0fFXilOpUgetSrcGlobalSpaceRoiUi;
+        __0fFXilOpUgetDstGlobalSpaceRoiUi;
+        __0fFXilOpTswitchToAlternateOpv;
+	__0fFXilOpNdivideBoxListP6KXilBoxListUiNCC;
+        __0fFXilOpGsetDstUiP6TXilDeferrableObject;
+        __0fFXilOpGsetSrcUiP6TXilDeferrableObject;
+        __0fFXilOpLsetOpNumberi;
+        __0fFXilOpNcanForwardMapv;
+        __0fFXilOpNisCommutativevK;
+        __0fFXilOpJisInPlacevK;
+        __0fFXilOpNflushOnInsertvK;
+        __0fFXilOpKcanBeSplitv;
+        __0fFXilOpWvSplitOnTileBoundariesP6KXilBoxList;
+        __0fFXilOpOvReportResultsPPv;
+        __0fFXilOpMvBackwardMapP6GXilBoxdTCTBPdTFUi;
+        __0fFXilOpPcompleteResultsv;
+        __0fFXilOpRsetForwardMappingi;
+        __0fFXilOpTmoveIntoObjectSpaceP6GXilRoiP6TXilDeferrableObject;
+        __0fFXilOpTmoveIntoGlobalSpaceP6GXilRoiP6TXilDeferrableObject;
+        __0fFXilOpTmoveIntoGlobalSpaceP6IXiliRectP6TXilDeferrableObject;
+        __0fFXilOpTmoveIntoObjectSpaceP6IXiliRectP6TXilDeferrableObject;
+        __0fFXilOpMgsForwardMapP6IXiliRectUiTB;
+        __0fFXilOpNgsBackwardMapP6IXiliRectTBUi;
+        __0fFXilOpKclipToTileP6TXilDeferrableObjectiP6IXiliRect;
+        __0fFXilOpNsetBoxStorageP6IXiliRectP6TXilDeferrableObjectP6GXilBox;
+        __0fFXilOpNisIOOperation6MXiliOpIOType;
+        __0fFXilOpOgetSystemStatev;
+        __0fFXilOpWthisOpCoversPreviousOpv;
+        __0fFXilOpSreadjustBoxStorageP6IXiliRect;
+        __0fFXilOpVreorderTileProcessingP6LXilTileListTB;
+
+        ##
+        ##  XilObject class
+        ##
+        __0fJXilObjectIsetValidi;
+        
+        ##
+        ##  Stand-alone Functions
+        ##
+
+    local:
+        *;
+};        

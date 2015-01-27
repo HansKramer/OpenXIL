@@ -1,0 +1,26 @@
+##
+##  @(#)mapfile	1.2 96/05/29 
+##
+##
+##  Linker MapFile for xilCompress_Mpeg1.so.2
+##
+
+xilCompress_Mpeg1 {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fbXilDeviceManagerCompressionGcreateUiTBPUiTDT;
+
+        ##
+        ##  Codec Device Members
+        ##
+
+
+    local:
+        *;
+};
+
+
+
+

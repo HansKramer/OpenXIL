@@ -1,0 +1,122 @@
+.\" @(#)xil_state_get_show_action.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_state_get_show_action 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_state_get_show_action, xil_state_set_show_action \- show information about when deferred actions are taken and which actions have been put together into molecules
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "int xil_state_get_show_action (XilSystemState " State );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_state_set_show_action (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "int " env_on_off );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_state_get_show_action
+.IX Functions xil_state_get_show_action
+.IX "Image Functions" "xil_state_get_show_action"
+XIL provides a deferred execution facility that automatically recognizes
+certain sequences of XIL functions (atoms) and executes the sequences
+as a single high-performance molecule. An example is a sequence of XIL functions
+that scales (implicitly capturing) and compresses an image. XIL defers execution
+of the scale function to see if a compression function follows. If it does,
+the two functions are executed together as a high-performance molecule.
+XIL defines a set of general-purpose molecules that perform
+sequences of operations such as color conversion and decompression.
+.P
+To determine if XIL functions are executing within molecules, set the
+SHOW_ACTION attribute of
+.I XilSystemState.
+This causes the XIL library to print a message to
+.I stderr
+whenever an
+operation that affects an XIL image or compressed image sequence is executed.
+.P
+.B xil_state_get_show_action
+(\^) gets the current value of the SHOW_ACTION attribute of
+.I State.
+.P
+.nh
+.IX xil_state_set_show_action
+.IX Functions xil_state_set_show_action
+.IX "Image Functions" "xil_state_set_show_action"
+.B xil_state_set_show_action
+(\^) sets the current value of the SHOW_ACTION attribute of
+.I State.
+.P
+.nh
+When 
+.SM SHOW_ACTION 
+is set to -1, the XIL library checks the value of the
+environment variable 
+.SM XIL_DEBUG, 
+and it sets the attribute 
+.SM SHOW_ACTION 
+to 0 if the environment variable 
+.SM XIL_DEBUG 
+does not contain the string "show_action"; it sets the attribute to 1 if
+.SM XIL_DEBUG 
+contains the string "show_action".
+.P
+.nh
+The default value for 
+.SM SHOW_ACTION 
+is -1. When 
+.SM SHOW_ACTION 
+is 1, the library prints information to 
+.I stderr 
+about when deferred actions happen and when they are combined into molecules.
+When 
+.SM SHOW_ACTION 
+is 0, no information is printed.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Show the output of 
+.SM XIL_SHOW_ACTION 
+in a segment of code, but only
+if the 
+.SM XIL_DEBUG 
+environment variable is set to "show_action".
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+State = xil_open();
+xil_state_set_show_action(State, 0);    /* turn off default behavior */
+/* ... set up code ... */
+xil_state_set_show_action(State, -1);   /* turn on output (only if environment */
+				          /* variable is set) */
+/* ... area of interest ... */
+xil_state_set_show_action(State, 0);    /* turn off output */
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+These functions do not produce any semantic differences in the execution of the program.  They are only useful for debugging and performance tuning.  Consult the 
+.I "XIL Programmer's Guide
+for information on performance tuning.
+
+
+

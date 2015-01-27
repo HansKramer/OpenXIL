@@ -1,0 +1,91 @@
+.\" @(#)xil_scale.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_scale 3 "16 June 1993" "" "XIL Library"
+.SH "NAME"
+xil_scale \- scale an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_scale (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "char *" interpolation ,
+.br
+.BI "float " xscale ,
+.br
+.BI "float " yscale );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_scale
+.IX Functions xil_scale
+.IX "Geometric Operations" "xil_scale"
+This function scales an image about its origin.
+By default, an image's origin
+is its upper-left corner (0.0, 0.0). You can change the origin with the
+.BR xil_set_origin (\^)
+function.
+.LP
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I interpolation 
+is a string that specifies the type of interpolation to be used.
+The supported interpolation types are 
+.I nearest
+(nearest neighbor),
+.I bilinear,
+.I bicubic,
+and
+.I general.  xscale 
+and
+.I yscale
+are the 
+.I x 
+and 
+.I y 
+scale factors. Scale factors of less than 1.0 reduce the size of an image in
+.I x
+and 
+.I y.
+.ft 1
+.SS ROI Behavior
+.nh
+If an ROI (region of interest) is attached to the source image, it is used as a read mask and is scaled into the destination image's space, where it is intersected with the destination ROI (if there is one).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Scale an image by 2.3 in the 
+.I x 
+direction and 4.3 in the 
+.I y 
+direction using 
+bicubic interpolation.
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+.ta 3.5i
+xil_scale(src, dst, "bicubic", 2.3, 4.3);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The source and destination images to be scaled must be the same type and number of bands. This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_affine (3).

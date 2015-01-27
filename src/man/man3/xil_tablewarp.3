@@ -1,0 +1,133 @@
+.\" @(#)xil_tablewarp.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_tablewarp 3 "29 March 1994" "" "XIL Library"
+.SH NAME
+xil_tablewarp, xil_tablewarp_horizontal, xil_tablewarp_vertical \- warp an image with a user-specified warp table
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_tablewarp (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "char* " interpolation ,
+.br
+.BI "XilImage " warp_table );
+.br
+.fi
+.in
+.BI "void xil_tablewarp_horizontal (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "char* " interpolation ,
+.br
+.BI "XilImage " warp_table );
+.br
+.fi
+.in
+.sp .5v
+.BI "void xil_tablewarp_vertical (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "char* " interpolation ,
+.br
+.BI "XilImage " warp_table );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_tablewarp
+.IX Functions xil_tablewarp
+.IX "Image Processing Operations" "xil_tablewarp"
+.IX "Geometric Operations" "xil_tablewarp"
+These functions warp an image with the specified warp table.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I interpolation
+is a string that specifies the interpolation to be used. The supported interpolation types are nearest (nearest neighbor), bilinear, bicubic, and general.
+.I warp_table
+is a handle to an 
+.I XilImage 
+structure that describes the backward mapping from a pixel in the destination to a pixel in the source. 
+.P
+A warp table is an XIL image whose pixel values define the backward
+mapping from a pixel in the destination to a pixel in the source.
+The warp table is applied at the origin of 
+the destination image. The source origin is then added to the backward 
+mapping position specified by the warp table. A warp table must have either
+datatype XIL_SHORT or XIL_FLOAT, though it can be used to warp images
+of any data type. 
+The XIL_SHORT value is interpreted 
+as fixed point wth 12 bits value and 4 bits of precision. 
+.P
+The warp table for
+.B xil_tablewarp
+(\^) is a 2-banded image where the bands specify the displacement in 
+.I x 
+and the displacement in 
+.I y. 
+The warp table for
+.B xil_tablewarp_horizontal 
+(\^) and
+.B xil_tablewarp_vertical
+(\^) is 1-banded and specifies the displacement in the 
+.I x 
+and 
+.I y 
+directions, respectively.
+.LP
+.SS ROI Behavior
+.nh
+Because a warp table is technically an XIL image, it can have a defined
+region of interest
+(ROI). However, an ROI is meaningless in a warp table and is therefore
+ignored.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+For this example, a warp table is created to produce the same effect as translation. This example translates a 100 x 120 block from src origin to the right and down with offset (26.0, 37.0) using bilinear interpolation.
+.LP
+.nf
+.RS
+.ft 3
+XilSystemState State;
+XilImage src, dst, warp_table;
+float values[2];
+.sp
+warp_table = xil_create(State, 100, 120, 2, XIL_SHORT);
+/* multiply offsets by 16 because of 12 bit values with 4 bit precision */
+values[0] = 26.0 * 16;
+values[1] = 37.0 * 16;
+xil_set_value(warp_table, values);
+.sp
+.ta 3.5i
+xil_tablewarp(src, dst, "bilinear", warp_table);
+.RE
+.fi
+.ft 1
+.sp
+.ne 10
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the 
+same number of bands. The images need not have the same width and height. 
+This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_set_origin (3),
+.BR xil_set_pixel (3),
+.BR xil_set_value (3).
+

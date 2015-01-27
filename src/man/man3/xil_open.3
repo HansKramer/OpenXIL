@@ -1,0 +1,111 @@
+.\" @(#)xil_open.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_open 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_open, xil_close \- open and close an XIL session
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilSystemState xil_open ();"
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.sp .5v
+.BI "void xil_close (XilSystemState " State );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_open
+.IX Functions xil_open
+.IX "General Utility Functions" "xil_open"
+.BR xil_open (3)
+is used to begin an XIL session.  It must be called before any other 
+XIL routine.  A single 
+.I XilSystemState 
+object is created and returned when 
+.BR xil_open (3)
+is invoked. If the function is successful, a handle to the 
+.I XilSystemState 
+object is returned.  This object can only be destroyed by a subsequent 
+call to 
+.BR xil_close (3)
+using the specified handle.
+.P
+.nh
+When
+.BR xil_open (3)
+is called, the XIL library attempts to open and load all of the compute
+pipelines specified in the machine's XIL configuration files.  All of the XIL
+library's capabilities are enabled after this call.
+.P
+.IX xil_close
+.IX Functions xil_close
+.IX "General Utility Functions" "xil_close"
+.B xil_close (3) is used to end an XIL session.  A handle to the 
+.I XilSystemState 
+.nh
+object describing the session to be terminated is passed to the function.  The 
+.I XilSystemState 
+system state object and all internal resources associated with the given XIL
+session are destroyed.  XIL objects created during the session at the
+application's request must be released by the appliction using the appropriate
+XIL destroy calls.  Application writers are expected to destroy the XIL
+objects they create.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Open and close the XIL Library:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+.ta 3.5i
+State = xil_open(\^);
+...
+..calls to XIL..
+...
+xil_close(State);
+.RE
+.fi
+.ft 1
+.fi
+.SH NOTES
+.nh
+Multiple calls to 
+.BR xil_open (\^) 
+produce completely separate system states that provide completely separate XIL
+environments.  Objects created in one environment can be used by other
+environments.  This feature is intended to allow layered software that uses
+the XIL library to be independent from other layered software using the XIL
+library.
+.P
+If your program creates a display image and you do not destroy the image with
+.BR xil_destroy (\^),
+you must close the XIL library (with
+.BR xil_close (\^))
+before you disconnect your program from the X server.
+.SH SEE ALSO
+.BR xil_create (3),
+.BR xil_cis_create (3),
+.BR xil_kernel_create (3),
+.BR xil_lookup_create (3),
+.BR xil_roi_create (3),
+.BR xil_sel_create (3),
+.BR xil_kernel_get_by_name (3),
+.BR xil_lookup_get_by_name (3),
+.BR xil_dithermask_get_by_name (3),
+.BR xil_colorspace_get_by_name (3).

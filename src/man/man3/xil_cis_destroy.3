@@ -1,0 +1,52 @@
+.\" @(#)xil_cis_destroy.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_destroy 3 "10 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_destroy \- destroy a compressed image sequence
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_cis_destroy ( XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_cis_destroy
+.IX Functions xil_cis_destroy
+.IX "CIS Functions" "xil_cis_destroy"
+This function destroys a compressed image sequence, freeing resources associated with the
+.I XilCis 
+structure.  Any data that was inserted into the 
+.I XilCis 
+with 
+.BR xil_cis_put_bits_ptr (3) 
+is not automatically freed, but the user-supplied callback function
+.I done_with_data
+is called, if present and non-NULL.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Deallocate storage associated with a compressed image sequence:
+.nf
+.sp
+.RS
+.ft 3
+XilCis cis;
+.ta 3.5i
+.sp
+xil_cis_destroy (cis);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_cis_create (3),
+.BR xil_cis_put_bits_ptr (3).
+

@@ -1,0 +1,149 @@
+.\" @(#)xil_lookup_get_by_name.3 1.1 96/09/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup_get_by_name 3 "29 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup_get_by_name, xil_lookup_get_name, xil_lookup_set_name \- get and set a lookup table name and get
+a handle to a lookup table by specifying its name
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilLookup xil_lookup_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_lookup_get_name (XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_lookup_set_name (XilLookup " lookup ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to lookup tables, retrieve lookup tables by name, and
+get the handle of a lookup table by specifying its name. Some
+predefined lookup tables are created at the time of an 
+.BR xil_open (3) 
+call.  These lookup tables can be retrieved by  
+.B xil_lookup_get_by_name
+(\^).
+.P
+.nh
+.IX xil_lookup_get_by_name
+.IX Functions xil_lookup_get_by_name
+.IX "Lookup Table Functions" "xil_lookup_get_by_name"
+.B xil_lookup_get_by_name
+(\^) returns the handle to the lookup table with the specified name 
+.I name.
+If such a lookup table does not exist, NULL is returned.  
+.B xil_lookup_get_by_name
+(\^) does not make a copy of the lookup table.
+.P
+.nh
+.IX xil_lookup_get_name
+.IX Functions xil_lookup_get_name
+.IX "Lookup Table Functions" "xil_lookup_get_name"
+.B xil_lookup_get_name
+(\^) returns a copy of the specified lookup table's name.  A call to 
+.B free
+(3) should be used to free the space allocated by 
+.B xil_lookup_get_name
+(\^). If the specified lookup table has no name, NULL is returned.
+.P
+.nh
+.IX xil_lookup_set_name
+.IX Functions xil_lookup_set_name
+.IX "Lookup Table Functions" "xil_lookup_set_name"
+.B xil_lookup_set_name
+(\^) sets the name of the specified lookup table 
+.I name.
+.SH Standard Lookup Tables Provided
+.nh
+The XIL library creates several predefined lookup tables at the time of an
+.BR xil_open (3)
+call.  The names of these lookup tables and their suggested uses follow.
+.TP 20
+.I Lookup Table Name
+.I Suggested Use
+.TP 20
+"yuv_to_rgb"
+RGB lookup table for displaying 8:5:5 dithered YCC data
+.TP 20
+"cc855"
+A good colorcube for dithering YCC data into 200 colors.  This lookup 
+table is created with an offset of 54.
+.TP 20
+"cc496"
+A good colorcube for dithering RGB data into 216 colors.  This lookup
+table is created with an offset of 38.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 25
+.SH EXAMPLES
+Create an inverse 8-bit lookup table named "invert":
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilLookup lookup;
+int i;
+unsigned char data[256];
+.sp
+for (i=0; i<256; i++) data[i] = 255 - i;
+lookup = xil_lookup_create(State,XIL_BYTE,XIL_BYTE,1,256,0,data);
+xil_lookup_set_name(lookup,"invert");
+.fi
+.ft
+.RE
+.ne 30
+.P 
+Use a lookup table named "invert" to remap an image:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage src, dst; 
+XilLookup lookup;
+.sp
+lookup = xil_lookup_get_by_name(State,"invert");
+xil_lookup(src, dst, lookup); 
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+The set of standard objects is generated for each instantiation
+of an 
+.I XilSystemState.
+If these standard objects are deleted, they become unavailable for the duration of the current XIL session.
+.P
+If you give two lookup tables the same name, it is not defined which lookup table will be retrieved by a call to 
+.B xil_lookup_get_by_name
+(\^).
+.SH SEE ALSO
+.BR xil_open (3),
+.BR xil_lookup_create (3),
+.BR xil_lookup_create_combined (3).

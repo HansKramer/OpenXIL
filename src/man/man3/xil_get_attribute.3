@@ -1,0 +1,105 @@
+.\" @(#)xil_get_attribute.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_attribute 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_get_attribute, xil_set_attribute \- get and set the client attributes
+of images
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "int xil_get_attribute (XilImage " image ,
+.if t .in +5n
+.br
+.BI "char *" attribute ,
+.br
+.BI "void **" value );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "int xil_set_attribute (XilImage " image ,
+.if t .in +5n
+.br
+.BI "char *" attribute ,
+.br
+.BI "void *" value );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_get_attribute
+.IX Functions xil_get_attribute
+.IX "Image Functions" "xil_get_attribute"
+.IX xil_set_attribute
+.IX Functions xil_set_attribute
+.IX "Image Functions" "xil_set_attribute"
+.nh
+These routines get and set values of client attributes of images.  Names 
+of the attributes can be arbitrarily assigned and are simply saved for
+later retrieval.
+.I attribute
+is the name of the attribute whose value is to be retrieved or set.
+.I value
+is the status of the specified attribute.
+.P
+.nh
+.BR xil_get_attribute (\^)
+returns XIL_SUCCESS if the attribute is available, and XIL_FAILURE
+if the specified attribute is not available.
+.P
+.nh
+.BR xil_set_attribute (\^)
+returns XIL_SUCCESS if the attribute is successfully set, and XIL_FAILURE
+otherwise.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Set the date that a photograph was taken:
+.P
+.nf
+.sp
+.RS
+.ft 3
+XilImage image;
+char *attribute;
+.sp
+status = xil_set_attribute (image, "DATE", (void *)date);
+if(status==XIL_FAILURE)
+   fprintf(stderr,"Failed to set DATE attribute");
+.RE
+.fi
+.ft 1
+.P
+Get the favorite ice cream flavor of the person in the photograph:
+.P
+.nf
+.sp
+.RS
+.ft 3
+XilImage image;
+char *attribute;
+.sp
+status = xil_get_attribute (image, "favorite flavor", (void **)&(flavor));
+if(status==XIL_FAILURE)
+   fprintf(stderr,"Failed to get flavor attribute");
+.RE
+.fi
+.ft 1
+.SH NOTES
+These functions are not intended to to be used as a database interface.  If
+the image does not contain the specified attribute, the parent is searched
+for the attribute, then the parent's parent is searched, and so on, until
+there are no more parents.
+.SH SEE ALSO
+.BR xil_get_device_attribute (3),
+.BR xil_set_device_attribute (3),
+.BR xil_cis_get_attribute (3),
+.BR xil_cis_set_attribute (3).

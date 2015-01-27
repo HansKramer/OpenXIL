@@ -1,0 +1,140 @@
+.\" @(#)xil_get_origin.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_origin 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_get_origin, xil_get_origin_x, xil_get_origin_y, xil_set_origin \- get and set the origin of an image 
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_get_origin ( XilImage " image ,
+.if t .in +5n
+.br
+.BI "float *" x ,
+.br
+.BI "float *" y );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "float xil_get_origin_x (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "float xil_get_origin_y (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_set_origin (XilImage "image ,
+.if t .in +5n
+.br
+.BI "float " x ,
+.br
+.BI "float " y );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX "Image Functions" "origin overview"
+These functions get and set the conceptual origin of an image.  In the XIL library, each image has a pair of floating-point numbers that represents a conceptual origin.  The default origin for an image when it is created is the upper left corner of the image (0.0, 0.0).  When an operation is performed, the origins of the source and destination images are aligned.  The floating-point origin values are rounded to integers for this purpose.
+.P
+.nh
+For all nongeometric operators, the following semantics are used to determine the extent of the processing.  The source image or images and the destination image are conceptually moved so that their origins are coincident.  The intersection of the source and destination images then forms the destination bounds.  Only the area of intersection is modified in the destination image, and only the area of intersection in the source is used by the operator.  This is very similar to the way in which regions of interest (ROIs) are handled.
+.P
+.nh
+Geometric operations behave a little differently, in that
+after the source and destination origins have been lined up,
+the bounds of the source image are geometrically 
+transformed and then interesected with the bounds of the
+destination image.  Note that as a result of the transform,
+the intersection may result in a nonrectangular region in the
+destination where modification can occur. ROIs are also handled in the 
+same manner.
+.P
+.nh
+If the semantic described above does not produce any overlap, no pixels in the destination are touched.  
+.P
+.BR xil_get_origin (\^)
+.IX xil_get_origin
+.IX Functions xil_get_origin
+.IX "Image Functions" "xil_get_origin"
+gets the 
+.I x
+and
+.I y
+coordinates of the origin of an 
+.I image.
+.P
+.BR xil_get_origin_x (\^)
+.IX xil_get_origin_x
+.IX Functions xil_get_origin_x
+.IX "Image Functions" "xil_get_origin_x"
+gets the 
+.I x
+coordinate of the origin of an 
+.I image.
+.P
+.BR xil_get_origin_y (\^)
+.IX xil_get_origin_y
+.IX Functions xil_get_origin_y
+.IX "Image Functions" "xil_get_origin_y"
+gets the
+.I y
+coordinate of the origin of an 
+.I image.
+.P
+.BR xil_set_origin (\^)
+.IX xil_set_origin
+.IX Functions xil_set_origin
+.IX "Image Functions" "xil_set_origin"
+sets the 
+.I x
+and 
+.I y
+coordinates of the origin of an 
+.I image.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 20
+.SH EXAMPLES
+Move the origin of an image +20.0 in 
+.I x 
+and -30.0 in 
+.I y
+:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage image;
+float x, y;
+.ta 3.5i
+.sp
+xil_get_origin (image, &x, &y);
+x += 20.0;
+y -= 30.0;
+xil_set_origin (image, x, y);
+.RE
+.fi
+.ft 1
+.SH NOTES
+The origin is not constrained to lie within the boundaries of the image.
+

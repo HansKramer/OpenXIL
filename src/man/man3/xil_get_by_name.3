@@ -1,0 +1,114 @@
+.\" @(#)xil_get_by_name.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_by_name 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_get_by_name, xil_get_name, xil_set_name \- get and set an image object name and get a handle to an image by specifying a name
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImage xil_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_get_name (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_set_name (XilImage " image ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to image objects, to read an image's name, and to
+retrieve image objects by name.
+.P
+.nh
+.IX xil_get_by_name
+.IX Functions xil_get_by_name
+.IX "Image Functions" "xil_get_by_name"
+.BR xil_get_by_name (\^)
+returns the handle to the image with the specified name 
+.I name.
+If such an image does not exist, NULL is returned.  
+.B xil_get_by_name
+(\^) does not make a copy of the image.
+.P
+.nh
+.IX xil_get_name
+.IX Functions xil_get_name
+.IX "Image Functions" "xil_get_name"
+.BR xil_get_name (\^)
+returns a copy of the specified image's name.  A call to 
+.B free
+(3) should be used to free the space allocated by 
+.BR xil_get_name (\^)
+ If the specified image has no name, NULL is returned.
+.P
+.nh
+.IX xil_set_name
+.IX Functions xil_set_name
+.IX "Image Functions" "xil_set_name"
+.BR xil_set_name (\^)
+sets the name of the specified image to the one provided.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create a 5x5 3-band blank test image called "empty5x5x3": 
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage image;
+float values[] = { 0.0, 0.0, 0.0 };
+.sp
+image = xil_create(State,5,5,3,XIL_BYTE);
+xil_set_value(image, values);
+xil_set_name(image, "empty5x5x3");
+.fi
+.ft
+.RE
+.P 
+Use an image named "empty5x5x3" to zero a portion of another image:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage zero_image, src, src_child;
+.sp
+zero_image = xil_get_by_name (State,"empty5x5x3");
+src_child = xil_create_child (src, 100, 100, 5, 5, 1, 3);
+xil_multiply (src_child, zero_image, src_child);
+.fi
+.ft
+.RE
+.sp
+.ne 10
+.SH NOTES
+.nh
+If you give two images the same name, it is not defined which image
+will be retrieved by a call to 
+.BR xil_get_by_name (\^).
+.SH SEE ALSO
+.BR xil_create_child (3).

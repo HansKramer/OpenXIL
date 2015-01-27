@@ -1,0 +1,86 @@
+.\" @(#)xil_dithermask_get_height.3 1.1 96/09/10 SMI/VPG;
+.so man3/xil.macs
+.TH xil_dithermask_get_height 3 "16 August 1993" "" "XIL Library"
+.SH NAME
+xil_dithermask_get_height, xil_dithermask_get_width, xil_dithermask_get_nbands \- read attributes of dither mask objects
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "unsigned int xil_dithermask_get_height ( XilDitherMask " mask );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "unsigned int xil_dithermask_get_width ( XilDitherMask " mask );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "unsigned int xil_dithermask_get_nbands ( XilDitherMask " mask );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+These routines control access to the dither mask object used in the
+.BR xil_ordered_dither (3)
+operation.
+In each routine,
+.I mask
+is a handle to a dither mask.
+.P
+.IX xil_dithermask_get_width
+.IX Functions xil_dithermask_get_width
+.IX "Dither Mask Functions" "xil_dithermask_get_width"
+.nh
+.BR xil_dithermask_get_width (\^)
+gets the width of the specified dither mask.
+.P
+.IX xil_dithermask_get_height
+.IX Functions xil_dithermask_get_height
+.IX "Dither Mask Functions" "xil_dithermask_get_height"
+.nh
+.BR xil_dithermask_get_height (\^)
+gets the height of the specified dither mask.
+.P
+.IX xil_dithermask_get_nbands
+.IX Functions xil_dithermask_get_nbands
+.IX "Dither Mask Functions" "xil_dithermask_get_nbands"
+.nh
+.BR xil_dithermask_get_nbands (\^)
+gets the number of bands in the specified dither mask.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the dimensions of a dither mask:
+.LP
+.nf
+.RS
+.ft 3
+XilDithermask dithermask;
+unsigned int width, height, nbands;
+.ta 3.5i
+.sp
+width  = xil_dithermask_get_width (dithermask);
+height = xil_dithermask_get_height (dithermask);
+nbands = xil_dithermask_get_nbands (dithermask);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_dithermask_create (3),
+.BR xil_dithermask_get_by_name (3).
+

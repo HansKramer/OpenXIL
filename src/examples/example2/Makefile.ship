@@ -1,0 +1,27 @@
+##
+##  Program Name
+##
+PGRM=   example2
+
+##
+##  Target Object Files
+##
+OBJS=   fileio.o \
+	window.o \
+	example2.o
+
+##
+##  Additional Flags/Libraries
+##
+CFLAGS += -g -O
+LDLIBS += -lxil -lX11
+UNCOMPRESS = /usr/bin/uncompress
+
+all: $(PGRM)
+
+example2:  $(OBJS)
+	${LINK.c} $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS) 
+
+clean:
+	rm -f core $(PGRM) $(OBJS)
+

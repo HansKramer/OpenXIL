@@ -1,0 +1,144 @@
+.\" @(#)xil_dithermask_get_by_name.3 1.1 96/09/10 SMI/VPG;
+.so man3/xil.macs
+.TH xil_dithermask_get_by_name 3 "16 August 1993" "" "XIL Library"
+.SH NAME
+xil_dithermask_get_by_name, xil_dithermask_get_name, xil_dithermask_set_name \- get and set a dither mask object name and get the handle of a dither mask
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilDitherMask xil_dithermask_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_dithermask_get_name (XilDitherMask " dithermask );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_dithermask_set_name (XilDitherMask " dithermask ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to dither mask objects, to
+retrieve dither mask objects by name, and to read the names of dither masks.  For example, some
+predefined dither masks are created by an 
+.BR xil_open (3) 
+call.  These dither masks can be retrieved by  
+.BR xil_dithermask_get_by_name (\^).
+.P
+.IX xil_dithermask_get_by_name
+.IX Functions xil_dithermask_get_by_name
+.IX "Dither Mask Functions" "xil_dithermask_get_by_name"
+.BR xil_dithermask_get_by_name (\^)
+returns the handle to the dither mask with the specified name 
+.I name.
+If such a dither mask does not exist, NULL is returned.  
+.BR xil_dithermask_get_by_name (\^)
+does not make a copy of the dither mask.
+.P
+.nh
+.IX xil_dithermask_get_name
+.IX Functions xil_dithermask_get_name
+.IX "Dither Mask" "xil_dithermask_get_name"
+.BR xil_dithermask_get_name (\^)
+returns a copy of the specified dither mask's name.  A call to 
+.B free
+(3) should be used to free the space allocated by 
+.BR xil_dithermask_get_name (\^).
+If the specified dither mask has no name, NULL is returned.
+.P
+.nh
+.IX xil_dithermask_set_name
+.IX Functions xil_dithermask_set_name
+.IX "Dither Mask" "xil_dithermask_set_name"
+.BR xil_dithermask_set_name (\^)
+sets the name of the specified dither mask to the one provided.
+.SH Standard Dither Masks Provided
+.nh
+The XIL library creates several predefined dither masks at the time of an
+.BR xil_open (3)
+call.  The names of these dither masks and their suggested uses follow.
+.TP 20
+.I Dither Mask Name
+.I Suggested Use
+.TP 20
+"dm883"
+8x8x3 mask for dithering 24-bit color images to 8-bit pseudocolor images
+.TP 20
+"dm881"
+8x8x1 mask for dithering 8-bit grayscale images to 1-bit images
+.TP 20
+"dm443"
+4x4x3 mask for dithering 24-bit color images to 8-bit pseudocolor images
+.TP 20
+"dm441"
+4x4x1 mask for dithering 8-bit grayscale images to 1-bit images
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 30
+.SH EXAMPLES
+Create and name a 2x2 single-banded dither mask:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilDitherMask dithermask;
+float data[] =	{ 0.0,  0.75,
+		  0.25, 0.5 };
+.sp
+xil_dithermask_create(State, 2, 2, 1, data);
+xil_dithermask_set_name(dithermask, "small_mask");
+.fi
+.ft
+.RE
+.P 
+Perform a dither operation on a 1-banded image using "small_mask":
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilDitherMask dithermask;
+XilLookup cc_2color_bit;	/* 2-entry cube; black /white */
+XilImage byte_image, bit_image;
+.sp
+dithermask = xil_dithermask_get_by_name(State, "small_mask");
+xil_ordered_dither(byte_image, bit_image, cc_2color_bit, dithermask);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+The set of standard objects is generated for each instantiation
+of an 
+.I XilSystemState.
+If these standard objects are deleted, they become unavailable for the duration of the current XIL session.
+.P
+If you give two dither masks the same name, it is not defined which dither mask will be retrieved by a call to 
+.BR xil_dithermask_get_by_name (\^).
+.SH SEE ALSO
+.BR xil_dithermask_create (3),
+.BR xil_dithermask_get_height (3),
+.BR xil_open (3).

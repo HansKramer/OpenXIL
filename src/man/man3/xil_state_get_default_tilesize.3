@@ -1,0 +1,78 @@
+.\" @(#)xil_state_get_default_tilesize.3 1.5 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_state_get_default_tilesize 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_state_get_default_tilesize, xil_state_set_default_tilesize \- get and set the default
+tile size for all images created with a particular XilSystemState
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "int xil_state_get_default_tilesize (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "unsigned int* " txsize ,
+.br
+.BI "unsigned int* " tysize );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "int xil_state_set_default_tilesize (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "unsigned int " txsize );
+.br
+.BI "unsigned int " tysize );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_state_get_default_tilesize
+.IX Functions xil_state_get_default_tilesize
+.IX "Image Functions" "xil_state_get_default_tilesize"
+.BR xil_state_get_default_tilesize (\^)
+returns the tile size that will be used for all images created
+under
+.I State.
+Unless modified by a call to
+.BR xil_state_set_default_tilesize 
+(\^) the values returned by this call are 0,0. These values indicate that the default tile size is calculated by XIL according to the amount of physical
+memory on the machine running the program and the default tiling mode.
+.P
+.nh
+.IX xil_state_set_default_tilesize
+.IX Functions xil_state_set_default_tilesize
+.IX "Image Functions" "xil_state_set_default_tilesize"
+.B xil_state_set_default_tilesize
+(\^) sets the tile size that will be used for all images created under
+.I State.
+If not set by the user, the default tile size is calculated by XIL
+in an optimal way according to the amount of physical memory on the
+machine running the program. Although the user can set the default tilesize at any time, the values are only examined when the default tiling mode is other than XIL_WHOLE_IMAGE.
+.P
+.nh
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH NOTES
+.nh
+Changing the default tile size through a call to
+.BR xil_state_set_default_tilesize (\^)
+can have serious performance implications.
+.P
+It is possible to override the default tile size for any given image
+through a call to
+.BR xil_set_tilesize (\^)
+after first exporting the image.
+.SH SEE ALSO
+.BR xil_set_tilesize (3).
+
+

@@ -1,0 +1,1115 @@
+# specify that output file will be 'xil.mo'
+domain "xil"
+# ------------------------------------------------------------
+# internal strings start here
+# -----------------------------------------------------------
+# error categories
+#
+# [These match with XilErrorCategory]
+msgid	"cat-0"
+msgstr	"System"
+#
+msgid	"cat-1"
+msgstr  "Resource"
+#
+msgid	"cat-2"
+msgstr	"Arithmetic"
+#
+msgid	"cat-3"
+msgstr	"Cis Data"
+#
+msgid	"cat-4"
+msgstr	"User"
+#
+msgid	"cat-5"
+msgstr	"Configuration"
+#
+msgid	"cat-6"
+msgstr	"Other"
+#
+# -------------------------------------------------------------
+# default error handler strings
+#
+msgid	"XilDefaultErrorFunc:\n"
+msgstr	"XilDefaultErrorFunc:\n"
+#
+msgid	"   error category: %s\n"
+msgstr	"   error category: %s\n"
+#
+msgid	"     error string: %s\n"
+msgstr	"     error string: %s\n"
+#
+msgid	"         error id: %s\n"
+msgstr	"         error id: %s\n"
+#
+msgid	"primary"
+msgstr	"primary"
+#
+msgid	"secondary"
+msgstr	"secondary"
+#
+msgid	"   %s error detected at location %s in XIL\n"
+msgstr	"   %s error detected at location %s in XIL\n"
+#
+msgid	"      object info: %s\n"
+msgstr	"      object info: %s\n"
+#
+msgid	"dh-cis"
+msgstr	"XilCis(%s) start frame %d; read frame %d; write frame %d"
+# -------------------------------------------------------------
+# normal error messages start here
+# 
+msgid	"di-1"
+msgstr	"Out of memory"
+#
+msgid	"di-2"
+msgstr	"Operation source #1 has incorrect number of bands or does not match number of destination bands"
+#
+msgid	"di-3"
+msgstr	"Operation source #2 has incorrect number of bands or does not match number of destination bands"
+#
+msgid	"di-4"
+msgstr	"Operation source #3 has incorrect number of bands or does not match number of destination bands"
+#
+msgid	"di-5"
+msgstr	"Operation is not implemented"
+#
+msgid	"di-7"
+msgstr	"Could not intersect ROIs"
+#
+msgid	"di-8"
+msgstr	"Could not get X Region list from ROI"
+#
+msgid   "di-14"
+msgstr  "Could not copy XilRoi"
+#
+msgid	"di-16"
+msgstr	"Could not translate ROI"
+#
+msgid   "di-17"
+msgstr  "Attempted to get an unknown compression attribute"
+#
+msgid   "di-18"
+msgstr  "Attempted to get a set-only compression attribute"
+#
+msgid   "di-19"
+msgstr  "Attempted to set an unknown compression attribute"
+#
+msgid   "di-20"
+msgstr  "Attempted to set a get-only compression attribute"
+#
+msgid   "di-21"
+msgstr  "Could not create operation"
+#
+msgid   "di-55"
+msgstr  "XilCis: Jpeg attribute error: cannot interleaved bands with different selectors and/or pt_transform values"
+#
+msgid   "di-56"
+msgstr  "XilCis: Jpeg attribute error: DECOMPRESSION_QUALITY value must be >= 1 and <= 100"
+#
+msgid   "di-57"
+msgstr  "XilCis: Jpeg attribute error: ENCODE_INTERLEAVED value must be either TRUE or FALSE"
+#
+msgid   "di-58"
+msgstr  "XilCis: Jpeg attribute error: ENCODE_VIDEO value must be either TRUE or FALSE"
+#
+msgid   "di-59"
+msgstr  "XilCis: Jpeg attribute error: COMPRESSION_QUALITY value must be >= 1 and <= 100"
+#
+msgid   "di-60"
+msgstr  "XilCis: Jpeg attribute error: TEMPORAL_FILTER value must be either TRUE or FALSE"
+#
+msgid   "di-61"
+msgstr  "XilCis: Jpeg attribute error: OPTIMIZE_HUFFMAN_TABLES value must be either TRUE or FALSE"
+#
+msgid   "di-62"
+msgstr  "XilCis: Jpeg attribute error: COMPRESSED_DATA_FORMAT value must be either INTERCHANGE or ABBREVIATED_FORMAT"
+#
+msgid   "di-63"
+msgstr  "XilCis: Cell attribute error: Must set DECOMPRESSOR_COLORMAP before RDWR_INDICES"
+#
+msgid   "di-64"
+msgstr  "XilCis: Cell attribute error: RDWR_INDICES: Invalid NULL indexlist"
+#
+msgid   "di-65"
+msgstr  "XilCis: Cell attribute error: RDWR_INDICES: Invalid indexlist count"
+#
+msgid   "di-67"
+msgstr  "XilCis: Jpeg bytestream error: Invalid code value index"
+#
+msgid   "di-68"
+msgstr  "XilCis: Jpeg bytestream error: Invalid symbol table id"
+#
+msgid   "di-69"
+msgstr  "XilCis: Jpeg bytestream error: Invalid huffman code length"
+# 
+msgid   "di-70"
+msgstr  "XilCis: Jpeg bitstream error: Invalid value for prediction selector"
+#
+msgid   "di-71"
+msgstr  "XilCis: Jpeg bitstream error: Invalid value for point transform"
+#
+msgid   "di-72"
+msgstr  "XilCis: Jpeg bitstream error: Invalid SOF marker for this decompressor"
+# 
+msgid   "di-73"
+msgstr  "XilCis: Jpeg bitstream error: Invalid selector in SOF segment"
+# 
+msgid   "di-74"
+msgstr  "XilCis: Jpeg bitstream error: Unsupported image precision in SOF segment"
+# 
+msgid   "di-75"
+msgstr  "XilCis: Jpeg bitstream error: Invalid image height in SOF segment"
+# 
+msgid   "di-76"
+msgstr  "XilCis: Jpeg bitstream error: Invalid image width in SOF segment"
+# 
+msgid   "di-77"
+msgstr  "XilCis: Jpeg bitstream error: Invalid qtable marker 0"
+# 
+msgid   "di-78"
+msgstr  "XilCis: Jpeg bitstream error: Table not used by any bands"
+# 
+msgid   "di-79"
+msgstr  "XilCis: Jpeg bitstream error: Invalid quantizer precision identifier"
+#
+msgid   "di-80"
+msgstr  "XilCis: Jpeg bitstream error: Number of quantizer tables too large"
+#
+msgid   "di-81"
+msgstr  "XilCis: Jpeg bitstream error: Table identifier not in use"
+#
+msgid   "di-82"
+msgstr  "XilCis: Jpeg bitstream error: Invalid table identifier"
+#
+msgid   "di-83"
+msgstr  "XilCis: Jpeg bitstream error: Invalid ac table identifier"
+#
+msgid   "di-84"
+msgstr  "XilCis: Jpeg bitstream error: dc table identifier not in use"
+#
+msgid   "di-85"
+msgstr  "XilCis: Jpeg bitstream error: Invalid dc table identifier"
+#
+msgid   "di-86"
+msgstr  "XilCis: Jpeg bitstream error: Invalid component identifier"
+# 
+msgid   "di-87"
+msgstr  "XilCis: Jpeg bitstream error: attempted use of non loaded ac table"
+# 
+msgid   "di-88"
+msgstr  "XilCis: Jpeg bitstream error: attempted use of non loaded dc table"
+# 
+msgid   "di-89"
+msgstr  "XilCis: Jpeg bitstream error: attempted use of non loaded qtable"
+# 
+msgid   "di-90"
+msgstr  "XilCis: Jpeg bitstream error: invalid htable identifier"
+# 
+msgid   "di-91"
+msgstr  "XilCis: Jpeg bitstream error: invalid qtable identifier"
+# 
+msgid   "di-92"
+msgstr  "XilCis: Jpeg bitstream error: unknown htable type"
+# 
+msgid   "di-93"
+msgstr  "XilCis: Jpeg bitstream error: invalid band number"
+#
+msgid   "di-94"
+msgstr  "XilCis: Jpeg bitstream error: tableindex too large"
+#
+msgid   "di-95"
+msgstr  "XilCis: internal error"
+#
+msgid   "di-96"
+msgstr  "XilCis: Wrong number of ops in molecule"
+#
+msgid   "di-97"
+msgstr  "XilCis: Cell bitstream error"
+#
+msgid   "di-98"
+msgstr  "XilCis: Jpeg bitstream error"
+#
+msgid   "di-99"
+msgstr  "XilCis: Compression name has not been set properly"
+#
+msgid   "di-100"
+msgstr  "XilCis: No data to decompress"
+#
+msgid   "di-101"
+msgstr  "XilCis: Could not create CIS destination image"
+#
+msgid   "di-102"
+msgstr  "XilCis: Jpeg cannot encode image as 4:1:1 yuv, using ENCODE_INTERLEAVED attribute instead"
+#
+msgid   "di-103"
+msgstr  "XilCis: Jpeg cannot interleave image, it has 5 or more bands."
+#
+msgid   "di-104"
+msgstr  "XilCis: Wrote more than maximum frame size into buffer space"
+#
+msgid   "di-105"
+msgstr  "XilCis: Seek to framenumber not in CIS"
+#
+msgid   "di-106"
+msgstr  "XilCis: Desired framenumber no longer in CIS"
+#
+msgid   "di-107"
+msgstr  "XilCis: CIS is empty, can not seek to framenumber"
+#
+msgid   "di-108"
+msgstr  "XilCis: No previous desired frametype to seek backward to"
+#
+msgid   "di-109"
+msgstr  "XilCis: Unable to complete seek by skipping (burning) frames"
+#
+msgid   "di-110"
+msgstr  "XilCis: Complete frame does not exist, No data to decompress"
+#
+msgid   "di-111"
+msgstr  "XilCis: Image width and height must be a multiple of 4."
+#
+msgid   "di-112"
+msgstr  "XilCis: could not create XilLookup for colormap"
+#
+msgid   "di-113"
+msgstr  "XilCis: Fax: source not a bit image"
+#
+msgid   "di-114"
+msgstr  "XilCis: Incomplete frame in buffer, cannot copy until complete"
+#
+msgid   "di-115"
+msgstr  "XilCis: start_frame adjusted past read_frame.  CIS Data Lost."
+#
+msgid   "di-116"
+msgstr  "XilCis: unsupported or illegal precision for compressed image"
+#
+msgid   "di-117"
+msgstr  "XilCis: Invalid NULL cis specified"
+#
+msgid   "di-118"
+msgstr  "XilCis: Partial frame end adjustment error on frame position"
+# 
+msgid   "di-119"
+msgstr  "XilCis: Partial frame end adjustment error on frame list"
+#
+msgid   "di-120"
+msgstr  "XilCis: Cannot create copy op."
+#
+msgid   "di-121"
+msgstr  "XilCis: Invalid compression type or specification."
+#
+msgid   "di-122"
+msgstr  "XilCis: Cannot create compression op."
+#
+msgid   "di-123"
+msgstr  "XilCis: Decompress destination image's type or nbands does not match CIS."
+#
+msgid   "di-124"
+msgstr  "XilCis: Illegal relative_to value in xil_cis_seek."
+# 
+msgid   "di-125"
+msgstr  "XilCis: Compression device is unavailable."
+# 
+msgid   "di-126"
+msgstr  "XilCis: Could not create compression device."
+#
+msgid	"di-127"
+msgstr	"Lookup would be too large for data type"
+#
+msgid	"di-128"
+msgstr	"Color cube multipliers do not match sizes"
+#
+msgid	"di-129"
+msgstr	"Object would be too large for 32 bit addressability"
+#
+msgid	"di-130"
+msgstr	"Attempted to read or write outside the range of a lookup"
+#
+msgid	"di-131"
+msgstr	"Invalid NULL lookup"
+#
+msgid	"di-132"
+msgstr	"Lookup datatype mismatch"
+#
+msgid	"di-133"
+msgstr	"Lookup may not have input type of XIL_FLOAT"
+#
+msgid	"di-134"
+msgstr	"Invalid datatype for image"
+#
+msgid	"di-135"
+msgstr	"Attempted to set device attribute on a non-device image"
+#
+msgid	"di-136"
+msgstr	"Attempted to get device attribute of a non-device image"
+#
+msgid	"di-137"
+msgstr	"Requested pixel outside of the image"
+#
+msgid	"di-140"
+msgstr	"Could not get image storage"
+#
+msgid	"di-142"
+msgstr	"Cannot get memory storage on non-exported image"
+#
+msgid	"di-145"
+msgstr	"Could not create XilRoi"
+#
+msgid	"di-146"
+msgstr	"Invalid parameters passed to function"
+#
+msgid	"di-147"
+msgstr	"Could not create XilImage"
+#
+msgid	"di-149"
+msgstr	"Could not create input/output device"
+#
+msgid	"di-150"
+msgstr	"Could not access input/output device"
+#
+msgid	"di-151"
+msgstr	"Image already exported"
+#
+msgid	"di-152"
+msgstr	"Image is of a type that cannot be exported"
+#
+msgid	"di-153"
+msgstr	"Cannot import image that was not previously exported"
+#
+msgid	"di-154"
+msgstr	"Cannot set memory storage on non-exported image"
+#
+msgid	"di-155"
+msgstr	"Cannot set memory storage on a child image"
+#
+msgid	"di-157"
+msgstr	"Undefined image datatype encountered"
+#
+msgid	"di-158"
+msgstr	"Could not open devhandler:  '%s'"
+#
+msgid	"di-159"
+msgstr	"Could not extract required symbols from devhandler:  '%s'"
+#
+msgid	"di-162"
+msgstr	"XIL Xlib I/O Driver: could not get graphics context"
+#
+msgid	"di-163"
+msgstr	"Could not copy XilKernel"
+#
+msgid	"di-164"
+msgstr	"Source and destination images must be 4 bands (CMYK colorspace)"
+#
+msgid	"di-165"
+msgstr	"Alpha channel image must have only 1 band"
+#
+msgid	"di-166"
+msgstr	"Invalid size for lookup"
+#
+msgid	"di-167"
+msgstr	"Image must have 3 bands"
+#
+msgid	"di-170"
+msgstr	"Could not copy XilSel"
+#
+msgid	"di-171"
+msgstr	"Coefficient(s) would cause a divide by zero"
+#
+msgid	"di-173"
+msgstr	"Number of bands in src image does not match lookup table"
+#
+msgid	"di-174"
+msgstr	"Datatype of dest image does not match lookup table input type"
+#
+msgid	"di-175"
+msgstr	"Datatype of src image does not match lookup table output type"
+#
+msgid	"di-176"
+msgstr	"Output image must be single-banded"
+#
+msgid	"di-177"
+msgstr	"Could not copy XilLookup"
+#
+msgid	"di-179"
+msgstr	"Datatype of src image does not match lookup table input type"
+#
+msgid	"di-180"
+msgstr	"Datatype of dest image does not match lookup table output type"
+#
+msgid	"di-181"
+msgstr	"Input image must be single-banded"
+#
+msgid	"di-182"
+msgstr	"Brush must be specified"
+#
+msgid	"di-184"
+msgstr	"XilCis:  Error AdjustStart"
+#
+msgid	"di-187"
+msgstr	"NULL XilRoi passed to intersect routine"
+#
+msgid	"di-188"
+msgstr	"Could not create XilImageType"
+#
+msgid	"di-189"
+msgstr	"Could not create XilKernel"
+#
+msgid	"di-190"
+msgstr	"Could not create XilDitherMask"
+#
+msgid	"di-191"
+msgstr	"Could not create XilSel"
+#
+msgid	"di-192"
+msgstr	"Could not create XilLookup"
+#
+msgid	"di-194"
+msgstr	"No capture operation defined for the '%s' I/O device"
+#
+msgid	"di-195"
+msgstr	"No display operation defined for the '%s' I/O device"
+#
+msgid	"di-199"
+msgstr	"Could not successfully execute the '%s' operation"
+#
+msgid	"di-202"
+msgstr	"Source colorspace not specified"
+#
+msgid	"di-203"
+msgstr	"Destination colorspace not specified"
+#
+msgid	"di-204"
+msgstr	"Unsupported color conversion"
+#
+msgid	"di-206"
+msgstr	"Lookup must be a colorcube"
+#
+msgid	"di-207"
+msgstr	"Invalid NULL XilImage specified"
+#
+msgid   "di-208"
+msgstr  "Tried to remove an error handler which was not installed"
+#
+msgid	"di-210"
+msgstr	"Could not create XilLookup for returning squeeze range data"
+#
+msgid	"di-211"
+msgstr	"Squeeze range requires single-band images"
+#
+msgid	"di-212"
+msgstr	"XIL I/O Driver:  Could not open specified frame buffer"
+#
+msgid	"di-213"
+msgstr	"XIL I/O Driver:  Could not perform ioctl on frame buffer"
+#
+msgid	"di-214"
+msgstr	"XIL I/O Driver:  Frame buffer not of expected type"
+#
+msgid	"di-215"
+msgstr	"XIL I/O Driver:  Could not mmap device"
+#
+msgid	"di-219"
+msgstr	"XIL I/O Driver:  Could not connect to dga"
+#
+msgid	"di-220"
+msgstr	"XIL I/O Driver:  Could not get window geometry"
+#
+msgid	"di-221"
+msgstr	"Invalid NULL XilKernel specified"
+#
+msgid	"di-222"
+msgstr	"Invalid NULL XilDitherMask specified"
+#
+msgid	"di-223"
+msgstr  "Tried to write to an invalid CIS"
+#
+msgid	"di-224"
+msgstr  "Tried to read from an invalid CIS"
+#
+msgid	"di-230"
+msgstr  "XilCis: Cell attribute failed because too few bytes per frame group"
+#
+msgid	"di-231"
+msgstr  "XilCis: Cell key frame interval is too large for bit rate control"
+#
+msgid	"di-232"
+msgstr  "XilCis: Cell key frame interval exceeds maximum"
+#
+msgid   "di-234"
+msgstr  "Number of bands in image and histogram do not match"
+#
+msgid   "di-235"
+msgstr  "Zero bins in histogram is not allowed"
+#
+msgid   "di-236"
+msgstr  "Cannot create XilHistogram"
+#
+msgid   "di-239"
+msgstr  "Could not set image attribute"
+#
+msgid   "di-241"
+msgstr  "Error loading in default display device handler -- display is not possible"
+#
+msgid   "di-242"
+msgstr  "Could not create display image"
+#
+msgid   "di-243"
+msgstr  "Number of bands cannot be 0"
+#
+msgid   "di-244"
+msgstr  "Cannot create XilSystemState"
+#
+msgid   "di-245"
+msgstr  "Invalid dithermask dimensions"
+#
+msgid   "di-246"
+msgstr  "Cannot create XilGlobalState"
+#
+msgid   "di-247"
+msgstr  "Cannot initialize localization information"
+#
+msgid   "di-248"
+msgstr  "Unable to load any compute device handlers"
+#
+msgid	"di-249"
+msgstr	"XIL Xlib I/O Driver:  Could not get window attributes"
+#
+msgid	"di-250"
+msgstr	"XIL Xlib I/O Driver:  Could not create XImage"
+#
+msgid	"di-251"
+msgstr	"Number of bands in src image does not match dithermask"
+#
+msgid	"di-252"
+msgstr	"Invalid colorcube dimensions"
+#
+msgid   "di-253"
+msgstr  "XilCis:  Cell compress image width is not an even multiple of 4"
+#
+msgid   "di-254"
+msgstr  "XilCis:  Cell compress image height is not an even multiple of 4"
+#
+msgid	"di-255"
+msgstr	"Could not copy XilImage"
+#
+msgid	"di-256"
+msgstr	"Could not install error handler"
+#
+msgid	"di-257"
+msgstr	"Invalid NULL XilRoi specified"
+#
+msgid	"di-258"
+msgstr	"Seed pixel not within fill region defined by fill color"
+#
+msgid	"di-259"
+msgstr	"Invalid NULL data pointer"
+#
+msgid	"di-260"
+msgstr	"Invalid NULL XilSystemState"
+#
+msgid	"di-261"
+msgstr	"XilCis:  Attempted to set Cell encoding type to unknown value"
+#
+msgid	"di-262"
+msgstr	"Invalid NULL XilSel specified"
+#
+msgid	"di-263"
+msgstr	"Invalid kernel value (NaN)"
+#
+msgid	"di-264"
+msgstr	"Invalid kernel value (infinity or -infinity)"
+#
+msgid	"di-265"
+msgstr	"Invalid NULL XilHistogram specified"
+#
+msgid	"di-266"
+msgstr	"Invalid image dimensions specified"
+#
+msgid	"di-267"
+msgstr	"Could not copy XilDitherMask"
+#
+msgid	"di-268"
+msgstr	"Invalid NULL object pointer"
+#
+msgid	"di-269"
+msgstr	"Could not set image ROI"
+#
+msgid	"di-271"
+msgstr	"Invalid dithermask value (NaN)"
+#
+msgid	"di-272"
+msgstr	"Invalid dithermask value (greater than 1.0 or less than 0.0)"
+#
+msgid	"di-273"
+msgstr	"Invalid sel value (must be 0 or 1)"
+#
+msgid	"di-274"
+msgstr	"XilCis:  Could not create internal symbol table"
+#
+msgid	"di-275"
+msgstr	"XilCis:  Could not create internal Cell compressor object"
+#
+msgid	"di-276"
+msgstr	"XilCis:  Internal error op number not found"
+#
+msgid	"di-277"
+msgstr	"XilCis:  Could not create internal CisBufferManager object"
+#
+msgid	"di-278"
+msgstr	"XilCis:  Could not create internal base XilDeviceCompression object"
+#
+msgid	"di-279"
+msgstr	"Could not set object name"
+#
+msgid   "di-280"
+msgstr  "XilCis:  Could not create JpegLL compressor object"
+#
+msgid   "di-281"
+msgstr  "XilCis:  Could not create JpegLL decompressor object"
+#
+msgid   "di-282"
+msgstr  "Could not create XilCis"
+#
+msgid   "di-283"
+msgstr  "XilCis:  Cell user data size is too large"
+#
+msgid   "di-284"
+msgstr  "XilCis:  Bitstream error -- invalid SOF marker"
+#
+msgid   "di-285"
+msgstr  "XilCis:  Invalid bitstream parameters"
+#
+msgid   "di-288"
+msgstr  "XilCis:  Image for compress has ROIs or non-zero origin"
+#
+msgid	"di-289"
+msgstr	"Invalid data in kernel for use with error-diffusion"
+#
+msgid	"di-290"
+msgstr	"XilCis:  Partial frame start adjustment error on frame position"
+#
+msgid	"di-291"
+msgstr	"XilCis:  Partial frame flag not set on buffer with partial frame"
+#
+msgid	"di-292"
+msgstr	"XilCis:  Partial frame start adjustment error--mismatch with buffer start"
+#
+msgid	"di-293"
+msgstr	"XilCis:  Current buffer manager read frame unknown"
+#
+msgid   "di-294"
+msgstr  "XilCis:  Could not derive output type from data in cis"
+#
+msgid	"di-295"
+msgstr	"Colorspace and image's number of bands mismatch"
+#
+msgid	"di-296"
+msgstr	"Invalid NULL XilColorspace specified"
+#
+msgid	"di-297"
+msgstr	"Could not copy XilColorspace"
+#
+msgid	"di-298"
+msgstr	"Could not create XilColorspace"
+#
+msgid	"di-299"
+msgstr	"Number of bands in destination image does not match lookup table"
+#
+msgid   "di-300"
+msgstr  "XilCis:  Could not create internal fax compressor"
+#
+msgid	"di-301"
+msgstr	"Invalid NULL X Region specified"
+#
+msgid	"di-302"
+msgstr	"Invalid colorcube multipliers"
+#
+msgid   "di-303"
+msgstr  "XilCis:  Invalid Cell key frame interval -- negative"
+#
+msgid   "di-304"
+msgstr  "XilCis:  Illegal seek backward in a non-random access CIS"
+#
+msgid   "di-305"
+msgstr  "XilCis:  Bad value for Xil_boolean type"
+#
+msgid   "di-306"
+msgstr  "XilCis:  Cell colormaps must contain at least 2 colors"
+#
+msgid   "di-307"
+msgstr  "XilCis:  Cell colormaps can not contain more than 256 colors"
+#
+msgid   "di-308"
+msgstr  "XilCis:  Cell COMPRESSOR_MAX_CMAP_SIZE attribute can not be changed after first xil_compress"
+#
+msgid   "di-309"
+msgstr  "XilCis:  Cannot set Cell colormap greater than COMPRESSOR_MAX_CMAP_SIZE"
+#
+msgid   "di-310"
+msgstr  "XilCis:  Quantizer value out of range"
+#
+msgid   "di-311"
+msgstr  "XilCis:  Failure decompressing Cell header"
+#
+msgid   "di-312"
+msgstr  "XilCis:  Illegal H.261 bitstream"
+#
+msgid   "di-313"
+msgstr  "XilCis:  Compressor for px64 device compression not yet implemented"
+#
+msgid   "di-314"
+msgstr  "XilCis:  Unable to sync up with current frame PSC in H.261 bitstream"
+#
+msgid	"di-317"
+msgstr	"XilCis:  Error in seeking.  No frames to skip/burn"
+#
+msgid	"di-318"
+msgstr	"XilCis:  Attribute error -- value must be either TRUE or FALSE"
+#
+msgid	"di-319"
+msgstr	"XilCis:  No user data established for already scanned Mpeg frame"
+#
+msgid	"di-320"
+msgstr	"XIL I/O Driver:  Could not get frame buffer info"
+#
+msgid	"di-321"
+msgstr	"Cannot re-size a child image"
+#
+msgid	"di-322"
+msgstr	"Cannot re-size non-device images"
+#
+msgid   "di-323"
+msgstr  "XilCis:  Compressor for MPEG1 device compression not yet implemented"
+#
+msgid	"di-324"
+msgstr	"XilCis:  Attribute error -- value out of range"
+#
+msgid	"di-325"
+msgstr	"XilCis:  D (DC intra-coded) frame type not supported"
+#
+msgid	"di-326"
+msgstr	"Matrix size does not match with src or dst number of bands"
+#
+msgid	"di-327"
+msgstr  "Tried to use an 'invalid' image as source to an operation"
+#
+msgid	"di-329"
+msgstr	"XilCis:  Mpeg1 bitstream error, incomplete frame"
+#
+msgid	"di-330"
+msgstr	"XIL Xlib I/O Driver:  Could not capture image -- window not mapped"
+#
+msgid	"di-331"
+msgstr	"NULL XilLookup list or zero number of XilLookup objects to combine"
+#
+msgid	"di-332"
+msgstr	"Input type of lookups are not of same type"
+#
+msgid	"di-333"
+msgstr	"Output type of lookups are not of same type"
+#
+msgid	"di-334"
+msgstr	"Not all lookups have a single band"
+#
+msgid	"di-335"
+msgstr	"Requested lookup table doesn't exist -- num_bands too large"
+#
+msgid	"di-336"
+msgstr	"Wrong lookup type -- not a combined lookup object"
+#
+msgid	"di-337"
+msgstr	"XilCis:  Wrote more than max_frame_size bytes into frame"
+#
+msgid	"di-338"
+msgstr	"XilCis:  moveEndStart error, read frame must be at end of buffer"
+#
+msgid	"di-339"
+msgstr	"XilCis:  moveEndStart error, read frame must have following frame"
+#
+msgid	"di-340"
+msgstr	"XilCis:  removeStartFrame error, read frame must be start of buffer"
+#
+msgid	"di-341"
+msgstr	"XilCis:  Mpeg1 seek, prev_nonbframe_id is frame which already has valid display_id"
+#
+msgid	"di-342"
+msgstr	"XilCis:  doneBufferSpace called with negative number of bytes, illegal"
+#
+msgid	"di-343"
+msgstr	"Unsupported edge detection method"
+#
+msgid   "di-344"
+msgstr  "Invalid NULL XilDevice specified"
+#
+msgid   "di-345"
+msgstr  "Could not create XilDevice"
+#
+msgid 	"di-347"
+msgstr	"ROI rectangle width/height cannot be <= 0"
+#
+msgid	"di-351"
+msgstr	"Could not create XilInterpolationTable"
+#
+msgid	"di-352"
+msgstr	"Invalid NULL XilInterpolationTable specified"
+#
+msgid	"di-354"
+msgstr	"X & Y skip values must be greater than 0"
+#
+msgid	"di-356"
+msgstr	"XIL I/O Device:  Could not open specified data file(s)"
+#
+msgid	"di-357"
+msgstr	"XilCis:  Mpeg Video Sequence Header changing without Sequence End Code added to previous sequence"
+#
+msgid	"di-358"
+msgstr	"Width and Height must be defined before parsing XilCis"
+#
+msgid	"di-359"
+msgstr	"Cannot read from a write-only device"
+#
+msgid	"di-360"
+msgstr	"Cannot write to a read-only device"
+#############################################################
+##
+##  XIL 1.3 New Error Messages
+##
+#############################################################
+#
+msgid   "di-361"
+msgstr  "Invalid tile size specified for current tiling mode"
+#
+msgid   "di-362"
+msgstr  "I/O device failed to provide a required attribute for its type and was not loaded"
+#
+msgid   "di-364"
+msgstr  "Unable to process configuration information in OWconfig file(s)"
+#
+msgid   "di-365"
+msgstr  "Mismatch in expected number of boxes for XilBoxList::getNext() -- full operation was not done"
+#
+msgid   "di-366"
+msgstr  "Cannot re-size an exported image"
+#
+msgid   "di-367"
+msgstr  "X scale factor not in the range [0.0, 1.0]"
+#
+msgid   "di-368"
+msgstr  "Y scale factor not in the range [0.0, 1.0]"
+#
+msgid   "di-369"
+msgstr  "Could not dlopen() libdga.so.1"
+#
+msgid   "di-370"
+msgstr  "Could not dlsym() required DGA symbol from libdga.so.1"
+#
+msgid   "di-371"
+msgstr  "xil_get/set_memory_storage not supported for given datatype"
+#
+msgid   "di-372"
+msgstr  "Invalid NULL XilColorspaceList specified"
+#
+msgid   "di-373"
+msgstr  "Invalid NULL XilColorspace given for the XilColorspaceList"
+#
+msgid   "di-374"
+msgstr  "Could not create XilStorage"
+#
+msgid   "di-375"
+msgstr  "Could not create XilColorspaceList"
+#
+msgid   "di-376"
+msgstr  "I/O device operation failed"
+#
+msgid   "di-377"
+msgstr  "Storage device operation failed"
+#
+msgid   "di-378"
+msgstr  "Attempted an operation which is not supported for this type of I/O device"
+#
+msgid	"di-379"
+msgstr  "Could not dlopen() libkcs.so.1"
+#
+msgid   "di-380"
+msgstr  "Could not dlsym() required KCMS symbol from libkcs.so.1"
+#
+msgid   "di-381"
+msgstr  "KCMS function did not return KCS_SUCCESS"
+#
+msgid   "di-382"
+msgstr  "Cannot set a non XIL_COLORSPACE_NAME XilColorspace on an image"
+#
+msgid   "di-383"
+msgstr  "Invalid NULL XilStorage object specified"
+#
+msgid   "di-384"
+msgstr  "Unable to Sync"
+#
+msgid   "di-385"
+msgstr  "Unsupported datatype for this operation"
+#
+msgid   "di-386"
+msgstr  "Device handler specified invalid an operation branch number of '%d'"
+#
+msgid   "di-387"
+msgstr  "Device handler's describeMembers() returned failure.  '%s' not loaded"
+#
+msgid   "di-388"
+msgstr  "Invalid image for creating XilStorage"
+#
+msgid   "di-391"
+msgstr  "Could not copy XilHistogram"
+#
+msgid   "di-392"
+msgstr  "Could not initialize the image tile size"
+#
+msgid   "di-395"
+msgstr  "Could not get image tile size"
+#
+msgid   "di-396"
+msgstr  "Cannot set or get tile size on a non-exported image"
+#
+msgid   "di-398"
+msgstr  "xil_convert() is not supported for combined lookups"
+#
+msgid   "di-399"
+msgstr  "Copy failed when in updating version for non-deferrable object with deferrable dependents"
+#
+msgid   "di-400"
+msgstr  "Could not successfully execute operation"
+#
+msgid   "di-401"
+msgstr  "Could not get source ROI in global space"
+#
+msgid   "di-402"
+msgstr  "Could not get destination ROI in global space"
+#
+msgid   "di-403"
+msgstr  "Adding box entry to boxlist failed"
+#
+msgid   "di-404"
+msgstr  "Could not lock DAG"
+#
+msgid   "di-405"
+msgstr  "Datatype mismatch when setting storage information"
+#
+msgid   "di-406"
+msgstr  "Band offset is too large for setting storage information"
+#
+msgid   "di-407"
+msgstr  "Invalid storage type encountered"
+#
+msgid   "di-408"
+msgstr  "Setting offfset on storage object not supported for this datatype"
+#
+msgid   "di-411"
+msgstr  "Thread creation failed"
+#
+msgid   "di-412"
+msgstr  "Error in loading device handler %s"
+#
+msgid   "di-414"
+msgstr  "Requested name of an invalid object type"
+#
+msgid   "di-415"
+msgstr  "Unable to set preprocess routine information for the operation"
+#
+msgid   "di-416"
+msgstr  "Unsupported or invalid NULL interpolation specified"
+#
+msgid   "di-417"
+msgstr  "Unable to set input type on device compressor"
+#
+msgid   "di-418"
+msgstr  "Could not decompress header information"
+#
+msgid   "di-422"
+msgstr  "Initializing XilTileList class failed"
+#
+msgid	"di-423"
+msgstr	"Set memory storage failed"
+#
+msgid   "di-424"
+msgstr  "Reducing op queue length has failed"
+#
+msgid   "di-425"
+msgstr  "Updating operation status encountered unknown status -- operation may not have executed"
+#
+msgid   "di-426"
+msgstr  "Setting invalid band or parameter on storage object"
+#
+msgid   "di-427"
+msgstr  "Could not determine source position number in evaluating dependent"
+#
+msgid   "di-428"
+msgstr  "Invalid operation for a temporary image"
+#
+msgid   "di-430"
+msgstr  "Missing mutex reference while operation evaluating -- unable to wait"
+#
+msgid   "di-431"
+msgstr  "Convex region intersection generated more than maximum of 16 vertices"
+#
+msgid   "di-432"
+msgstr  "ROI transpose failed"
+#
+msgid   "di-433"
+msgstr  "ROI unite failed"
+#
+msgid   "di-434"
+msgstr  "Operation source #1 has incorrect datatype"
+#
+msgid   "di-435"
+msgstr  "Operation source #2 has incorrect datatype"
+#
+msgid   "di-436"
+msgstr  "Operation source #3 has incorrect datatype"
+#
+msgid   "di-437"
+msgstr  "Operation destination has incorrect datatype"
+#
+msgid   "di-438"
+msgstr  "Illegal operation for an imported image"
+#
+msgid   "di-439"
+msgstr  "Operation destination has incorrect number of bands"
+#
+msgid   "di-440"
+msgstr  "Could not copy XilImageType"
+#
+msgid	"di-441"
+msgstr	"Could not copy XilStorage"
+#
+msgid	"di-442"
+msgstr	"Could not copy XilInterpolationTable"
+#
+msgid	"di-443"
+msgstr	"Tile number is higher than there are tiles in setOpStatus()"
+#
+msgid	"di-444"
+msgstr	"Tile number is higher than there are tiles in getOpStatus()"
+#
+msgid	"di-445"
+msgstr	"Could not translate from one internal ROI implementation to another"
+#
+msgid   "di-446"
+msgstr  "Invalid NULL affine transfomation matrix specified"
+#
+msgid   "di-447"
+msgstr  "Source smaller than kernel/sel not yet implemented"
+#
+msgid   "di-448"
+msgstr  "Invalid NULL XilImageType specified"
+#
+msgid   "di-449"
+msgstr  "Attempting to change a non-NULL dag reference"
+#
+msgid   "di-450"
+msgstr  "Non-integral sampling ratios not yet implemented"
+#
+msgid   "di-451"
+msgstr  "Setting tile size on a child image is not supported"
+#
+msgid   "di-452"
+msgstr  "Mismatch of tiling mode and tile size"

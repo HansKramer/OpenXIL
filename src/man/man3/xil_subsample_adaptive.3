@@ -1,0 +1,87 @@
+.\" @(#)xil_subsample_adaptive.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_subsample_adaptive 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_subsample_adaptive \- adaptively subsample an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_subsample_adaptive (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "float " xscale ,
+.br
+.BI "float " yscale );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_subsample_adaptive
+.IX Functions xil_subsample_adaptive
+.IX "Geometric Operations" "xil_subsample_adaptive"
+This function adaptively subsamples an image about its origin.
+ By default, an image's origin
+is its upper-left corner (0.0, 0.0). You can change the origin with the
+.BR xil_set_origin (\^)
+function.
+The subsampling algorithm used minimizes information loss from skipped pixels in the source image.
+.I src
+is the source image handle.
+.I dst
+.nh
+is the destination image handle.
+.I xscale 
+and
+.I yscale
+are the 
+.I x 
+and 
+.I y 
+scale factors, which must be less than or equal to 1.0 and
+greater than 0.0.
+.ft 1
+.fi
+.SS ROI Behavior
+.LP
+.nh
+If an ROI (region of interest) is attached to the source image, it is used as
+a read mask and is scaled into the destination image's space, where it is
+intersected with the destination ROI (if there is one).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Adaptively subsample an image by .3 in the 
+.I x 
+direction and .4 in the 
+.I y 
+direction:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+.ta 3.5i
+xil_subsample_adaptive(src, dst, .3, .4);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.fi
+.nh
+This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_subsample_binary_to_gray (3),
+.BR xil_set_origin (3),
+.BR xil_scale (3).
+

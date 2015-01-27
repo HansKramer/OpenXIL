@@ -1,0 +1,25 @@
+##
+##  Program Name
+##
+PGRM=   encode
+
+##
+##  Target Object Files
+##
+OBJS=   fileio.o \
+	encode.o
+
+##
+##  Additional Flags/Libraries
+##
+CFLAGS += -g -O
+LDLIBS += -lxil -lX11
+
+all: $(PGRM)
+
+encode: $(OBJS)
+	${LINK.c} $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS) 
+
+clean:
+	rm -f core $(PGRM) $(OBJS)
+

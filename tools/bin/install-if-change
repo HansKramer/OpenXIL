@@ -1,0 +1,143 @@
+#/bin/bash
+#!/bin/ksh -p
+#  (-p above just says to not parse $ENV file; makes it faster for
+#   those of us who set $ENV)
+# @(#)install-if-change	1.13 93/09/17 North Carolina Development Center
+#
+# install files if they have changed by running 'cmp', then 'install'
+#   as necessary.
+#
+#  Optionally, can append a suffix before last existing suffix (if any) or
+#     a prefix to the entire string.
+#
+# NOTE
+#   We used to use /usr/ucb/install, but that is no longer cool
+#   as it relies on a non-required package.
+#   We can't use /usr/sbin/install since it will not allow a
+#   file name change on the fly, which makes -V impossible.
+#   So now we just copy and chmod by hand.
+
+# progname=`basename $0`
+progname=${0##*/}        # fast basename hack for ksh, bash
+
+USAGE=\
+"usage: $progname [ -vmPV ] file [ file ... ] dest-directory-or-file
+	-v	    -- verbose
+        -P prefix   -- prefix to append to targets 
+        -V suffix   -- suffix to append to targets (before any . suffix)
+                        eg: -V _g would change 'foo' to 'foo_g' and
+                                               'libfoo.a' to 'libfoo_g.a'
+        -m mode     -- mode for new file(s)"
+
+fatal() {
+    if [ "$1" ]
+    then
+        echo $* >&2
+    fi
+    echo "$USAGE" 1>&2
+    exit 1
+}    
+
+#
+# process the options
+#
+
+verbose=""
+suffix=""
+prefix=""
+mode=""
+
+while getopts vm:V:P: OPT
+do
+    case "$OPT" in
+	v)
+	    verbose="yes";;
+        V)
+            eval suffix=$OPTARG;;
+        P)
+            eval prefix=$OPTARG;;
+        m)
+            mode="$OPTARG";;
+        *)
+            fatal
+    esac
+done
+
+((shiftcount = $OPTIND - 1))
+shift $shiftcount
+
+args=$*
+
+#
+# Separate source file(s) from dest directory or file
+#
+
+files=""
+dest=""
+for d in $args
+do
+    files="$files $dest"
+    dest=$d
+done
+
+if [ ! "$files" ] || [ ! "$dest" ]
+then
+    fatal "missing files or invalid destination"
+fi
+
+#
+# Process the arguments
+#
+
+targets=""
+for f in $files
+do
+
+    # leaf=`basename $f`
+    leaf=${f##*/}        # fast basename hack for ksh, bash
+
+    target=$dest
+    if [ -d $dest ]
+    then
+        # if we were given a suffix or prefix, then add it as appropriate
+        if [ "$suffix" -o "$prefix" ]
+        then
+            case $f in
+                *.*)
+                    # leaf=`echo $leaf | /bin/sed "s/\([~\.]*\)\.\(.*\)$/\1$suffix.\2/"`
+                    leaf=$prefix${leaf%%.*}$suffix.${leaf#*.}    # ksh,bash hack for above sed script
+
+                    echo "$progname: $f will be installed as $leaf"
+                    ;;
+                *)
+                    leaf=$prefix$leaf$suffix;;
+            esac
+        fi
+        target=$target/$leaf
+    fi
+
+    [ ! -r $f ] && fatal "can not read $f"
+
+    if [ ! -f $target -o $target -ot $f ]
+    then
+        [ "$verbose" = "yes" ] && echo "rm -f $target"
+        rm -f $target
+        [ "$verbose" = "yes" ] && echo "cp -p $f $target"
+        cp -p $f $target || exit 1
+        targets="$targets $target"    # keep list for chmod below
+    else
+        [ "$verbose" = "yes" ] && echo "'$f' not newer than '$target'"
+    fi
+done
+
+if [ "$mode" -a "$targets" ]
+then
+     [ "$verbose" = "yes" ] && echo "chmod $mode $targets"
+     chmod $mode $targets
+fi
+
+exit 0
+
+# Local Variables: ***
+# mode:ksh ***
+# End: ***

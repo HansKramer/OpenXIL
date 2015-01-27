@@ -1,0 +1,79 @@
+.\" @(#)xil_storage_is_type.3 1.4 97/06/17 SMI/VPG;
+.so man3/xil.macs
+.TH xil_storage_is_type 3 "01 January 1997" "" "XIL Library"
+.SH NAME
+xil_storage_is_type \- returns TRUE if the XilStorageType of the data in the XilStorage object matches the target type
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "Xil_boolean xil_storage_is_type (XilStorage " storage ,
+.if t .in +5n
+.br
+.BI "XilStorage " storage ,
+.br
+.BI "XilStorageType " target_type );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Returns TRUE if the data associated with
+.I storage
+is of the 
+.I target_type,
+and FALSE if the data is of any other XilStorageType.
+.P
+Possible storage types are XIL_PIXEL_SEQUENTIAL,
+XIL_BAND_SEQUENTIAL, and XIL_GENERAL.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Test for storage type in order to optimize image processing:
+.RS
+.ft B
+.nf
+.sp
+XilImage image;
+XilStorageType storage_type;
+XilDataType data_type;
+XilStorage storage;
+.sp
+     ...load the image from elsewhere...
+.sp
+datatype = xil_get_datatype(image);
+xil_export(image);
+storage = xil_get_storage_with_copy(image);
+if((datatype == XIL_BYTE) &&
+(xil_storage_is_type(storage,XIL_PIXEL_SEQUENTIAL)) {
+.sp
+       ...process optimally for pixel sequential byte data...
+.sp
+} else {
+      ...slower more general data processing code...
+}
+.fi
+.ft
+.RE
+.P 
+.sp
+.ne 10
+.SH NOTES
+.nh
+No data is associated with a storage object until after a call to
+.BR xil_get_tile_storage (3),
+or
+.BR xil_get_storage_with_copy (3)
+is made or until the XilStorage information is explicitly set by the user.
+.SH SEE ALSO
+.BR Storage (3),
+.BR xil_storage_set_band_stride (3),
+.BR xil_get_tile_storage (3),
+.BR xil_get_storage_with_copy (3)
+

@@ -1,0 +1,136 @@
+.\" @(#)xil_histogram_create.3 1.5 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_histogram_create 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_histogram_create, xil_histogram_create_copy, xil_histogram_destroy \- create, create and return a copy, or destroy histogram
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilHistogram  xil_histogram_create ( XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "unsigned int " nbands ,
+.br
+.BI "unsigned int *" nbins , 
+.br
+.BI "float *" low_value ,
+.br
+.BI "float *" high_value );
+.br
+.ft R
+.fi
+.in
+.P
+.fi
+.sp .5v
+.BI "XilHistogram xil_histogram_create_copy ( XilHistogram " histogram );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_histogram_destroy ( XilHistogram " histogram );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_histogram_create
+.IX Functions xil_histogram_create
+.IX "Histogram Functions" "xil_histogram_create"
+.IX xil_histogram_create_destroy
+.IX Functions xil_histogram_destroy
+.IX "Histogram Functions" "xil_histogram_destroy"
+.IX xil_histogram_create_copy
+.IX Functions xil_histogram_create_copy
+.IX "Histogram Functions" "xil_histogram_create_copy"
+These routines create and destroy histogram objects. Histograms are used to
+accumulate level information from images.  XIL histograms can have an arbitrary
+numbers of bands, but the number of bands must match the number of bands in
+the image that is to be histogrammed. A histogram of a 3-band RGB image
+for example, contains a cube of information that reflects the 
+number of pixels found in each of the bins, as in the three-dimensional array
+.BR pixel_count[red_bin][green_bin][blue_bin].
+.P
+.nh
+.I State
+is the XIL system state. 
+.P
+.I nbands
+is the number of independent bands in the histogram. 
+.P
+.I nbins
+is a pointer to an array that contains the number of bins for each band. These bins are used to hold information about gray or
+color levels. 
+.P
+.in +4
+.I CAUTION: 
+The total number of bins in the histogram is the product of the 
+.I nbins 
+value
+for all bands. Specifying too many bins for multi-band images may consume
+large quantities of memory and lead to significantly degraded performance.
+For example, specifying 256 bins for each band of a 3 band images would
+require a histogram data array of approximately 16 million bins (64 Mbytes).
+.in
+.P
+.nh
+.I low_value
+is a pointer to an array of floats that defines the central value of the
+first bin for each band.
+.P
+.I high_value
+is a pointer to an array of floats that defines the central value of the last bin for each band.
+.P
+For each of the arrays
+.I nbins, 
+.I low_value,
+and
+.I high_value,
+the number of elements in the array must match the number of bands
+in the image.
+.P
+.BR xil_histogram_create_copy
+(\^) creates and returns a copy of the specified histogram. The name of a copy is initially empty (NULL).
+.IX xil_histogram_destroy
+.IX Functions xil_histogram_destroy
+.IX "Histogram Functions"  "xil_histogram_destroy"
+.BR xil_histogram_destroy  (\^)
+destroys the specified histogram object.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create a histogram structure appropriate for calculating the histogram of a 3-band
+XIL_BYTE image. Note the use of the first and last bin central values for
+low_value and high_value:
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilHistogram histogram;
+unsigned int nbins[3] = {32,32,32}; /* Total bins = 32768 */
+float low_value[3] = {4.0, 4.0, 4.0};
+float high_value[3] = {252.0, 252.0, 252.0};
+.sp
+histogram = xil_histogram_create (State, 3, nbins, low_value, high_value);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_histogram (3),
+.BR xil_histogram_get_nbands (3),
+.BR xil_histogram_get_nbins (3),
+.BR xil_histogram_get_values (3),
+.BR xil_histogram_get_info (3), 
+.BR xil_histogram_get_state (3),
+.BR xil_choose_colormap (3).

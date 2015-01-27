@@ -1,0 +1,28 @@
+##
+##  Program Name
+##
+PGRM=   xilcis_example
+
+##
+##  Target Object Files
+##
+OBJS=   memmap.o \
+	xilcis_example.o \
+	xilcis_color.o
+
+H_FILES=memmap.h run_cell_movie run_jpeg_movie
+
+##
+##  Additional Flags/Libraries
+##
+CFLAGS += -g -O
+LDLIBS += -lxil -lX11
+
+all: $(PGRM)
+
+xilcis_example: $(OBJS) $(H_FILES)
+		${LINK.c} $(LDFLAGS) $(OBJS) -o $@ $(LDLIBS) 
+
+clean:
+	rm -f core $(PGRM) $(OBJS)
+

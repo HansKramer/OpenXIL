@@ -1,0 +1,172 @@
+.\" @(#)xil_divide.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_divide 3 "03 August 1993" "" "XIL Library"
+.SH NAME
+xil_divide, xil_divide_by_const, xil_divide_into_const \- image division operations
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_divide (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "XilImage " src2 ,
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_divide_by_const (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "float *" constants ,
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_divide_into_const (float *" constants , 
+.if t .in +5n
+.br
+.BI "XilImage " src1 ,
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_divide
+.IX Functions xil_divide
+.IX "Arithmetic and Logical Operations" "xil_divide" 
+.nh
+.BR xil_divide (\^)
+performs a pixel-by-pixel division of image 
+.I src2 
+into image 
+.I src1 
+and stores the result in the 
+.I dst 
+(destination) image.  
+.P
+.IX xil_divide_by_const
+.IX Functions xil_divide_by_const
+.IX "Arithmetic and Logical Operations" "xil_divide_by_const" 
+.nh
+.BR xil_divide_by_const (\^)
+performs a pixel-by-pixel division of image 
+.I constants 
+values into image 
+.I src1 
+and stores the result in the 
+.I dst 
+(destination) image.  
+.P
+.IX xil_divide_into_const
+.IX Functions xil_divide_into_const
+.IX "Arithmetic and Logical Operations" "xil_divide_into_const" 
+.nh
+.BR xil_divide_into_const (\^)
+performs a pixel-by-pixel division of image 
+.I src1 
+into
+.I constants 
+values and stores the result in the 
+.I dst 
+(destination) image.  
+.P
+.nh
+For division operations with constants and an n-band image, n float values must be provided,
+one per band.
+If the result of the operation is out of range for a particular data type, the
+result is clamped to the minimum or maximum value for the data type.
+Results for XIL_BYTE operations, for example, are clamped to 0 if they are less than
+0 and 255 if they are greater than 255.
+.P
+If division of a non-zero value by zero occurs, the destination value is set to the maximum value for the pixel data type.  If division of zero by zero occurs, the destination value is zero.  For all division cases (image into image, constant into image, image into constant), an exception is raised once for any number of occurences of division by zero.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Divide 
+.I image2 
+into 
+.I image1 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, image2, dst;
+.sp
+xil_divide(image1, image2, dst);
+.fi
+.ft
+.RE
+.sp
+.ne 20
+.LP
+Divide     
+.I constants 
+into 4-band
+.I image1 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf 
+.sp
+XilImage image1, dst;
+float constants[4];
+.sp
+constants[0] = 1.0;
+constants[1] = 2.0;
+constants[2] = 2.0;
+constants[3] = 2.0;
+xil_divide_by_const(image1, constants, dst);
+.fi
+.ft
+.RE
+.ne 30
+.LP
+Divide 4-band
+.I image1
+into     
+.I constants  
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf 
+.sp
+XilImage image1, dst;
+float constants[4];
+.sp
+constants[0] = 1.0;
+constants[1] = 1.0;
+constants[2] = 1.0;
+constants[3] = 1.0;
+xil_divide_into_const(constants, image1, dst);
+.fi
+.ft
+.RE
+.LP
+.SH NOTES
+.LP
+.nh
+Source and destination images must be the same data type
+and have the same number of bands.  In-place operations are supported.

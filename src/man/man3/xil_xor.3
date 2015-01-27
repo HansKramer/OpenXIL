@@ -1,0 +1,105 @@
+.\" @(#)xil_xor.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_xor 3 "03 August 1993" "" "XIL Library"
+.SH NAME
+xil_xor, xil_xor_const \- bitwise logical XOR operations
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.sp .5v
+.fi
+.BI "void xil_xor (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "XilImage " src2 , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_xor_const (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "unsigned int *" constants , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_xor
+.IX Functions xil_xor
+.IX "Arithmetic and Logical Operations" "xil_xor"
+.B xil_xor
+(\^) performs a bitwise logical XOR operation on each pixel of the 
+.I src2
+(source) image with the
+.I src1
+image and stores the result in the 
+.I dst
+(destination) image.
+.P
+.nh
+.IX xil_xor_const
+.IX Functions xil_xor_const
+.IX "Arithmetic and Logical Operations" "xil_xor_const"
+.B xil_xor_const
+(\^) performs a bitwise logical XOR operation on each pixel of the 
+.I src1 
+(source) image with a specified constant and stores the results in the 
+.I dst 
+(destination) image.  For a n-band image, n unsigned integers must be provided, one per band.
+The value of
+.I constants[0]
+is XORed with the values in band 0, and so on.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Bitwise logical XOR 
+.I image2 
+with 
+.I image1 
+and store the result in 
+.I dst:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, image2, dst;
+.sp
+xil_xor(image1, image2, dst);
+.fi
+.ft
+.RE
+.LP
+.sp
+Bitwise logical XOR a 4-band 
+.I image1 
+with 4 constants and store the result in 
+.I dst:
+.RS
+.ft B
+.nf
+.sp
+XilImage image, dst;
+unsigned int constants[4];
+.sp
+constants[0] = 1;
+constants[1] = 0;
+constants[2] = 0;
+constants[3] = 0;
+xil_xor_const(image, constants, dst);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+Source and destination images must be the same data type and have the same number of bands.  In-place operations are supported.

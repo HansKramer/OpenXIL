@@ -1,0 +1,62 @@
+.\" @(#)xil_roi_add_image.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_add_image 3 "16 June 1993" "" "XIL Library"
+.SH NAME
+xil_roi_add_image \- add a binary image to an ROI
+.SH SYNOPSIS
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_roi_add_image ( XilRoi " roi ,
+.if t .in +5n
+.br
+.BI "XilImage " image );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_roi_add_image
+.IX Functions xil_roi_add_image
+.IX "ROI Functions" "xil_roi_add_image"
+.nh
+This function adds the specified XIL_BIT image to the specified region of interest (ROI).  Bits that are set in the image are added to the region of interest.  The image's origin is used to position the image pixels with respect to the ROI.  The origin of the ROI is always (0.0, 0.0), corresponding to the upper left corner.  The image must be of type XIL_BIT 
+and consist of only one band.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Do a logical AND of two binary images, and add the result to ae region of 
+interest:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilRoi roi;
+XilImage  image1, image2, image3;
+.ta 3.5i
+.sp
+xil_and (image1, image2, image3);
+xil_roi_add_image (roi, image3);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_roi (3),
+.BR xil_set_roi (3),
+.BR xil_roi_add_rect (3),
+.BR xil_roi_add_region (3),
+.BR xil_roi_create (3),
+.BR xil_roi_create_copy (3),
+.BR xil_roi_destroy (3),
+.BR xil_roi_get_as_image (3),
+.BR xil_roi_get_as_region (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_translate (3),
+.BR xil_roi_unite (3).

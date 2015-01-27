@@ -1,0 +1,84 @@
+.\" @(#)xil_choose_colormap.3 1.1 96/09/18 SMI/VPG;
+.so man3/xil.macs
+.TH xil_choose_colormap 3 "17 September 1996" "" "XIL Library"
+.SH NAME
+xil_choose_colormap \- choose a best-fit colormap for a 24 bit 3-band image
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilLookup xil_choose_colormap ( XilImage " src , 
+.if t .in +5n
+.br
+.BI "unsigned int " size );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_choose_colormap
+.IX Functions xil_choose_colormap
+.IX "Presentation Functions" "xil_choose_colormap"
+This function creates and returns an 
+.I XilLookup 
+colormap with
+.I size
+entries to represent the full-color (usually 24 bit)
+.I src 
+(source) image.
+.I size
+specifies the number of colormap entries in the resulting 
+.I XilLookup 
+object.
+.BR xil_choose_colormap (\^)
+accepts only 3 banded XIL_BYTE source images. The colormap which is
+produced will also have 3 output bands.
+.P
+The colormap selection algorithm attempts to produce a set of
+.I size
+color triplets which produce the minimum amount of error when used
+to represent the 24 bit image.
+The normal use for this function is to produce a colormap which can be used
+on an 8 bit indexed-color framebuffer to display 24 bit color images. 
+It would be used in conjunction with xil_nearest_color(3), which would
+map the color triplets in the image to the closest entry in the colormap.
+.P
+The user is responsible for destroying the lookup table when it is no longer
+required, using 
+.BR xil_lookup_destroy(3).
+.SH RETURN VALUES
+The desired XilLookup object, or NULL (could not generate
+.I XilLookup
+).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Create a reasonable 
+.I XilLookup 
+with 216 colormap entries to represent the full-color source image:
+.LP
+.RS
+.ft B
+.nf
+XilImage     src; /* 3 band XIL_BYTE source image */
+XilImage     dst; /* 1 band XIL_BYTE destination image */
+XilLookup    cmap;
+
+/* Leave some free colors for the window system */
+unsigned int cmap_size = 216;
+
+/* Generate the best colormap */
+cmap = xil_choose_colormap(src, cmap_size);
+
+/* Assign the closest colormap entries */
+xil_nearest_color(src, dst, cmap);
+.fi
+.ft
+.RE

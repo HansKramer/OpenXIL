@@ -1,0 +1,119 @@
+.\" @(#)xil_erode.3 1.1 96/09/18 SMI/VPG;
+.so man3/xil.macs
+.TH xil_erode 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_erode, xil_dilate \- erode or dilate an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_erode (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "XilSel " sel );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_dilate (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "XilSel " sel );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_erode
+.IX Functions xil_erode
+.IX "Image Processing Operations" "xil_erode"
+.nh
+.BR xil_erode (\^)
+erodes an image. 
+.P
+.IX xil_dilate
+.IX Functions xil_dilate
+.IX "Image Processing Operations" "xil_dilate"
+.nh
+.BR xil_dilate (\^)
+dilates an image.
+.P 
+.I src
+is the source image handle.
+.I dst
+.nh
+is the destination image handle.
+.I sel
+is a structuring element that describes which of a source pixel's
+neighbors will be used as input to the operation.
+.ft 1
+.SS ROI Behavior
+.nh
+An ROI (region of interest) is used as a read mask for key pixels in the source image and as a write mask in the destination image. The key pixel
+aligns with the output pixel and constrains which input pixels are used to
+generate the output. The erode and dialate
+operation may access data outside a source ROI as long as the key pixel remains inside.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Erode an image using a 3 x 3 "cross-shaped" structuring element with the key pixel in the center (1,1).
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilImage src, dst;
+XilSel sel;
+unsigned int sel_data[\^] = { 0, 1, 0,
+			      1, 1, 1, 
+			      0, 1, 0 };
+.sp
+sel=xil_sel_create (State, 3, 3, 1, 1, sel_data);
+.sp
+xil_erode(src, dst, sel);
+.RE
+.fi
+.ft 1
+.ne 30
+.P
+.nh
+Dilate an image using a 3 x 3 "X-shaped" structuring element with the key pixel in the upper left-hand corner (0,0).
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilImage src, dst;
+XilSel sel;
+unsigned int sel_data[\^] = { 1, 0, 1,
+			      0, 1, 0,
+			      1, 0, 1 };
+.sp
+sel=xil_sel_create (State, 3, 3, 0, 0, sel_data);
+.sp
+.ta 3.5i
+xil_dilate(src, dst, sel);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+Source and destination images must be the same type and have the same number of bands.  This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_sel_create (3)
+
+

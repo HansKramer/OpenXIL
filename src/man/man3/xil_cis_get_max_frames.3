@@ -1,0 +1,121 @@
+.\" @(#)xil_cis_get_max_frames.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_get_max_frames 3 "07 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_get_max_frames, xil_cis_set_max_frames, xil_cis_get_keep_frames, xil_cis_set_keep_frames \- get or set the upper limit on the number of compressed frames that a CIS should
+buffer
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "int xil_cis_get_max_frames (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_cis_set_max_frames (XilCis " cis ,
+.if t .in +5n
+.br
+.BI "int " max_frames_to_buffer ); 
+.br
+.ft R
+.fi
+.in
+.P 
+.sp .5v
+.BI "int xil_cis_get_keep_frames (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P 
+.sp .5v
+.BI "void xil_cis_set_keep_frames (XilCis " cis , 
+.if t .in +5n 
+.br
+.BI "int " frames_to_keep ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_cis_set_max_frames
+.IX Functions xil_cis_set_max_frames
+.IX "CIS Functions" "xil_cis_set_max_frames"
+.nh
+.B xil_cis_set_max_frames
+(\^) sets the upper limit on the number of compressed frames that the compressed image sequence (CIS) should buffer. A value of -1 means no limit.
+The default size depends on the compressor. The setting is a suggestion
+rather than a requirement, because some compression algorithms may not be able
+to function reasonably on an arbitrarily small buffer.  An error occurs if a call to
+.BR xil_compress (3), 
+.BR xil_cis_put_bits (3),
+or 
+.BR xil_cis_put_bits_ptr (3)
+results in more than 
+.I max_frames_to_buffer 
+frames in the CIS.
+.P
+.IX xil_cis_get_max_frames
+.IX Functions xil_cis_get_max_frames
+.IX "CIS Functions" "xil_cis_get_max_frames"
+.nh
+.BR xil_cis_get_max_frames (\^)
+retrieves the value set as the maximum number of compressed
+frames that the CIS will buffer at one time.
+.P
+.IX xil_cis_set_keep_frames
+.IX Functions xil_cis_set_keep_frames
+.IX "CIS Functions" "xil_cis_set_keep_frames" 
+.nh
+.BR xil_cis_set_keep_frames (\^)
+sets the number of frames before the read frame that the CIS should
+try to retain. A value of -1 means no limit. In general, the number of
+keep frames should be smaller than the number of max frames. 
+.P
+XIL assigns higher priority to maintaining max_frames than to maintaining
+keep_frames. Like 
+.BR xil_cis_set_max_frames (\^),
+the setting of the maximum number of keep frames is only a suggestion,
+because some decompression algorithms may not be able to function reasonably unless some
+set of previously read frames (such as key frames) exists in the CIS. 
+.P
+An error occurs when the number of frames between the start of the CIS and the read position falls below the set number of keep frames due to the addition of frames to the CIS and the CIS's attempt to keep the maximum number of frames in the entire CIS less than or equal to 
+.I max_frames.
+.P
+Seeking backward such that the number of frames before the read position becomes less than the desired keep frame value is not an error.
+.P
+.IX xil_cis_get_keep_frames
+.IX Functions xil_cis_get_keep_frames
+.IX "CIS Functions" "xil_cis_get_keep_frames"
+.nh
+.BR xil_cis_get_keep_frames (\^)
+retrieves the value set as the maximum number of frames that the CIS should attempt to keep around.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 25
+.SH EXAMPLES
+.RS
+.nf
+.ft 3
+XilCis cis;
+int mframes, kframes;
+xil_cis_set_max_frames(cis , -1);
+xil_cis_set_keep_frames(cis , 10);
+
+mframes = xil_cis_get_max_frames(cis);
+
+kframes = xil_cis_get_keep_frames(cis);
+.SH SEE ALSO
+.BR xil_compress (3)
+

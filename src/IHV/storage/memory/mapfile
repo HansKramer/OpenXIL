@@ -1,0 +1,17 @@
+##
+##  @(#)mapfile	1.6 96/05/29 
+##
+##
+##  Linker MapFile for xilStorage_XilMemory.so.2
+##
+
+xilStorage_XilMemory.so.2 {
+    global:
+        ##
+        ##  Required Storage Device Manager Members
+        ##
+        __0fXXilDeviceManagerStorageGcreateUiTBPUiTDT;
+
+    local:
+        *;
+};

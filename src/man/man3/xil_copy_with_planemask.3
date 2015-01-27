@@ -1,0 +1,96 @@
+.\" @(#)xil_copy_with_planemask.3 1.2 97/01/27 SMI/VPG;
+.so man3/xil.macs
+.TH xil_copy_with_planemask 3 "03 February 1994" "" "XIL Library"
+.SH NAME
+xil_copy_with_planemask \- using a plane mask, copy a source
+image into a destination image
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_copy_with_planemask (XilImage " src , 
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "unsigned int " planemask[] );
+.br
+.ft R
+.fi
+.SH DESCRIPTION
+.IX xil_copy_with_planemask
+.IX Functions xil_copy_with_planemask
+.IX "Planemask Operations" "xil_copy_with_planemask" 
+.IX "Image Processing Operations" "xil_copy_with_planemask" 
+.nh
+.B xil_copy_with_planemask
+(\^) copies a 
+.I src
+(source) image into a specified 
+.I dst
+(destination) image, using a 
+.I plane mask
+to specify which source-image planes (bits) are copied.  
+.sp
+Each pixel in the destination image is defined by the following operation:
+.sp
+dst = (dst & ~mask) | (src & mask)
+.sp
+Here, 
+.I dst
+is the destination image,
+.I mask
+is the plane mask, and
+.I src
+is the source image. Thus, if the plane-mask bit is "on,"
+the copy overwrites the corresponding bit in the destination image;
+otherwise, the bit in the destination image is unchanged.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Copy the low order bit of 
+.I src1 
+into the
+.I dst
+low order bit. Copy the
+high order seven bits of 
+.I src2 
+into the
+.I dst
+high order seven bits:
+.RS
+.ft B
+.nf
+.sp
+XilImage src1;
+XilImage src2;
+XilImage dst;
+unsigned int planemask1 = 0x1;
+unsigned int planemask2 = 0xfe;
+.sp
+xil_copy_with_planemask(src1, dst, &planemask1);
+xil_copy_with_planemask(src2, dst, &planemask2);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+The plane mask is an array of unsigned integers. The number of array
+elements must match the number of image bands; each array element
+specifies the plane mask for the corresponding band in the destination.
+Both the source and destination images must have the same
+type and number of bands. Standard ROI and in-place operations
+are supported.
+.sp
+When using a plane mask for copying an image to the display, the 
+window's depth is the upper limit on the number of meaningful bits you can
+set in the plane mask, and you must manipulate the colormap to get a
+reasonable display.
+.SH SEE ALSO
+.BR xil_copy (3),
+.BR xil_copy_pattern (3).

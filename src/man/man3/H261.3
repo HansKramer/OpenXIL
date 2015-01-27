@@ -1,0 +1,559 @@
+.\" @(#)H261.3 1.1 96/09/11 SMI/VPG;
+.so man3/xil.macs
+.TH H261 3 "3 August 1993" "" "XIL Library"
+.SH NAME
+H261 \- H.261 decompressor for compressed image sequences
+.SH DESCRIPTION
+.IX H.261
+.IX Functions H.261
+.IX H.261 overview
+.nh
+CCITT Recommendation H.261, Video Codec for Audiovisual Services at
+p x 64 kbit/s, is an international standard for videophone and
+videoconferencing.  It describes the moving picture component of
+audiovisual services at the rates of p x 64 kbit/s, where p is in
+the range 1 to 30.
+.P
+.nh
+The XIL H261 codec implements the H.261 standard without the
+transmission coder/decoder; i.e., the XIL bitstream does not contain
+any Error Correction Framing bits.
+.P
+.nh
+The current release of the XIL library does not contain an implementation 
+of an H.261 compressor.  Calls to
+.BR xil_compress (3)
+will produce an error unless a third party H.261 compressor has been installed.
+.SS Image Types
+.nh
+The H261 decompressor produces 3-band, XIL_BYTE images in the XIL library's "ycc601" color space (The XIL image color space will not be examined or 
+set by the H261 codec, but the codec assumes its input image has the 
+proper color space).  The width and height of the images must be either 
+Common Intermediate Format (CIF), which is 352 wide by 288 high, or 
+Quarter CIF (QCIF), which is 176 wide by 144 high.
+.SS Creating a CIS
+.nh
+To create an H.261 compressed image sequence (CIS), specify "H261" for the
+.I compressorname
+argument in
+.BR xil_cis_create (3).
+.SS Getting and Setting H261 Attributes
+.nh
+Use
+.BR xil_cis_get_attribute (3)
+and
+.BR xil_cis_set_attribute (3)
+to get and set H261 CIS attributes.  These attributes are as described in the
+following sections.  Refer to the example section for additional information.
+.SS H261 Compression Attributes
+.nh
+The following paragraphs describe the H.261 CIS attributes available with the
+XIL library. All structures and enumerations are defined via
+.B xil.h.
+Note that if you are setting an attribute and
+that attribute is a structure, you must pass the address of that structure.  If
+you are getting an attribute, you must always pass the address of the attribute. 
+If you are getting a structure attribute, you must pass a pointer to a 
+pointer to the structure and XIL will set the pointer to the structure.  
+You must free the memory for this structure (using free(3C)) when it is no longer needed.
+.IX "H.261" "compression attributes"
+.P
+.I COMPRESSOR_BITS_PER_IMAGE
+.P
+.TP 15
+Description
+.nh
+Encode images with this number of bits per image.
+This is normally bits_per_second/frames_per_second.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Integer
+.TP 15
+Values
+value must be greater than or equal to 0
+.TP 15
+Default
+5069 (0.2 bits/pixel at QCIF resolution)
+.nf
+.sp
+.fi
+.ne 15
+.P
+.I COMPRESSOR_IMAGE_SKIP
+.TP 15
+Description
+.nh
+Number of images that the application is skipping between
+encoded frames.  Controls the Temporal Reference
+counter in the bitstream.  (Temporal Reference is
+incremented by 1 + COMPRESSOR_IMAGE_SKIP)
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Integer
+.TP 15
+Values
+0-31
+.TP 15
+Default
+0
+.nf
+.sp
+.fi
+.P
+.I COMPRESSOR_MV_SEARCH_RANGE
+.TP 15
+Description
+.nh
+Set motion vector search range.  Value 15 is the maximum
+H.261 search range. Value 0 means that the search range is limited to the
+spatially corresponding block in the previous picture.  This attribute 
+is only a suggestion and may be ignored by the compressor.  It may be used to 
+speed up compression at the expense of compression quality.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+typedef struct {
+.nf
+        int x;    /* horizontal search limit */
+        int y;    /* vertical search limit */
+} XilH261MVSearchRange;
+.fi
+.TP 15
+Values
+.I x:
+Can have a value in the range of 0-15
+.sp
+.I y:
+Can have a value in the range of 0-15
+.TP 15
+Default
+15 for both x and y
+.nf
+.sp
+.fi
+.P
+.I COMPRESSOR_LOOP_FILTER
+.TP 15
+Description
+.nh
+Allow encoder to use loop filtering.
+This attribute is only a suggestion and may be ignored by the compressor.
+It may be used to minimize the bitstream size (at the expense of image
+quality) by reducing inter-frame differences.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Loop filtering turned on
+.sp
+.I FALSE:
+.nh
+Loop filtering turned off
+.TP 15
+Default
+.I TRUE
+.nf
+.sp
+.fi
+.P
+.sp
+.ne 10
+.I COMPRESSOR_ENCODE_INTRA
+.TP 15
+Description
+.nh
+Cause encoder to encode pictures in INTRA mode with coding parameters to avoid
+buffer overflow. (This attribute can be used by
+the application in response to a Fast Update signal sent via H.221).
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Intra-only coding turned on
+.sp
+.I FALSE:
+.nh
+Intra-only coding turned off
+.TP 15
+Default
+.I FALSE
+.nf
+.sp
+.fi
+.P
+.I COMPRESSOR_FREEZE_RELEASE
+.TP 15
+Description
+.nh
+Set the Freeze Picture Release bit in each picture in the bitstream,
+starting with the next compressed picture.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Set the Freeze Picture Release bit in the bitstream.
+.sp
+.I FALSE:
+.nh
+Do not set the Freeze Picture Release bit in the bitstream.
+.TP 15
+Default
+.I FALSE
+.nf
+.sp
+.fi
+.P
+.I COMPRESSOR_SPLIT_SCREEN
+.TP 15
+Description
+.nh
+Set the Split Screen Indicator bit in each picture in the bitstream,
+starting with the next compressed picture.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Set the Split Screen Indicator bit in the bitstream.
+.sp
+.I FALSE:
+.nh
+Do not set the Split Screen Indicator bit in the bitstream.
+.TP 15
+Default
+.I FALSE
+.nf
+.sp
+.fi
+.P
+.I COMPRESSOR_DOC_CAMERA
+.TP 15
+Description
+.nh
+Set the Document Camera Indicator bit in each picture in the bitstream,
+starting with the next compressed picture.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Set the Document Camera Indicator bit in the bitstream.
+.sp
+.I FALSE:
+.nh
+Do not set the Document Camera Indicator bit in the bitstream.
+.TP 15
+Default
+.I FALSE
+.nf
+.sp
+.fi
+.SS H261 Decompression Attributes
+.IX "H.261" "decompression attributes
+.I IGNORE_HISTORY
+.TP 15
+Description
+.nh
+If TRUE, perform forward seeks without
+updating the decoding history and allow backward
+seeking (decompression after these seeks may yield
+incomplete results).  If FALSE, maintain proper
+decoding history during forward seeks and disallow backward seeking.
+.BR xil_cis_get_random_access (3)
+will return TRUE if 
+.I IGNORE_HISTORY 
+is TRUE,
+and will return FALSE if 
+.I IGNORE_HISTORY 
+is FALSE.
+.TP 15
+Access
+get and set
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Allow backward seeks and perform fast forward seeks.
+.sp
+.I FALSE:
+.nh
+Perform correct seeking.
+.TP 15
+Default
+.I FALSE
+.nf
+.sp
+.fi
+.P
+.I DECOMPRESSOR_FREEZE_RELEASE
+.TP 15
+Description
+.nh
+Return value of the Freeze Picture Release bit from the picture header
+of the most recently decompressed picture.  Value is
+available immediately after executing an 
+.BR xil_decompress (3)
+call and may be "gotten" and
+tested without compromising the execution of a decompression molecule.
+.TP 15
+Access
+get
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Freeze Picture Release bit is set.
+.sp
+.I FALSE:
+.nh
+Freeze Picture Release bit is not set.
+.TP 15
+Default
+Value is undefined if no pictures have been decompressed.
+.nf
+.sp
+.fi
+.P
+.I DECOMPRESSOR_SPLIT_SCREEN
+.TP 15
+Description
+.nh
+Return value of the Split Screen Indicator bit from the picture header
+of the most recently decompressed picture.  Value is
+available immediately after executing an 
+.BR xil_decompress (3)
+call and may be "gotten" and
+tested without compromising the execution of a decompression molecule.
+.TP 15
+Access
+get
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Split Screen Indicator bit is set.
+.sp
+.I FALSE:
+.nh
+Split Screen Indicator bit is not set.
+.TP 15
+Default
+Value is undefined if no pictures have been decompressed.
+.nf
+.sp
+.fi
+.P
+.I DECOMPRESSOR_DOC_CAMERA
+.TP 15
+Description
+.nh
+Return value of the Document Camera Indicator bit from the picture header
+of the most recently decompressed picture.  Value is
+available immediately after executing an 
+.BR xil_decompress (3)
+call and may be "gotten" and
+tested without compromising the execution of a decompression molecule.
+.TP 15
+Access
+get
+.TP 15
+Type
+Xil_boolean
+.TP 15
+Values
+.I TRUE:
+.nh
+Document Camera Indicator bit is set.
+.sp
+.I FALSE:
+.nh
+Document Camera Indicator bit is not set.
+.TP 15
+Default
+Value is undefined if no pictures have been decompressed.
+.nf
+.sp
+.fi
+.P
+.I DECOMPRESSOR_SOURCE_FORMAT
+.TP 15
+Description
+.nh
+Return value of the Source Format bit from the picture header
+of the most recently decompressed picture.  Value is
+available immediately after executing an 
+.BR xil_decompress (3)
+call and may be "gotten" and
+tested without compromising the execution of a decompression molecule.
+.TP 15
+Access
+get
+.TP 15
+Type
+typedef enum {
+.nf
+                QCIF, CIF
+} XilH261SourceFormat;
+.fi
+.ne 10
+.TP 15
+Values
+.I CIF:
+.nh
+Source Format (picture size) is Common Intermediate Format (CIF)
+.sp
+.I QCIF:
+.nh
+Source Format (picture size) is Quarter Common Intermediate Format (QCIF)
+.TP 15
+Default
+Value is undefined if no pictures have been decompressed.
+.nf
+.sp
+.fi
+.P
+.I DECOMPRESSOR_TEMPORAL_REFERENCE
+.TP 15
+Description
+.nh
+Return value of the Temporal Reference from the picture header
+of the most recently decompressed picture.
+Temporal Reference is formed by incrementing its value in the previously
+transmitted picture header by one plus the number of non-transmitted
+pictures (at 29.97 Hz) since the last transmitted one.  Arithmetic is
+performed modulo 32.
+Value is
+available immediately after executing an 
+.BR xil_decompress (3)
+call and may be "gotten" and
+tested without compromising the execution of a decompression molecule.
+.TP 15
+Access
+get
+.TP 15
+Type
+Integer
+.TP 15
+Values
+.I value
+.nh
+can be an integer from 0 to 31.
+.TP 15
+Default
+Value is undefined if no pictures have been decompressed.
+.SH EXAMPLES
+.nh
+The following example opens and closes an H.261 CIS using the XIL library:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilCis cis;
+.ta 3.5i
+State = xil_open(\^);
+cis = xil_cis_create(State, \^"H261\^");
+ 
+-- calls to H261-specific compression routines --
+ 
+xil_cis_destroy(cis);
+xil_close(State);
+.RE
+.fi
+.ft 1
+.fi
+.sp
+.ne 15
+.PP
+The following example sets an H.261 CIS attribute called
+.I COMPRESSOR_LOOP_FILTER
+to TRUE.  Note that because this attribute is not a structure, it is not
+necessary to pass the address of
+.I COMPRESSOR_LOOP_FILTER
+when setting it.
+.RS
+.ft B
+.nf
+.sp
+XilCis cis;
+.sp
+xil_cis_set_attribute(cis,"COMPRESSOR_LOOP_FILTER", (void *) TRUE);
+.sp
+.fi
+.ft
+.RE
+.P
+The following example returns the value of an H.261 CIS attribute called
+.I DECOMPRESSOR_DOC_CAMERA.
+Note that when getting an attribute it is always
+necessary to pass the address.
+.RS
+.ft B
+.nf
+.sp
+Xil_boolean on;
+XilCis cis;
+.sp
+xil_cis_get_attribute(cis, "DECOMPRESSOR_DOC_CAMERA", (void **) &on);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+The
+.B xil_cis_set_attribute
+(\^) and
+.B xil_cis_get_attribute
+(\^) calls are used to modify the default behavior of a specific compressor.  Generic attributes of compressors are set by individual function calls.
+.SH SEE ALSO
+.BR xil_cis_create (3),
+.BR xil_cis_get_attribute (3),
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_compress (3),
+.BR xil_decompress (3).

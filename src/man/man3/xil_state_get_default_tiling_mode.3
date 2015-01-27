@@ -1,0 +1,66 @@
+.\" @(#)xil_state_get_default_tiling_mode.3 1.2 97/02/25 SMI/VPG;
+.so man3/xil.macs
+.TH xil_state_get_default_tiling_mode 3 "27 May 1997" "" "XIL Library"
+.SH NAME
+xil_state_get_default_tiling_mode, xil_state_set_default_tiling_mode - get  and  set the default tiling mode for all images created with a particular XilSystemState
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "XilTilingMode xil_state_get_default_tiling_mode (XilSystemState " State );
+.br
+.sp
+.BI "int xil_state_set_default_tilesize (XilSystemState " State,
+.if t .in +5n
+.br
+.BI "XilTilingMode " tiling_mode );
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_state_get_default_tiling_mode
+.IX Functions xil_state_get_default_tiling_mode
+.IX "Image Functions" "xil_state_get_default_tiling_mode"
+.IX xil_state_set_default_tiling_mode
+.IX Functions xil_state_set_default_tiling_mode
+.IX "Image Functions" "xil_state_set_default_tiling_mode"
+\f2tiling mode\fP is the tiling mode of the images, which can be one of the following enumeration constants of type XilTiling mode:
+.sp
+.fi
+.TP 17
+.nh
+XIL_WHOLE_IMAGE
+The default setting. Each image is stored as a contiguous memory buffer.
+.TP 17
+.nh
+XIL_TILING
+Very large images are stored in separate buffers of contiguous memory. Each of the buffers is the tile_xsize by the tile_ysize.
+.TP 17
+XIL_STRIPPING
+Images are stored in a contiguous memory buffer, but accessed as separate "strips". Each strip is the width of the image by the tile_ysize.
+.P
+.B xil_state_get_default_tiling_mode () 
+returns the tiling mode to be used for all images created under \f2State\fP. Unless modified by a call to 
+.B xil_state_set_default_tiling_mode ()
+, the default tiling mode is always XIL_WHOLE_IMAGE.
+.P
+.B xil_state_set_default_tiling_mode () 
+sets the tiling mode to be used for all images created under \f2State\fP. If not set by the user, the default tiling mode is XIL_WHOLE_IMAGE.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH NOTES
+When the tiling mode is set to XIL_WHOLE_IMAGE, the user can only call 
+.BR xil_set_tilesize (3)
+on an image with a \f2tile_xsize\fP greater than or equal to the image width, and \f2tile_ysize\fP greater than or equal to the image height.
+.P
+When the tiling mode of an image is set to XIL_STRIPPING, the user can only explicitly set the tile_xsize to 0 or to a value greater than or equal to the width of the image. 
+.SH SEE ALSO
+.BR xil_get_tilesize (3),
+.BR xil_set_tilesize (3),
+.BR xil_state_get_default_tilesize (3),
+.BR xil_state_set_default_tilesize (3).

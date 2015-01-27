@@ -1,0 +1,182 @@
+.\" @(#)xil_lookup_create.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup_create 3 "17 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup_create, xil_lookup_create_copy, xil_lookup_destroy \- create or destroy lookup tables
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilLookup xil_lookup_create ( XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "XilDataType " input_datatype , 
+.br
+.BI "XilDataType " output_datatype ,
+.br
+.BI "unsigned int " output_nbands , 
+.br
+.BI "unsigned int " num_entries , 
+.br
+.BI "short " first_entry_offset , 
+.br
+.BI "void *" data );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilLookup xil_lookup_create_copy ( XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_lookup_destroy ( XilLookup " lookup );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+These routines create and destroy lookup tables. Lookup tables are used in transforming data, and specialized lookup tables are used as colormap attributes of images.  
+.P
+.nh
+.IX xil_lookup_create
+.IX Functions xil_lookup_create
+.IX "Lookup Table Functions" "xil_lookup_create"
+.B xil_lookup_create
+(\^) creates a lookup table for one band of input data. It can
+be used to create a single lookup table for converting a single-band
+input image to a single-band or multiband destination image. Or it
+can be used to create 
+.I n
+single lookup tables for a multiband input image with
+.I n
+bands; when used for multiband input images, the single
+lookups created for the input bands must be combined into a
+.I combined
+lookup table by calling the 
+.BR xil_lookup_create_combined (3)
+function. 
+.P
+.nh
+When used to convert a single-band input image to a multiband image, the 
+lookup table must have multiple output data elements per input value; 
+the number of elements must match the number of
+.I output_nbands
+specified. When used for converting a single band of input data,
+the lookup table can have only one output data element per input value,
+and the destination
+.I output_nbands
+must equal 1. 
+.P
+.nh
+Regardless of whether it is created for single-band or
+multiband input data, a lookup table
+allows an offset that describes the input value corresponding to the 
+first table value.  
+Table data can represent any of the allowed
+image data types, but 1-bit data is stored in an unpacked format as the 
+least significant bit in an 8-bit entry.
+The tables created for multiband input data can
+use different offsets, but they must all use the same data types.
+.P
+.nh
+The maximum number of entries allowed in 
+the lookup table is determined by the input data type and by the 
+.I first_entry_offset,
+as specified in the 
+.B xil_lookup_create
+(\^) call.  This ensures that inaccessible lookup table entries 
+are not created.  Lookup tables with a
+.I first_entry_offset
+of 0 and an input data type of 
+.SM XIL_BYTE
+may have at most 256 entries.  Lookup tables with a
+.I first_entry_offset
+of -32768 and an input data type of
+.SM XIL_SHORT
+may have at most 65536 entries.  Lookup tables with a 
+.I first_entry_offset
+of 0 and a data type of
+.SM XIL_SHORT 
+may have at most 32768 entries.  This function accepts NULL as a valid 
+value for any of its arguments. XIL lookups cannot have XIL_FLOAT as an
+input datatype.
+.P
+.IX xil_lookup_create_copy
+.IX Functions xil_lookup_create_copy
+.IX "Lookup Table Functions" "xil_lookup_create_copy"
+.B xil_lookup_create_copy
+(\^) returns a copy of the specified lookup table.   Copies of
+lookup objects have the same 
+.I XilVersion 
+number as the original lookup object.  The name of a copy is 
+initially empty (NULL).
+.P
+.IX xil_lookup_destroy
+.IX Functions xil_lookup_destroy
+.IX "Lookup Table Functions" "xil_lookup_destroy"
+.B xil_lookup_destroy
+(\^) destroys the specified lookup table.
+For multiband input data, the tables created for
+each input band must be destroyed individually; the combined table
+must also be destroyed.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 20
+.SH EXAMPLES
+Create a lookup table for converting an 8-bit pseudocolor image
+to a 24-bit color image given the colormap components
+.I red,
+.I green,
+.I blue:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilLookup lookup_table;
+Xil_unsigned8 red[256];	/* red component of colormap */
+Xil_unsigned8 green[256];	/* green component of colormap */
+Xil_unsigned8 blue[256];	/* blue  component of colormap */
+Xil_unsigned8 data[256*3];	/* lookup table data */ 
+int i, j;
+.ta 3.5i
+.sp
+for(j=0,i=0; i<256; i++, j+=3) {
+    data[j]     = blue[i];
+    data[j+1] = green[i];
+    data[j+2] = red[i];
+}
+lookup_table = xil_lookup_create (State, XIL_BYTE, XIL_BYTE, 3, 256, 0, data);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_lookup (3),
+.BR xil_lookup_convert (3),
+.BR xil_lookup_create_combined (3),
+.BR xil_lookup_get_input_datatype (3),
+.BR xil_lookup_get_num_entries (3),
+.BR xil_lookup_get_offset (3),
+.BR xil_lookup_get_band_lookup (3),
+.BR xil_lookup_get_output_datatype (3),
+.BR xil_lookup_get_input_nbands (3),
+.BR xil_lookup_get_output_nbands (3),
+.BR xil_lookup_get_colorcube (3),
+.BR xil_lookup_set_offset (3),
+.BR xil_lookup_get_colorcube_info (3),
+.BR xil_lookup_get_state (3),
+.BR xil_lookup_set_values (3).

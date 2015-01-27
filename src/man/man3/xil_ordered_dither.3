@@ -1,0 +1,92 @@
+.\" @(#)xil_ordered_dither.3 1.1 96/09/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_ordered_dither 3 "16 August 1993" "" "XIL Library"
+.SH NAME
+xil_ordered_dither \- use ordered dithering to convert a multiband or single-band image into a single-band image with a colormap
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.sp .5v
+.fi
+.BI "void xil_ordered_dither(XilImage " src , 
+.if t .in +5n
+.br
+.BI "XilImage " dst, 
+.br
+.BI "XilLookup " cmap,
+.br
+.BI "XilDitherMask " mask)
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_ordered_dither
+.IX Functions xil_ordered_dither
+.IX "Presentation Functions" "xil_ordered_dither" 
+.nh
+This routine performs an ordered dithering of a 
+.I src 
+(source) image with dither matrices and produces a single-band 
+.I dst 
+(destination) image. 
+.I cmap 
+is a lookup table and must be a colorcube.
+.I mask
+is a  dither mask and must contain n matrices for an n-band source image. These matrices must have the same dimensions and contain floating point values between 0.0 and 1.0.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Ordered-dither a 3-band image into a single-band image using a 4x4 dither
+mask:
+.P
+.RS
+.ft B
+.nf
+XilImage src;			/* 3-band source image */
+XilImage dst;			/* 1-band destination image */
+XilLookup colormap;		/* colorcube */
+XilDitherMask dithermask;	/* 3 dither matrices */
+float data[]= {	0.0,       0.5,       0.125,   0.625,
+		0.75,     0.25,     0.875,   0.375,
+		0.1875, 0.6875, 0.0625, 0.5625,
+		0.9375, 0.4375, 0.8125, 0.3125,
+		0.0,       0.5,       0.125,   0.625,
+		0.75,     0.25,     0.875,   0.375,
+		0.1875, 0.6875, 0.0625, 0.5625,
+		0.9375, 0.4375, 0.8125, 0.3125,
+		0.0,       0.5,       0.125,   0.625,
+		0.75,     0.25,     0.875,   0.375,
+		0.1875, 0.6875, 0.0625, 0.5625,
+		0.9375, 0.4375, 0.8125, 0.3125};
+.sp
+dithermask = xil_dithermask_create(State, 4, 4, 3, data);	
+.sp
+xil_ordered_dither(src, dst, colormap, dithermask);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+In-place operations can occur when converting a single-band image into
+a single-band image of the same data type with a colormap.
+.sp
+.ne 20
+.SH SEE ALSO
+.BR xil_dithermask_create (3),
+.BR xil_lookup_create_copy (3),
+.BR xil_lookup_destroy (3),
+.BR xil_lookup_get_input_datatype (3),
+.BR xil_lookup_get_num_entries (3),
+.BR xil_lookup_get_offset (3),
+.BR xil_lookup_get_output_datatype (3),
+.BR xil_lookup_get_output_nbands (3),
+.BR xil_lookup_set_offset (3),
+.BR xil_lookup_convert (3),
+.BR xil_colorcube_create (3),
+.BR xil_lookup_get_colorcube (3),
+.BR xil_lookup_get_colorcube_info (3).
+

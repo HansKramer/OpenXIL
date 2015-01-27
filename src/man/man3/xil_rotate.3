@@ -1,0 +1,81 @@
+.\" @(#)xil_rotate.3 1.2 96/09/12 SMI/VPG;
+.so man3/xil.macs
+.TH xil_rotate 3 "11 September 1996" "" "XIL Library"
+.SH NAME
+xil_rotate \- rotate an image
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_rotate (XilImage " src,
+.if t .in +5n
+.br
+.BI "XilImage " dst ,
+.br
+.BI "char *" interpolation ,
+.br
+.BI "float " angle );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_rotate
+.IX Functions xil_rotate
+.IX "Geometric Operations" "xil_rotate"
+This function rotates an image about its origin. By default, an image's origin
+is its upper-left corner (0.0, 0.0). You can change the origin with the
+.BR xil_set_origin (\^)
+function.
+.LP
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I interpolation 
+is a string that specifies the type of interpolation to be used.
+The supported interpolation types are 
+.I nearest
+(nearest neighbor),
+.I bilinear,
+.I bicubic,
+and
+.I general.  angle 
+is the angle of rotation in radians.  A positive angle indicates
+counterclockwise rotation; a negative angle indicates clockwise
+rotation.
+.ft 1
+.fi
+.SS ROI Behavior
+.nh
+If an ROI (region of interest) is attached to the source image, it is used as a read mask and is rotated into the destination image's space, where it is intersected with the destination ROI (if there is one).
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH "EXAMPLES"
+Rotate an image clockwise by 45 degrees (0.7854 radians) using bilinear
+interpolation:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage src, dst;
+.ta 3.5i
+xil_rotate(src, dst, "bilinear", -0.7854);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The source and destination images to be rotated must be the same type and number of bands. This operation cannot be performed in place.
+.SH SEE ALSO
+.BR xil_affine (3),
+.BR xil_scale (3),
+.BR xil_set_origin (3),
+.BR xil_transpose (3).

@@ -1,0 +1,95 @@
+.\" @(#)xil_state_get_interpolation_tables.3 1.1 96/09/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_state_get_interpolation_tables 3 "18 March 1994" "" "XIL Library"
+.SH NAME
+xil_state_get_interpolation_tables, xil_state_set_interpolation_tables \- set or get interpolation tables to or from the XilSystemState object. 
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_state_get_interpolation_tables (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "XilInterpolationTable* " horiz ,
+.br
+.BI "XilInterpolationTable* " vertical );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_state_set_interpolation_tables (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "XilInterpolationTable " horiz );
+.br
+.BI "XilInterpolationTable " vertical );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_state_get_interpolation_tables
+.IX Functions xil_state_get_interpolation_tables
+.IX "Image Functions" "xil_state_get_interpolation_tables"
+XIL supports general interpolation.  These tables affect all general interpolation operations using images created from this 
+.I XilSystemState.
+The
+.I horiz
+and
+.I vertical
+tables define the values in the subsamplng kernels.
+.P
+.B xil_state_get_interpolation_tables
+(\^) gets the interpolation tables of
+.I State.
+The
+.I horiz
+argument returns a pointer to the horizontal table, and the
+.I vertical
+argument returns a pointer to the vertical table. Either table's pointer
+lets you access that table's kernel size, number of subsamples, and
+kernel data. 
+.P
+.nh
+.IX xil_state_set_interpolation_tables
+.IX Functions xil_state_set_interpolation_tables
+.IX "Image Functions" "xil_state_set_interpolation_tables"
+.B xil_state_set_interpolation_tables
+(\^) sets the interpolation tables of
+.I State.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Set interpolation tables on an XilSystemState object.
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilInterpolationTable horiz, vertical;
+float *horiz_data, *vertical_data;
+
+horiz = xil_interpolation_table_create(State, 9, 32, horiz_data);
+vertical = xil_interpolation_table_create(State, 9, 32, vertical_data);
+
+xil_state_set_interpolation_tables(State, horiz, vertical);
+
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_interpolation_table_create (3),
+.BR xil_interpolation_table_destroy (3),
+.BR xil_interpolation_table_get_subsamples (3),
+.BR xil_interpolation_table_get_kernel_size (3),
+.BR xil_interpolation_table_get_data (3),
+.BR xil_state_get_interpolation_tables (3).

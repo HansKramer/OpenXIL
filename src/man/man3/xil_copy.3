@@ -1,0 +1,65 @@
+.\" @(#)xil_copy.3 1.1 97/01/27 SMI/VPG;
+.so man3/xil.macs
+.TH xil_copy 3 "08 February 1994" "" "XIL Library"
+.SH NAME
+xil_copy \- copy an image
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_copy (XilImage " src , 
+.if t .in +5n
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in 
+.SH DESCRIPTION
+.nh
+.IX xil_copy
+.IX Functions xil_copy
+.IX "Image Processing Operations" "xil_copy"
+This routine copies a 
+.I src
+(source) image into a specified 
+.I dst
+(destination) image. The source and destination images must be the same
+data type and have the same number of bands.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Copy 
+.I image1 
+into 
+.I tmp_image
+:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, tmp_image;
+.sp
+xil_copy(image1, tmp_image);
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+If overlapping but not coincident sibling images  
+(children of the same parent) are specified as the 
+source and destination,
+.BR xil_copy (\^)
+detects the overlap and
+correctly generates the destination image. 
+All other operations generate a warning message under these conditions
+and have undefined results, as discussed in
+.BR xil_create_child (3).
+.SH SEE ALSO
+.BR xil_copy_pattern (3),
+.BR xil_copy_with_planemask (3).

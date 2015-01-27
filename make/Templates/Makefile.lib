@@ -1,0 +1,59 @@
+#
+# @(#)Makefile.lib	1.13 94/06/20 Sun Microsystems North Carolina Development Center
+#
+# Templates/Makefile.lib
+#       Template library Makefile
+#
+
+LIBNAME=xxx-your-library-name-goes-here
+LIB=${ARCH}/${LIBNAME}
+
+include $(XIL_CUSTOM)
+include $(PROJECT_ROOT)/make/lib.cfg
+
+# C and C++ source names, if any, go here -- minus the .c or .cc
+C_PIECES=xxxd xxxe xxxf
+C_FILES=$(C_PIECES:%=%.c)
+C_O_FILES=$(C_PIECES:%=${ARCH}/%.o)
+
+CC_PIECES=xxxa xxxb xxxc 
+CC_FILES=$(CC_PIECES:%=%.cc)
+CC_O_FILES=$(CC_PIECES:%=${ARCH}/%.o)
+
+H_FILES=
+
+# Assembly source names, if any, go here -- minus the .s
+S_PIECES=
+S_FILES=$(S_PIECES:%=%.S)
+S_O_FILES=$(S_FILES:%.S=${ARCH}/%.o)
+
+SRCS=$(C_FILES) $(CC_FILES) $(H_FILES) $(S_FILES)
+OBJS=$(C_O_FILES) $(CC_O_FILES) $(S_O_FILES)
+
+#
+# Add local stuff here using +=
+#
+
+DEFINES  += 
+CPPFLAGS += 
+CFLAGS   += 
+
+#
+# Add your list of files to delete here.  The config files
+#  already know how to delete some stuff, so you may want
+#  to just run 'make clean' first to see what gets missed.
+#  'make clobber' already includes 'make clean'
+#
+
+CLEAN_ADDITIONS += $(LIB) xxx-your-debris-goes-here
+CLOBBER_ADDITIONS +=
+
+all:	${ARCH} .WAIT $(LIB)
+
+# Install the library, appending _g or _p as appropriate.
+# for include files, just use $(INSTALL)
+install:  all
+	$(INSTALL_VARIANT) -m 644 ${LIB} ${PROJECT_RELEASE}/lib
+
+# Include the general rules for building targets
+include $(PROJECT_ROOT)/make/rules/lib.cfg

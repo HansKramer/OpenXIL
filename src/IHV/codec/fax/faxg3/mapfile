@@ -1,0 +1,21 @@
+##
+##  @(#)mapfile	1.1 96/02/06 
+##
+##
+##  Linker MapFile for xilCompress_faxG3.so.2
+##
+
+xilCompress_faxG3 {
+    global:
+        ##
+        ##  Required Codec device manager methods
+        ##
+        __0fbXilDeviceManagerCompressionGcreateUiTBPUiTDT;
+
+    local:
+        *;
+};
+
+
+
+

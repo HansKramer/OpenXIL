@@ -1,0 +1,120 @@
+.\" @(#)xil_histogram_get_by_name.3 1.1 96/09/11 SMI/VPG;
+.so man3/xil.macs
+.TH xil_histogram_get_by_name 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_histogram_get_by_name, xil_histogram_get_name, xil_histogram_set_name \- get and set a histogram object name and get a handle
+to a histogram by specifying a name
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilHistogram xil_histogram_get_by_name (XilSystemState " State ,
+.if t .in +5n
+.br
+.BI "char *" name );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "char* xil_histogram_get_name (XilHistogram " histogram );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_histogram_set_name (XilHistogram " histogram ,
+.if t .in +5n
+.br
+.BI "char *" name ); 
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+Use these functions to assign names to histogram objects, set a histogram's name, and to
+retrieve histogram objects by name.  
+.P
+.nh
+.IX xil_histogram_get_by_name
+.IX Functions xil_histogram_get_by_name
+.IX "Histogram Functions" "xil_histogram_get_by_name"
+.BR xil_histogram_get_by_name (\^)
+returns the handle to the histogram with the specified name 
+.I name.
+If such a histogram does not exist, NULL is returned.  
+.BR xil_histogram_get_by_name (\^)
+does not make a copy of the histogram.
+.P
+.nh
+.IX xil_histogram_get_name
+.IX Functions xil_histogram_get_name
+.IX "Histogram Functions" "xil_histogram_get_name"
+.BR xil_histogram_get_name (\^)
+returns a copy of the specified 
+.I histogram's 
+name.  A call to 
+.B free
+(3) should be used to free the space allocated by 
+.BR xil_histogram_get_name (\^).
+If the specified histogram has no name, NULL is returned.
+.P
+.nh
+.IX xil_histogram_set_name
+.IX Functions xil_histogram_set_name
+.IX "Histogram Functions" "xil_histogram_set_name"
+.BR xil_histogram_set_name (\^)
+sets the 
+.I name 
+of the specified 
+.I histogram 
+to the one provided.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Create and name a histogram from a single-band byte reference image:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilImage ref_image;
+XilHistogram histogram;
+.sp
+histogram = xil_histogram_create(State, 1, 256, 0.0, 255.0);
+xil_histogram(ref_image, histogram, 1, 1);
+xil_histogram_set_name(histogram, "reference");
+.sp
+.fi
+.ft
+.RE
+.P 
+Get a histogram named "reference" for comparison:
+.RS
+.ft B
+.nf
+.sp
+XilSystemState State;
+XilHistogram histogram;
+.sp
+histogram = xil_histogram_get_by_name(State, "reference");
+.fi
+.ft
+.RE
+.SH NOTES
+.nh
+If you give two histograms the same name, it is not defined which histogram
+will be retrieved by a call to 
+.BR xil_get_by_name (\^).
+.SH SEE ALSO
+.nh
+.BR xil_histogram_create (3),
+.BR xil_histogram (3).

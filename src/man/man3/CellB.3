@@ -1,0 +1,184 @@
+.\" @(#)CellB.3 1.2 96/09/17 SMI/VPG;
+.so man3/xil.macs
+.TH "CellB" 3 "03 June 1993" "" "XIL Library"
+.SH NAME
+CellB \- XIL driver for CellB video compression/decompression
+.SH DESCRIPTION
+.IX CellB
+.IX Functions CellB
+.IX "CellB" "overview" 
+.nh
+CellB is a video compression format based on the techniques of block
+truncation coding and vector quantization.  It is well suited for video
+conferencing, providing fast encoding as well as decoding. 
+Even though it uses interframe compression, it guarantees 
+that all cells are intraframe encoded periodically, allowing for dropped 
+frames.
+.SS Creating a CellB CIS
+.nh
+To compress a compressed image sequence (CIS) with the XIL CellB compressor, specify "CellB" for the 
+.I compressorname
+argument in
+.BR xil_cis_create (3).
+.SS Getting and Setting CellB Attributes
+.nh
+Use 
+.BR xil_cis_get_attribute (3)
+and 
+.BR xil_cis_set_attribute (3)
+to get and set CellB CIS attributes.  These attributes are as described in the following sections.  Refer to the example section for additional information.
+.SS CellB Attributes
+.IX "CellB" "attributes"
+.nh
+The following paragraphs describe the CellB CIS attributes available with the
+XIL library. All structures and enumerations are defined via 
+.B xil.h.  
+Note that some attributes are "set-only" and others are "get-only."  This is noted under the 
+.I Access 
+heading for each attribute.  
+.PP
+Note that if you are setting an attribute and 
+that attribute is a structure, you must pass the address of that structure.  If
+you are getting an attribute, you must always pass its address.
+.nf
+.sp
+.fi
+.P
+.I WIDTH
+.P
+.TP 15
+.nh
+Description
+Sets the frame width of the encoded bitstream.  It is only necessary
+to set this attribute to decompress a bitstream that has been input
+via a call to
+.BR xil_cis_put_bits (3)
+or
+.BR xil_cis_put_bits_ptr (3).
+.TP 15
+Access     
+set
+.TP 15 
+Type
+integer
+.nf
+.sp
+.fi
+.P
+.I HEIGHT
+.P
+.TP 15
+.nh
+Description
+Sets the frame height of the encoded bitstream.  It is only necessary
+to set this attribute to decompress a bitstream that has been input
+via a 
+call to
+.BR xil_cis_put_bits (3)
+or
+.BR xil_cis_put_bits_ptr (3).
+.TP 15
+Access     
+set
+.TP 15 
+Type
+integer
+.nf
+.sp
+.fi
+.P
+.I IGNORE_HISTORY
+.P
+.TP 15
+.nh
+Description
+CellB bitstreams do not contain "key" frames, i.e. frames which can be
+reconstructed without reference to other frames in the CIS.
+In general, this means that these
+bitstreams are not randomly seekable, because it is expensive to back up far
+enough so that all cells/macroblocks can be properly decoded for the
+frame you want to seek to.
+.sp
+.nh
+.ne 10
+By setting 
+.I IGNORE_HISTORY
+to TRUE, you inform the decoder that it should reconstruct frames after a
+seek, without decoding the intermediate frames.
+This will, of course produce invalid results for some cells. The results
+will eventually self-correct after several frames as new values for the cells are calculated.
+Setting this attribute to TRUE allows applications to trade some temporary
+decoding errors to achieve fast seeks.
+.TP 15
+Values
+.I FALSE:
+the decoder sets the 
+.I RandomAccess 
+attribute of
+such CISs to FALSE (i.e., 
+.BR xil_cis_get_random_access (3)
+returns FALSE), and it becomes impossible to seek backwards.  Also, seeks
+forward will actually decode all intermediate frames, instead of just jumping
+to the appropriate location and decoding the sought frame.
+.sp
+.I TRUE:
+(i.e.,
+.BR xil_cis_get_random_access (3)
+returns TRUE), seeking backwards is possible, and forward seeks may not decode
+the intermediate frames.  After an
+.I IGNORE_HISTORY
+seek, the decoded picture may have some bad cells (macroblocks).  As these are 
+encoded in subsequent frames, these will "twinkle" in.
+.TP 15
+Type
+Boolean
+.TP 15
+Access
+set/get
+.TP 15
+Default
+FALSE  
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 15
+.SH EXAMPLES
+The following example opens and closes a CellB CIS using the XIL library:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilCis cis;
+.ta 3.5i
+State = xil_open(\^);
+cis = xil_cis_create(State, \^"CellB\^");  
+
+-- calls to CellB-specific compression routines --
+
+xil_cis_destroy(cis);
+xil_close(State);
+.RE
+.fi
+.ft 1
+.fi
+.SH NOTE
+.nh
+The CellB bitstream definition (unlike the one for 
+.BR H261 (3)) 
+does not define
+a maximum number of frames before a cell must be encoded in the bitstream.
+However, the encoder that comes with the XIL library does enforce this
+behavior.
+.SH SEE ALSO
+.BR xil_cis_get_attribute (3),
+.BR xil_cis_create (3),
+.BR xil_cis_put_bits (3),
+.BR xil_cis_put_bits_ptr (3),
+.BR xil_cis_get_bits_ptr (3),
+.BR xil_compress (3),
+.BR xil_decompress (3).
+

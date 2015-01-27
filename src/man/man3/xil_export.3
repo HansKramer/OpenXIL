@@ -1,0 +1,165 @@
+.\" @(#)xil_export.3 1.3 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_export 3 "8 April 1994" "" "XIL Library"
+.SH NAME
+xil_export, xil_import, xil_get_exported \- move an image from XIL to application space, or from application to XIL space, or determine whether an image is exported
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "int xil_export ( XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_import ( XilImage " image ,
+.if t .in +5n
+.br
+.BI "Xil_boolean "change_flag );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "int xil_get_exported ( XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_export
+.IX Functions xil_export
+.IX "Image Functions" "xil_export"
+.nh
+.BR xil_export(3)
+switches an image from XIL library control to application control.  This
+function returns
+.I XIL_SUCCESS 
+if the export
+succeeds, and 
+.I XIL_FAILURE 
+if the export fails.  
+.P
+.nh
+By calling
+.BR xil_export(3)
+to switch an image from XIL library control to application control,
+the application is now able to access information about how image data is
+stored in memory.  The actual switch of control simply switches a bit in the
+image indicating the application has control.
+.P
+.nh
+The exported image's data is accessed by calling
+.BR xil_get_tile_storage(3),
+.BR xil_get_storage_with_copy(3)
+or the old (and not recommended for new applications)
+.BR xil_get_memory_storage(3).
+.BR xil_export(3)
+can also be used to ensure that the image's data storage
+remains in main memory.  This prevents the image from being moved to another
+image processing device other than those which can process the image as they
+exist in main memory.  Although, for controlling the movement of storage, 
+.BR xil_set_storage_movement(3)
+may be used instead.
+.P
+.nh
+Exported images can be operated on by all XIL operations.  But, doing so
+may limit the movement of image data to image processing accelerators which in
+turn may reduce the performance of the operations.  Furthermore, operating on
+an exported image means the operation cannot be deferred for acceleration by
+molecules.  Using
+.BR xil_set_storage_movement(3)
+may be a better choice when performing operations on stationary data. 
+.P
+.IX xil_import
+.IX Functions xil_import
+.IX "Image Functions" "xil_import"
+.nh
+.BR xil_import(3)
+switches an image from application control to XIL library control.  
+An image exported for read-only purposes may be re-imported in the most 
+efficient way if the parameter
+.I change_flag
+is set to
+.I FALSE 
+(in other words, if the image data was not modified).  You
+.I must
+set the change flag to
+.I TRUE
+when you import an image if you make any modifications to its data while it is
+exported.
+.P
+When an application calls
+.BR xil_import(3),
+the XIL library is free to move the image's data to another address space
+and to another format; therefore, importing an image invalidates the
+information returned by a previous storage aquisition.
+If the image is exported again, the image data is unlikely to appear in the
+same memory location as the last time it was exported, and it's unlikely to
+have the same format as the last time.  Therefore, storage information
+aquisition must done called after each 
+.BR xil_export(3)
+in order to obtain the current memory location and format for the image data.
+.P
+To ensure that image data is not moved and is not reformatted, an application
+could export the image but never import it again.  However, this prevents
+the XIL library from moving the image to an accelerator, if one exists,
+and it prevents the library from implementing its deferred execution
+scheme; thus, application performance is significantly degraded. After
+manipulating an exported image's data, it's usually best for an
+application to take advantage of available acceleration by importing the
+image; then, when it needs to manipulate data again, it can export the
+image and get new pointers to the data and new format information by using one
+of the storage aquisition methods.  See
+.BR xil_set_storage_movement(3)
+as a mechanism to limit how the XIL library can move data while the image is
+imported.  
+.P
+.IX xil_get_exported
+.IX Functions xil_get_exported
+.IX "Image Functions" "xil_get_exported"
+.nh
+.BR xil_get_exported(3)
+returns the export status of an image.  One of three possible values
+is returned:
+.TP 10
+0
+if the image is not exported
+.TP 10
+1
+if the image is exported
+.TP 10
+-1
+if the image is not exportable
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH NOTES
+.nh
+Images created from a window with 
+.BR xil_create_from_window (3)
+or from a device with
+.BR xil_create_from_device (3)
+cannot be exported.  A description of the storage of the image cannot 
+be requested if the image is not exported. Temporary images (created by
+.BR xil_create_temporary (3)
+or
+.BR xil_create_temporary_from_type (3)
+) can not be exported.
+.SH SEE ALSO
+.BR xil_set_tile_storage (3),
+.BR xil_get_tile_storage (3),
+.BR xil_set_storage_with_copy (3),
+.BR xil_get_storage_with_copy (3),
+.BR xil_set_storage_movement (3),
+.BR xil_get_storage_movement (3),
+.BR xil_set_memory_storage (3),
+.BR xil_get_memory_storage (3).

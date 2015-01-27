@@ -1,0 +1,78 @@
+.\" @(#)xil_color_convert.3 1.3 97/05/19 SMI/VPG;
+.so man3/xil.macs
+.TH xil_color_convert 3 "09 June 1993" "" "XIL Library"
+.SH NAME
+xil_color_convert \- converts an image from one color space to another
+.SH SYNOPSIS
+.LP
+.ft B
+.nf
+#include <xil/xil.h>
+.LP
+.fi
+.sp .5v
+.BI "void xil_color_convert (XilImage " src ,
+.if t .in +5n
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_color_convert
+.IX Functions xil_color_convert
+.IX "Color Operations" "xil_color_convert"
+This function converts the data in the source image from the source image's color space to the destination image's color space. The color space is an attribute of each image.
+.I src
+.nh
+is the source image's handle.
+.I dst
+is the destination image's handle.  Neither the source nor the destination
+image can be a NULL image or have a NULL color space. This function does not support the XIL_FLOAT data type.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Converts the data in 
+.I src 
+from 
+.I ycc601 
+colorspace to data in
+.I dst
+in
+.I rgblinear 
+colorspace:
+.sp
+.LP
+.nf
+.RS
+.ft 3
+XilSystemState State;
+XilColorspace cspace1, cspace2;
+XilImage src, dst;
+.sp
+cspace1 = xil_colorspace_get_by_name(State, "ycc601");
+xil_set_colorspace(src, cspace1);
+.sp
+cspace2 = xil_colorspace_get_by_name(State, "rgblinear");
+xil_set_colorspace(dst, cspace2);
+.sp
+.ta 3.5i
+xil_color_convert(src, dst);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+The source and destination images must be the same data type.
+The number of bands in an image must match its color space.  In-place operations can be
+done by creating a child image consisting of the whole image and then assigning a different
+color space to the child image.
+.SH SEE ALSO
+.BR xil_colorspace_get_by_name (3),
+.BR xil_set_colorspace (3),
+.BR xil_black_generation (3).
+

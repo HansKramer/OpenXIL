@@ -1,0 +1,46 @@
+.\" @(#)xil_toss.3 1.1 96/09/16 SMI/VPG;
+.so man3/xil.macs
+.TH xil_toss 3 "17 August 1993" "" "XIL Library"
+.SH NAME
+xil_toss \- throw away the contents of an image without destroying it
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_toss (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_toss
+.IX Functions xil_toss
+.IX "Image Functions" "xil_toss"
+This function throws away the contents of an image without destroying it.  
+This function provides a way to inform the XIL library that the user is
+no longer concerned about the contents of an image.  After 
+.BR xil_toss (3) 
+is called, the contents of the image is undefined.
+.P
+.nh
+This function can sometimes be useful for code optimization.  Sometimes
+the XIL library will perform more optimally if 
+.B xil_toss (3)
+is called when the results of an intermediate operation are no longer 
+needed.  When used properly, this function will not change the results of
+operations.
+.P
+.nh
+.BR xil_toss (3)
+will set the image's state to "invalid".  Invalid images cannot be used as the
+source for an operation without first being used as a destination or having
+their storage set.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+

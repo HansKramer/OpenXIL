@@ -1,0 +1,170 @@
+.\" @(#)xil_roi_create.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_roi_create 3 "09 August 1993" "" "XIL Library"
+.SH NAME
+xil_roi_create, xil_roi_create_copy, xil_roi_destroy \- create or destroy ROIs
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilRoi xil_roi_create (XilSystemState " State );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "XilRoi xil_roi_create_copy (XilRoi " roi );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_roi_destroy (XilRoi " roi );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+These routines create and destroy region of interest (ROI) objects. 
+.P
+.nh
+.IX xil_roi_create
+.IX Functions xil_roi_create
+.IX "ROI Functions" "xil_roi_create" 
+.B xil_roi_create
+(\^) creates an 
+.I XilRoi 
+object.  It is initially empty.
+You can use
+.BR xil_roi_add_rect (3),
+.BR xil_roi_add_region (3),
+or
+.BR xil_roi_add_image (3) 
+to add rectangles to an ROI.  ROIs exist in the coordinate system of the image storage.  That is, an ROI coordinate of (0.0, 0.0) always refers to the upper left pixel in an image, regardless of the image's origin.
+.P
+.IX xil_roi_create_copy
+.IX Functions xil_roi_create_copy
+.IX "ROI Functions" "xil_roi_create_copy"
+.B xil_roi_create_copy
+(\^) returns a copy of the specified ROI.  The name of a copy is initially
+empty (NULL).
+.P
+.B xil_roi_destroy
+(\^) destroys the specified ROI.
+.SS XIL and Regions of Interest
+.nh
+.IX "ROI Functions" "ROI overview"
+ROIs provide a way to limit operations to a specific part of image data.  ROIs are attributes of images; they specify what part of an image may be used.  
+.P
+.nh
+As a destination attribute, the ROI functions as a "write mask" for the destination image.
+If the ROI is valid (non-zero) for a particular pixel, that pixel may be modified by the operation; otherwise, the pixel is not written.
+.P
+.nh
+For a source image, the ROI defines what part of the source image may go toward modifying the destination.  In the case of some of the geometric operators, this means a rectangular ROI in the source maps to a nonrectangular area of modification in the destination.  
+.P
+.nh
+Area operations, such as interpolated geometric zooms, convolution, and erosion, may use data outside the source ROI in creating their output pixel.  In the case of geometric operators, the source pixel is generated if the backward-mapped subpixel position lies in the ROI; pixels used in the interpolation may be outside the ROI.  For convolution and erosion/dilation, the source pixel is used if it is inside the source ROI; the surrounding pixels used in generating the convolution may be outside the ROI.  In the destination, only the output pixel is tested against the destination ROI for writability.
+.P
+.nh
+If more than one image in an operation has an ROI attribute, the intersection of all the ROIs (with source ROIs transformed into the destination space) is used to mask the destination.
+.sp
+.ne 20
+.P
+.nh
+Although they are image attributes, ROIs attached to an image are not modified along with the image.  Destination images retain their own ROIs and do not adopt the ROI of the source image.  Copying an image does not copy the ROI attribute; it must be copied explicitly.  In addition, creating a child image from an image with an ROI does not cause the child to inherit the portion of the parent's ROI covering it.  Installation of an ROI on a child image must be performed explicitly.
+.P
+.nh
+The coordinate space of the ROI is conceptually tied to the image storage.  That is, the location of the ROI with respect to image data is not changed by changing the image origin.
+.P
+.nh
+Operations on ROIs may be performed by retrieving the ROI as a 1-bit image, passing the image to the appropriate XIL operator, then reinstalling the image as an ROI.  Several functions exist to operate directly on ROIs without having to first convert them into an external format.  This probably provides better performance for these supported operators.  A list of
+ROI operations and their corresponding man pages is given below.
+.TP 35
+Get an ROI
+.BR xil_get_roi (3)
+.TP 35
+Set an ROI
+.BR xil_set_roi (3)
+.TP 35
+Add a binary image to an ROI
+.BR xil_roi_add_image (3)
+.TP 35
+Add a rectangle to an ROI
+.BR xil_roi_add_rect (3)
+.TP 35
+Add an X region to an ROI
+.BR xil_roi_add_region (3)
+.TP 35
+Create and return a copy of an ROI
+.BR xil_roi_create_copy (3)
+.TP 35
+Destroy an ROI
+.BR xil_roi_destroy (3)
+.TP 35
+Get an image version of an ROI
+.BR xil_roi_get_as_image (3)
+.TP 35
+Get an X region version of an ROI 
+.BR xil_roi_get_as_region (3)
+.TP 35
+Find the intersection of two ROIs
+.BR xil_roi_intersect (3)
+.TP 35
+Subtract a rectangle from an ROI
+.BR xil_roi_subtract_rect (3)
+.TP 35
+Translate an ROI
+.BR xil_roi_translate (3)
+.TP 35
+Find the union of two ROIs
+.BR xil_roi_unite (3)
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.sp
+.ne 25
+.SH EXAMPLES
+.nh
+Create an ROI, add a rectangle to it (beginning at
+(10,20) and ending at (109,69), associate it with an image, and then destroy it:
+.P
+.nf
+.sp
+.RS
+.ft 3
+XilSystemState State;
+XilImage image;
+XilRoi roi;
+long  xstart=10, ystart=20, width=100, height=50;
+.ta 3.5i
+.sp
+roi = xil_roi_create (State);
+xil_roi_add_rect (roi, xstart, ystart, width, height);
+xil_set_roi (image, roi);
+xil_roi_destroy (roi);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_roi_add_image (3),
+.BR xil_roi_add_rect (3),
+.BR xil_roi_add_region (3),
+.BR xil_roi_get_as_image (3),
+.BR xil_roi_get_as_region (3),
+.BR xil_roi_intersect (3),
+.BR xil_roi_subtract_rect (3),
+.BR xil_roi_translate (3),
+.BR xil_roi_unite (3),
+.BR xil_get_roi (3),
+.BR xil_roi_get_state (3),
+.BR xil_set_roi (3).

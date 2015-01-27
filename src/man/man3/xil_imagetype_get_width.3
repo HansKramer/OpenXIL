@@ -1,0 +1,105 @@
+.\" @(#)xil_imagetype_get_width.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_imagetype_get_width 3 "17 August 1993" "" "XIL Library"
+.SH "NAME"
+xil_imagetype_get_width, xil_imagetype_get_height, xil_imagetype_get_nbands, xil_imagetype_get_size \- get width, height, number of bands, or size of image type objects
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "unsigned int xil_imagetype_get_width (XilImageType " imagetype );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_imagetype_get_height (XilImageType " imagetype );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "unsigned int xil_imagetype_get_nbands (XilImageType " imagetype );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_imagetype_get_size (XilImageType " imagetype ,
+.if t .in +5n
+.br
+.BI "unsigned int *" width ,
+.br
+.BI "unsigned int *" height );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_imagetype_get_width
+.IX Functions xil_imagetype_get_width
+.IX "Image Type Functions" "xil_imagetype_get_width"
+.BR xil_imagetype_get_width (\^)
+returns the width of an image type object.
+.P
+.IX xil_imagetype_get_height
+.IX Functions xil_imagetype_get_height
+.IX "Image Type Functions" "xil_imagetype_get_height"
+.BR xil_imagetype_get_height (\^)
+returns the height of an image type object.
+.P
+.IX xil_imagetype_get_nbands
+.IX Functions xil_imagetype_get_nbands
+.IX "Image Type Functions" "xil_imagetype_get_nbands"
+.BR xil_imagetype_get_nbands (\^)
+returns the number of bands in an image type object.
+.P
+.IX xil_imagetype_get_size
+.IX Functions xil_imagetype_get_size
+.IX "Image Type Functions" "xil_imagetype_get_size"
+.BR xil_imagetype_get_size (\^)
+returns the size of an image type object, returning its width and height.
+.P
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the width and height of an image type object:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+unsigned int width, height;
+XilImageType imagetype;
+.ta 3.5i
+.sp
+width = xil_imagetype_get_width (imagetype);
+height = xil_imagetype_get_height (imagetype);
+.RE
+.fi
+.ft 1
+.P
+Or alternatively:
+.nf
+.sp
+.RS
+.ft 3
+.ta 3.5i
+xil_imagetype_get_size (imagetype, &width, &height);
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_get_imagetype (3),
+.BR xil_imagetype_get_datatype (3),
+.BR xil_imagetype_get_info (3).

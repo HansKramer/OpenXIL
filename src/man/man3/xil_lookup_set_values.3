@@ -1,0 +1,117 @@
+.\" @(#)xil_lookup_set_values.3 1.2 97/05/27 SMI/VPG;
+.so man3/xil.macs
+.TH xil_lookup_set_values 3 "29 March 1994" "" "XIL Library"
+.SH NAME
+xil_lookup_set_values, xil_lookup_get_values \- set and get values in a lookup table
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "void xil_lookup_set_values ( XilLookup "lookup , 
+.if t .in +5n
+.br
+.BI "short " start ,
+.br
+.BI "unsigned int " num_values , 
+.br
+.BI "void *" data );
+.br
+.ft R
+.fi
+.in
+.P
+.sp .5v
+.BI "void xil_lookup_get_values ( XilLookup "lookup ,
+.if t .in +5n
+.br
+.BI "short " start ,
+.br
+.BI "unsigned int " num_values , 
+.br
+.BI "void *" data );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_lookup_set_values
+.IX Functions xil_lookup_set_values
+.IX "Lookup Table Functions" "xil_lookup_set_values"
+.B xil_lookup_set_values
+(\^) sets the specified values in the lookup table to those in
+.I data.
+The version number of the lookup table is updated whenever this is done.
+.P
+.nh
+.IX xil_lookup_get_values
+.IX Functions xil_lookup_get_values
+.IX "Lookup Table Functions" "xil_lookup_get_values"
+.B xil_lookup_get_values
+(\^) copies 
+.I num_values
+lookup table values into the user-supplied buffer
+.I data.
+.I start
+is the table entry position at which to begin reading values.  The
+user is responsible for allocating and freeing the buffer.  The
+example below shows how big to make the buffer.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Get a sequence of data values out of a lookup table containing
+XIL_SHORT data values, and add 1 to each entry:
+.P
+.nf
+.ft 3
+XilLookup table;
+unsigned int count, buf_size, i, j, output_nbands;
+short start;   
+void* buffer;
+xil_signed_16* pixel_ptr;
+/* extract 100 entries starting at the 42nd value in the table /*
+ 	/* (assumes a table offset of 0 )*/
+count = 100; start = 42;
+.sp
+/* determine how big to make the values buffer (assume XIL_SHORT datatype) */
+output_nbands = xil_lookup_get_output_nbands (table);
+buf_size = output_nbands * count * sizeof(Xil_signed16);
+.sp
+/* allocate the values buffer */
+buffer = (void *) malloc (buf_size);
+.sp
+/* get the current values in the lookup table */
+xil_lookup_get_values (table, start, count, buffer);
+.sp
+.ne 20
+/* increment all the extracted values by 1 */
+pixel_ptr = (Xil_signed16 *) buffer;
+for (i = 0; i < count; i++)
+    for (j = 0; j < output_nbands; j++) {
+      *pixel_ptr += 1;
+       pixel_ptr++;
+    }
+.sp
+/* replace the values in the lookup table */
+xil_lookup_set_values (table, start, count, buffer);
+.fi
+.ft 1
+.SH NOTES
+These functions cannot be used on combined lookup tables.
+.SH SEE ALSO
+.BR xil_lookup_create (3),
+.BR xil_lookup_create_copy (3),
+.BR xil_lookup_destroy (3),
+.BR xil_lookup_get_input_datatype (3),
+.BR xil_lookup_get_num_entries (3),
+.BR xil_lookup_get_offset (3),
+.BR xil_lookup_get_output_datatype (3),
+.BR xil_lookup_get_output_nbands (3),
+.BR xil_lookup_set_offset (3),
+.BR xil_lookup_convert (3),
+.BR xil_lookup_get_version (3).

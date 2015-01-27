@@ -1,0 +1,72 @@
+XIL Open Source Distribution
+----------------------------
+
+
+What is XIL?
+-----------
+
+XIL is an imaging library, originally developed by Sun Microsystems for 
+the Solaris operating system. It provides a C API for use by
+programmers developing imaging applications. Its name to the contrary,
+XIL is not part of the X window system, although it does interact with X.
+
+
+Why is Sun releasing the XIL source code?
+----------------------------------------
+
+XIL is being removed from the Solaris operating system in favor
+of a cross-platform Java-based API, Java Advanced Imaging. See
+
+   http://java.sun.com/products/java-media/jai/
+
+Not all applications are ready or able to migrate to Java. For those
+applications which can operate in a platform-native environment, XIL
+can provide a viable image processing solution. Making the source code
+available provides an optional strategy for applications which must
+continue to depend on XIL.
+
+
+What can XIL do for me?
+-----------------------
+
+XIL is a performance-oriented image processing library. It provides
+full support for image tiling, allowing very large images to be 
+processed with modest memory resources. It is also MT-Hot,
+transparently making use of multiple processors to accelerate image
+processing.
+
+A basic part of XIL's architecture is the ability to provide
+transparent hardware acceleration which uses special capabilities
+of framebuffers or processors. This is accomplished via a pluggable
+"pipeline" architecture, allowing already deployed user code to gain
+improved performance. 
+
+Full information about XIL's capabilities can be found at
+    http://www.sun.com/software/imaging/XIL/xil.html
+
+
+What platforms does XIL support?
+--------------------------------
+
+The source code being released has been built and tested on
+Solaris/sparc, Solaris/Intel and Linux/Intel. Previous binary releases
+were distributed on this site for other OS'es, notably Windows NT 4.0.
+However, due to time and resource constraints, the Win32 version has
+not been built and tested for this current release.
+
+Frankly, developing Win32 libraries is not a core competency in the XIL
+group. However, the results of previous porting  efforts are reflected
+in the source base. There IS Windows-specific code in the source tree,
+and a working Win32 version has been built in the past. Someone in the
+developer community who is more Windows-savvy (or Windows-motivated)
+should be able to get XIL to build and run in a Windows environment.
+
+
+What can I do with XIL?
+-----------------------
+
+Pretty much anything you please as long as you follow the requirements
+in the license agreement. We've tried to model it roughly on the
+Mozilla Public License. Specifically, its not GPL'ed, so you can use it
+in you own product without having to open up everything.
+

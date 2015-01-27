@@ -1,0 +1,38 @@
+##
+##  @(#)mapfile	1.2 97/12/17 
+##
+##
+##  Linker MapFile for xiliUtils_FaxCommon.so.2
+##
+
+xiliUtils_FaxCommon.so.2 {
+    global:
+        __0dXXilDeviceCompressionFaxG__vtbl;
+        __0dXXilDeviceCompressionFaxJc_codes_b;
+        __0dXXilDeviceCompressionFaxJc_codes_w;
+        __0dXXilDeviceCompressionFaxJhorz_mode;
+        __0dXXilDeviceCompressionFaxJpass_mode;
+        __0dXXilDeviceCompressionFaxJvert_mode;
+        __0dXXilDeviceCompressionFaxKxc_codes_b;
+        __0dXXilDeviceCompressionFaxKxc_codes_w;
+        __0dXXilDeviceCompressionFaxKbyte_table;
+        __0fXXilDeviceCompressionFaxEisOKv;
+        __0fXXilDeviceCompressionFaxFresetv;
+        __0fXXilDeviceCompressionFaxIsetBandsUi;
+        __0fXXilDeviceCompressionFaxIsetWidthUi;
+        __0fXXilDeviceCompressionFaxJnextstatePUcUiTC;
+        __0fXXilDeviceCompressionFaxJsetHeightUi;
+        __0fXXilDeviceCompressionFaxKburnFramesi;
+        __0fXXilDeviceCompressionFaxKinitValuesv;
+        __0fXXilDeviceCompressionFaxLadd_1d_bitsPUciNCC;
+        __0fXXilDeviceCompressionFaxLadd_2d_bitsPUciPPCUiTC;
+        __0fXXilDeviceCompressionFaxLinit_bitbufv;
+        __0fXXilDeviceCompressionFaxMmaxFrameSizeUiNCB;
+        __0fXXilDeviceCompressionFaxPgetMaxFrameSizev;
+        __0fXXilDeviceCompressionFaxQderiveOutputTypev;
+        __0oXXilDeviceCompressionFaxctP6bXilDeviceManagerCompressionP6GXilCis;
+        __0oXXilDeviceCompressionFaxdtv;
+
+    local:
+	*;
+};

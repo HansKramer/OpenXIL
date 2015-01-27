@@ -1,0 +1,45 @@
+.\" @(#)xil_cis_flush.3 1.1 96/09/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_cis_flush 3 "10 June 1993" "" "XIL Library"
+.SH NAME
+xil_cis_flush \- complete pending operations for a compressed image sequence
+.SH SYNOPSIS
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_cis_flush (XilCis " cis );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_cis_flush
+.IX Functions xil_cis_flush
+.IX "Video Compression Functions" "xil_cis_flush" 
+This function instructs the compressor to complete any pending write
+.BR (xil_compress) 
+operations for the compressed image sequence
+.I cis.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+Flush a compressed image sequence:
+.LP
+.nf
+.RS
+.ft 3
+XilCis cis;
+.sp
+xil_cis_flush( cis );
+.RE
+.fi
+.ft 1
+.SH SEE ALSO
+.BR xil_compress (3)

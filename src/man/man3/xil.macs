@@ -1,0 +1,160 @@
+.\" @(#)xil.macs 2.5 92/08/31 SMI;
+' 	# redefine header macro to deal with long names
+.	# page header -- remove string "]D" from header. --JH
+.\" Troff definition
+.if n .ig jh
+.de }H
+.ev 1
+.if \\nF .tm .SE PAGINATE NEW-PAGE \\n%
+'sp .333i
+.ft 1
+.ps 10
+.lt 7i
+.if !\\nD .tl \\*(]W\\*(]H
+.if  \\nD .if o .tl \\*(]W\\*(]H
+.if  \\nD .if e .tl \\*(]H\\*(]W
+'sp .083i
+.if !\\n(pb .}R
+.ev
+.nr TQ \\n(.i
+.nr TK \\n(.u
+.if \\n(IT \{\
+.	in 0
+.	nf
+.	if \\n(T1 .TC
+.	TT
+.	in \\n(TQu
+.	if \\nTK .fi
+.\}
+.ns
+.mk #T
+.if \\n(U# \{\
+.	mk U#
+.	in \\n(DIu
+.\}
+..
+.jh
+.\" Nroff definition
+.if t .ig jh
+'	# handle the head of the page
+.de }H
+.ev 1
+.}C
+.if \\nF .tm .SE PAGINATE NEW-PAGE \\n%
+'sp .5i
+.ft 1
+.ps 10
+.tl \\*(]W\\*(]H
+'sp .5i
+.ev
+.ns
+..
+.jh
+.\" troff definition
+.if n .ig jh
+.	# page footer
+.\" We need to fix this to remove chapter-page
+.\" style numbering.  Removing string "]C" should
+.\" do the trick. -- JH
+.de }F
+.rn }F FZ
+.if \\n(U# \{\
+.mr U#
+.\}
+.if \\n(IT .nr T. 1
+.if \\n(IT .if !\\n(FC .T# 1
+.if \\n(IT .br
+.ev 1
+.ft 1
+.ps 10
+'sp |8.5i
+.if t .if !\\nD .tl \\*(]L\\*(PN%
+.if t .if  \\nD .if o .tl \\*(]L\\*(PN%
+.if t .if  \\nD .if e .tl \\*(PN%\\*(]L
+.if !\\nA 'bp
+.if \\nA .if \\n%>=\\nA \{\
+.	ds PN \\n%
+.	pn 1
+.	af % a
+.	nr A 0
+'	bp 1
+.\}
+.if \\nA .if \\n%<\\nA 'bp
+.ev
+.rn FZ }F
+..
+.jh
+.\" Nroff definition
+.if t .ig jh
+'	# handle the foot of the page
+.de }F
+.ev 1
+.ft 1
+.ps 10
+'sp .5i
+.if !\\nD .tl \\*(]W\\*(]L\\*(PN%
+.if  \\nD .if o .tl \\*(]W\\*(]L\\*(PN%
+.if  \\nD .if e .tl \\*(PN%\\*(]L\\*(]W
+.if !\\nX 'bp
+.if \\nX .if \\n%>=\\nX \{\
+.ds PN \\n%
+.pn 1
+.af % a
+.nr X 0
+'bp 1\}
+.if \\nX .if \\n%<\\nX 'bp
+.ev
+..
+.jh
+.	# index entry
+.\" Remove chapter number from index entries (i.e., scrub string "]C"). -- JH
+.de IX
+.if \\nF .tm .IE\tENTRY\t\\$1\t\\$2\t\\$3\t\\$4\t\\$5\t\\$6\t\\*(PN\\n%
+..
+'\"	# Bold with small caps
+'\"	# 	$1 is bold
+'\"	# 	$2 is small caps and bold
+'\"	# 	$3 is bold
+.\" Further modified to split overly-long arguments
+.\" across lines if necessary. -- JHevelin (2-15-91)
+.de Bs
+.nr xX \w'\\$1'
+.nr xX +\w'\\$2'
+.nr xX +\w'\\$3'
+.nr xX +\w'\ \ '
+.ie (\\n(xX<(\\n(.lu-\\n(.ou)) \{\
+.B "\&\\$1\s-1\\$2\s0\\$3"
+.\}
+.el \{\
+.B "\&\\$1\s-1\\$2\s0"
+.br
+.B "\&\t\\$3"
+.\" Don't print out messages to user
+.\" .tm ERROR: Bs lines too long!  Fix commas!
+.\}
+.rr xX
+..
+.\" Tab Set for parameters definition
+.de Ts
+.if n .ta 2.0i
+.if t .ta 1.2i
+..
+.\" Tab Reset for normal text
+.de Tr
+.if n .ta 0.8i
+.if t .ta 0.5i
+..
+.\" Start of listing text.
+.de Ls
+.nf
+\fL
+.ps -2
+.vs -3
+..
+.\" End of listing text.
+.de Le
+.vs +3
+.ps +3
+\fR
+.fi
+..

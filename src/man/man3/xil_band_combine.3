@@ -1,0 +1,146 @@
+.\" @(#)xil_band_combine.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_band_combine 3 "15 June 1993" "" "XIL Library"
+.SH NAME
+xil_band_combine \- interband linear combination operation
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_band_combine (XilImage " src ,
+.if t .in +5n
+.br 
+.BI "XilImage " dst , 
+.br
+.BI " XilKernel " matrix );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_band_combine
+.IX Functions xil_band_combine
+.IX "Image Processing Operations" "xil_band_combine"
+This function performs the arbitrary interband linear combination
+of an image using the specified matrix.
+.I src
+is the source image handle.
+.I dst
+is the destination image handle.
+.I matrix
+is the floating point matrix used to perform the linear combination.
+The width of the matrix must be one larger than the number of bands
+in the source image.  The height of the matrix must be equal to the
+number of bands in the destination image.  Because the matrix can
+be of arbitrary size, this function can be used to produce a destination
+image with a different number of bands from the source image.
+.P
+.nh
+The destination image is formed by performing a matrix-multiply
+operation between the bands of the source image and the specified matrix.  
+The extra column of values is a constant that is added after the
+matrix-multiply operation takes place.  The matrix is implemented as an 
+.I XilKernel. 
+For a source pixel with N bands represented by
+(s0,s1,s2,...,sN-1), and a destination pixel with M bands represented
+by (d0,d1,d2,...,
+.br
+dM-1), the corresponding (N+1) x M matrix:
+.sp
+.nf
+a00	a10	a20	...	aN0
+a01	a11	a21	...	aN1
+ ...
+a0(M-1)	a1(M-1)	a2(M-1)	...	aN(M-1)
+.fi
+.sp
+would give for the first element in the destination pixel:
+.sp
+.nf
+d0 = a00s0 + a10s1 + a20s2 + ... + a(N-1)0s(N-1) + aN0
+.fi
+.P
+.nh
+For example, the following 4x3 matrix would give a destination image 
+equal to the source image:
+.sp
+.nf
+1.0	0.0	0.0	0.0
+0.0	1.0	0.0	0.0
+0.0	0.0	1.0	0.0
+.fi
+.P
+.nh
+This 5x1 matrix would select the second band of a 4 band image:
+.sp
+.nf
+0.0	1.0	0.0	0.0	0.0
+.fi
+.P
+.nh
+This 4x1 matrix would generate a single-band luminance image from
+an RGB image with the standard bgr memory format:
+.sp
+.nf
+0.114	0.587	0.299	0.0
+.fi
+.P
+.nh
+This 4x3 matrix would invert the second band of a 3-band image:
+.sp
+.nf
+1.0	0.0	0.0	0.0
+0.0       -1.0	0.0     255.0
+0.0	0.0	1.0	0.0
+.fi
+.P
+.nh
+Notice that the fourth column of this last matrix corresponds to the
+"constant" that is added after the multiply-add steps.  It should
+be in the range appropriate for the source and destination data types.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+.nh
+The following example generates a single-band image that is 
+the normalized sum of all the bands of a three-band source image.
+.RS
+.ft B
+.nf
+.sp
+#include <xil/xil.h>
+XilSystemState	State;
+XilImage	src, dst;
+XilKernel	matrix;
+unsigned int	width = 4, height = 1;
+float		*matrix_values = {0.333, 0.333, 0.333, 0.0}
+.sp	
+State = xil_open();
+.sp
+matrix = xil_kernel_create(State, width, height, 0, 0, matrix_values);
+.sp	
+/* create a dst image the same type as source, but only 1 band */
+dst = xil_create(State, xil_get_width(src), xil_get_height(src),
+	1, xil_get_datatype(src));
+.sp	
+xil_band_combine(src, dst, matrix);
+.fi
+.ft
+.RE
+.P
+.SH NOTES
+.nh
+The key pixel values for the 
+.I XilKernel 
+object are not used by
+.B xil_band_combine
+(\^), and are ignored.
+.SH SEE ALSO
+.BR xil_kernel_create (3)

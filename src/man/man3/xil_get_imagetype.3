@@ -1,0 +1,79 @@
+.\" @(#)xil_get_imagetype.3 1.2 97/05/13 SMI/VPG;
+.so man3/xil.macs
+.TH xil_get_imagetype 3 "17 August 1993" "" "XIL Library"
+.SH "NAME"
+xil_get_imagetype \- get an XilImageType object
+.SH SYNOPSIS
+.ft B
+.nf
+#include <xil/xil.h>
+.fi
+.sp .5v
+.BI "XilImageType xil_get_imagetype (XilImage " image );
+.if t .in +5n
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.nh
+.IX xil_get_imagetype
+.IX Functions xil_get_imagetype
+.IX "Image Functions" "xil_get_imagetype"
+This function returns an
+.I XilImageType
+object that contains information about the size, data type, and
+color space of an 
+.I image.
+This function may be called on all images.  An
+.I XilImageType
+object describes the characteristics of an image that will be generated (or
+expected) by a particular device (for example, a frame grabber or an output
+device).  The characteristics of an
+.I XilImageType
+object are
+.I xsize, ysize, nbands, datatype,
+and
+.I colorspace.
+You obtain an
+.I XilImageType
+object from a call to
+.BR xil_cis_get_output_type (3)
+or 
+.BR xil_cis_get_input_type (3).
+You use an
+.I XilImageType
+object to create images (via an
+.BR xil_create_from_type (3)
+call) that will be compatible with a given device, compressor, and so on. 
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Get the imagetype of a particular image:
+.LP
+.nf
+.sp
+.RS
+.ft 3
+XilImage image;
+XilImageType imagetype;
+.ta 3.5i
+.sp
+imagetype = xil_get_imagetype (image);
+.RE
+.fi
+.ft 1
+.SH NOTES
+.nh
+After
+.I image
+is destroyed, the handle to the 
+.I XilImageType 
+object is no longer valid.
+.SH SEE ALSO
+.BR xil_create_from_type (3),
+.BR xil_cis_get_output_type (3),
+.BR xil_cis_get_input_type (3),
+.BR xil_create_temporary_from_type (3).

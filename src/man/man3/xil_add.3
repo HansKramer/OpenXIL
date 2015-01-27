@@ -1,0 +1,116 @@
+.\" @(#)xil_add.3 1.1 97/01/28 SMI/VPG;
+.so man3/xil.macs
+.TH xil_add 3 "3 August 1993" "" "XIL Library"
+.SH NAME
+xil_add, xil_add_const \- image addition operations
+.SH SYNOPSIS
+.LP
+.nf
+.ft B
+#include <xil/xil.h>
+.LP
+.sp .5v
+.fi
+.BI "void xil_add (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "XilImage " src2 , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.LP
+.sp .5v
+.BI "void xil_add_const (XilImage " src1 , 
+.if t .in +5n
+.br
+.BI "float *" constants , 
+.br
+.BI "XilImage " dst );
+.br
+.ft R
+.fi
+.in
+.SH DESCRIPTION
+.IX xil_add
+.IX Functions xil_add
+.IX "Arithmetic and Logical Operations" "xil_add" 
+.nh
+.B xil_add
+(\^) performs a pixel-by-pixel addition of the 
+.I src2 
+image to the
+.I src1 
+image and stores the result in the 
+.I dst
+(destination) image.
+If the result of the operation is out of range for a particular data type, the
+result is clamped to the minimum or maximum value for the data type.
+Results for XIL_BYTE operations, for example, are clamped to 0 if they are less than
+0 and 255 if they are greater than 255.
+.P
+.IX xil_add_const
+.IX Functions xil_add_const
+.IX "Arithmetic and Logical Operations" "xil_add_const" 
+.nh
+.B xil_add_const
+(\^) performs a pixel-by-pixel addition of the
+.I constants     
+values to the
+.I src1    
+image and stores the result in the
+.I dst
+(destination) image.
+.nh
+For an n-band image, n float values must be provided, one per band.  Pixel values are rounded and clipped according to the image data type.
+.SH ERRORS
+.nh
+For a complete list of XIL error messages by number, consult Appendix B of the 
+.I "XIL Programmer's Guide."
+.SH EXAMPLES
+Add 
+.I image2 
+to 
+.I image1 
+and store the result in 
+.I dst
+:
+.RS
+.ft B
+.nf
+.sp
+XilImage image1, image2, dst;
+.sp
+xil_add(image1, image2, dst);
+.sp
+.fi
+.ft
+.RE
+.LP 
+Add 
+.I constants 
+to 4-band
+.I image1 
+and store the result in
+.I dst
+:
+.RS
+.ft B
+.nf 
+.sp
+XilImage image1, dst;
+float constants[4];
+.sp
+constants[0] = 1.0;
+constants[1] = 1.0;
+constants[2] = 1.0;
+constants[3] = 0.0;
+xil_add_const(image1, constants, dst);
+.fi
+.ft
+.RE
+.SH NOTES
+.LP
+Source and destination images must be of the same data type and have the same number of bands.  In-place operations are supported.
